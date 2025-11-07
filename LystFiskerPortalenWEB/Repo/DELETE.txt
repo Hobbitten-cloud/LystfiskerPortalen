@@ -1,6 +1,0 @@
-﻿namespace LystFiskerPortalenWEB.Repo
-{
-    public class DELETE
-    {
-    }
-}
