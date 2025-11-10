@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\Services\**" />
+    <Content Remove="Components\Services\**" />
+    <EmbeddedResource Remove="Components\Services\**" />
+    <None Remove="Components\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.21" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.21" />
@@ -24,8 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\Services\" />
-    <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>

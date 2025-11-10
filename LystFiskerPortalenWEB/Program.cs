@@ -18,11 +18,11 @@ namespace LystFiskerPortalenWEB
             // Add services to the container.
             builder.Services.AddRazorComponents();
 
-            builder.Services.AddDbContext<DataContext>(options => 
+            builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
             });
-            
+
             builder.Services.AddDefaultIdentity<Profile>
                 (options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
@@ -39,11 +39,11 @@ namespace LystFiskerPortalenWEB
             builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
             builder.Services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = IdentityConstants.ApplicationScheme;
-                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-                });
-                //.AddIdentityCookies();
+    {
+        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+    });
+    //.AddIdentityCookies();
 
     //        builder.Services.AddIdentityCore<Profile>(options => options.SignIn.RequireConfirmedAccount = true)
     //.AddEntityFrameworkStores<DataContext>()
@@ -69,7 +69,7 @@ namespace LystFiskerPortalenWEB
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+
             app.MapRazorComponents<App>();
 
             app.MapAdditionalIdentityEndpoints();;
