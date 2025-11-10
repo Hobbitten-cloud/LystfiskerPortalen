@@ -11,7 +11,7 @@ namespace LystFiskerPortalenWEB.Models
         [Required]
         public string  Role { get; set; }
 
-        public Image ProfileImage { get; set; }
+        public string ImagePath { get; set; }
 
        
 
