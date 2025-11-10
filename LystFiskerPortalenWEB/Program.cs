@@ -17,11 +17,11 @@ namespace LystFiskerPortalenWEB
             // Add services to the container.
             builder.Services.AddRazorComponents();
 
-            builder.Services.AddDbContext<DataContext>(options => 
+            builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
             });
-            
+
             builder.Services.AddDefaultIdentity<Profile>
                 (options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
@@ -39,13 +39,13 @@ namespace LystFiskerPortalenWEB
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-    })
-    .AddIdentityCookies();
+    });
+    //.AddIdentityCookies();
 
-            builder.Services.AddIdentityCore<Profile>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DataContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
+    //        builder.Services.AddIdentityCore<Profile>(options => options.SignIn.RequireConfirmedAccount = true)
+    //.AddEntityFrameworkStores<DataContext>()
+    //.AddSignInManager()
+    //.AddDefaultTokenProviders();
 
             builder.Services.AddSingleton<IEmailSender<Profile>, IdentityNoOpEmailSender>();
             var app = builder.Build();
@@ -66,7 +66,7 @@ namespace LystFiskerPortalenWEB
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+
             app.MapRazorComponents<App>();
 
             app.MapAdditionalIdentityEndpoints();;

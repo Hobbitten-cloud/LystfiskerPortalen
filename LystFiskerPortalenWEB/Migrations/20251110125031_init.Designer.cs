@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251107103155_init")]
+    [Migration("20251110125031_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -44,6 +44,10 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -66,6 +70,10 @@ namespace LystFiskerPortalenWEB.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
