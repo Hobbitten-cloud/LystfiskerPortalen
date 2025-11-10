@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using LystFiskerPortalenWEB.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
+using LystFiskerPortalenWEB.Repo;
 
 namespace LystFiskerPortalenWEB
 {
@@ -32,6 +33,8 @@ namespace LystFiskerPortalenWEB
             builder.Services.AddScoped<IdentityUserAccessor>();
 
             builder.Services.AddScoped<IdentityRedirectManager>();
+
+            builder.Services.AddScoped<IProfileRepo,ProfileRepo>();
 
             builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
