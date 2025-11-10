@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using LystFiskerPortalenWEB.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
+using LystFiskerPortalenWEB.Repo;
 
 namespace LystFiskerPortalenWEB
 {
@@ -33,19 +34,21 @@ namespace LystFiskerPortalenWEB
 
             builder.Services.AddScoped<IdentityRedirectManager>();
 
+            builder.Services.AddScoped<IProfileRepo,ProfileRepo>();
+
             builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
             builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-    })
-    .AddIdentityCookies();
+                {
+                    options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                    options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                });
+                //.AddIdentityCookies();
 
-            builder.Services.AddIdentityCore<Profile>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DataContext>()
-    .AddSignInManager()
-    .AddDefaultTokenProviders();
+    //        builder.Services.AddIdentityCore<Profile>(options => options.SignIn.RequireConfirmedAccount = true)
+    //.AddEntityFrameworkStores<DataContext>()
+    //.AddSignInManager()
+    //.AddDefaultTokenProviders();
 
             builder.Services.AddSingleton<IEmailSender<Profile>, IdentityNoOpEmailSender>();
             var app = builder.Build();
