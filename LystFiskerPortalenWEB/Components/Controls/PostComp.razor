@@ -1,14 +1,36 @@
-﻿<div class="card" style="width: 18rem;">
-    <div class="card-body">
-        <h5 class="card-title">@post.Title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
-    <img src="..." class="card-img-top" alt="...">
-</div>
+﻿@rendermode InteractiveServer
+
+@inject IPostRepo PostRepo
+
+@if (allPosts == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	@foreach (var post in allPosts)
+	{
+		<div class="card" style="width: 18rem;">
+			<div class="card-body">
+				<h5 class="card-title">@post.Title</h5>
+				<p class="card-text">@post.Description</p>
+				<p class="card-text">@post.CreationDate</p>
+			</div>
+			<img src="@post.Picture" class="card-img-top" alt="...">
+			<a href="#" class="btn btn-primary">Go somewhere</a>
+		</div>
+	}
+}
 
 @code {
-    Post post = new Post();
+	[Inject]
+	private IPostRepo postRepo { get; set; }
 
+	private List<Post> allPosts { get; set; }
 
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		allPosts = await postRepo.GetAllPosts();
+	}
 }
