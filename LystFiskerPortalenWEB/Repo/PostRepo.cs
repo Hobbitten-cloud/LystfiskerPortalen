@@ -1,38 +1,54 @@
 ﻿using LystFiskerPortalenWEB.Models;
+using LystFiskerPortalenWEB.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LystFiskerPortalenWEB.Repo
 {
-    public class PostRepo
+    public class PostRepo : IPostRepo
     {
-        public void CreatePost(Post post)
+        private DataContext _context;
+
+        public PostRepo(DataContext context)
+        {
+            _context = context;
+        }
+
+        public async Task CreatePost(Post post)
         {
             if (post == null)
             {
                 return;
             }
-
-            //_assignmentContext.Assignments.Add(assignment);
-            //_assignmentContext.SaveChanges();
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeletePost(int id)
+        public async Task UpdatePost(Post post)
         {
-            Assignment assignment = _assignmentContext.Assignments.Find(id);
-            _assignmentContext.Assignments.Remove(assignment);
-            _assignmentContext.SaveChanges();
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdatePost()
+        public async Task DeletePost(int id)
         {
-            //assignmentToUpdate.Title = assignment.Title;
-            //assignmentToUpdate.Description = assignment.Description;
-            //assignmentToUpdate.Subjects = assignment.Subjects;
-            //_assignmentContext.SaveChanges();
+            var post = GetPostById(id).Result;
+
+            if (post != null)
+            {
+                _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public Post GetPost(int id)
+        public async Task<List<Post>> GetAllPosts()
         {
-            return _assignmentContext.Assignments.Find(id);
+            return await _context.Posts.ToListAsync();
         }
+
+        public async Task<Post> GetPostById(int id)
+        {
+            return await _context.Posts.FindAsync(id);
+        }
+
     }
 }

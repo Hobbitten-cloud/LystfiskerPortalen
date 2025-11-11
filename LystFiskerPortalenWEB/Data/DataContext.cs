@@ -12,6 +12,7 @@ namespace LystFiskerPortalenWEB.Data
         }
 
         public DbSet<Profile> Profiles { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
