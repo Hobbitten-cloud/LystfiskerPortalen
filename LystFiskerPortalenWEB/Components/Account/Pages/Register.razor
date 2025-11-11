@@ -42,6 +42,11 @@
                 <label for="confirm-password">Confirm Password</label>
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
+            <div class="form-floating mb-3">
+                <InputText type="username" @bind-Value="Input.username" class="form-control" autocomplete="new-username" aria-required="true" placeholder="Username" />
+                <label for="username">UserName</label>
+                <ValidationMessage For="() => Input.username" class="text-danger" />
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
@@ -134,5 +139,17 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
+
+        public string Role { get; set; } = "User"; 
+
+        [Required]
+        [Display(Name = "Username")]
+        [StringLength(10, ErrorMessage = "The Username must be between 4 and 10 charecters long", MinimumLength = 4)]
+        public string username { get; set; } = "";
+
+        public string ImagePath { get; set; } = "default.png";
+
+        [Phone]
+        public string PhoneNumber { get; set; } = "";
     }
 }
