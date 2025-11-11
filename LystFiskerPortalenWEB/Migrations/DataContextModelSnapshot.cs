@@ -22,6 +22,55 @@ namespace LystFiskerPortalenWEB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Posts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreationDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "En fantastisk dag ved søen med masser af fisk!",
+                            Location = "Søen ved Skoven",
+                            Picture = "fisketur1.jpg",
+                            Title = "Fisketur ved søen"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "En spændende dag på havet med store fangster.",
+                            Location = "Kysten ved Byen",
+                            Picture = "havfiskeri.jpg",
+                            Title = "Havfiskeri eventyr"
+                        });
+                });
+
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>
                 {
                     b.Property<string>("Id")

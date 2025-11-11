@@ -36,6 +36,8 @@ namespace LystFiskerPortalenWEB
 
             builder.Services.AddScoped<IProfileRepo,ProfileRepo>();
 
+            builder.Services.AddScoped<IPostRepo, PostRepo>();
+
             builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
             builder.Services.AddAuthentication(options =>
@@ -72,7 +74,7 @@ namespace LystFiskerPortalenWEB
 
             app.MapRazorComponents<App>();
 
-            app.MapAdditionalIdentityEndpoints();;
+            app.MapAdditionalIdentityEndpoints();
 
             app.Run();
         }
