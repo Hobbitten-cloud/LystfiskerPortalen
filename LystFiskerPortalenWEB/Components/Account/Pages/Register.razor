@@ -14,6 +14,8 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject IFileUploadService FileUploadService
+@inject IProfileRepo ProfileRepo
 
 <PageTitle>Register</PageTitle>
 
@@ -47,12 +49,23 @@
                 <label for="username">UserName</label>
                 <ValidationMessage For="() => Input.username" class="text-danger" />
             </div>
+            <div class="form-floating mb-3">
+                <InputText type="username" @bind-Value="Input.PhoneNumber" class="form-control" autocomplete="new-PhoneNumber" aria-required="true" placeholder="PhoneNumber" />
+                <label for="Phonenumber">PhoneNumber</label>
+                <ValidationMessage For="() => Input.username" class="text-danger" />
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
 </div>
 
 @code {
+    [Inject]
+    private IFileUploadService fileUploadService { get; set; }
+
+    [Inject]
+    private IProfileRepo profileRepo { get; set; } 
+
     private IEnumerable<IdentityError>? identityErrors;
 
     [SupplyParameterFromForm]
@@ -95,6 +108,8 @@
                 "Account/RegisterConfirmation",
                 new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
         }
+
+        await profileRepo.AddProfile(user);
 
         await SignInManager.SignInAsync(user, isPersistent: false);
         RedirectManager.RedirectTo(ReturnUrl);
@@ -147,9 +162,11 @@
         [StringLength(10, ErrorMessage = "The Username must be between 4 and 10 charecters long", MinimumLength = 4)]
         public string username { get; set; } = "";
 
-        public string ImagePath { get; set; } = "default.png";
+        public IFormFile ImagePath { get; set; } 
+
+        //public string ImagePath { get; set;  } = "default.png";
 
         [Phone]
-        public string PhoneNumber { get; set; } = "";
+        public string PhoneNumber { get; set; }
     }
 }

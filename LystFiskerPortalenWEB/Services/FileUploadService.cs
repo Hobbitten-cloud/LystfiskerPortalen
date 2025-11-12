@@ -1,8 +1,8 @@
 ﻿namespace LystFiskerPortalenWEB.Services
 {
-    public class FileUploadService
+    public class FileUploadService : IFileUploadService
     {
-        async Task<string> UploadFile(IFormFile file)
+        public async Task<string> UploadFile(IFormFile file)
         {
 
             try
@@ -15,9 +15,9 @@
                 return filePath;
 
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                return ex.Message;  
+                return ex.Message;
             }
 
         }
