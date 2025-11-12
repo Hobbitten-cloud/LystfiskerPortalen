@@ -10,8 +10,9 @@ else
     {
         <div class="card" style="width: 18rem; margin-bottom: 2%" >
             <div class="card-body">
-                <h5 class="card-title">@post.Title</h5>
+                <a>BRUGER</a>
                 <p class="card-text">@post.CreationDate</p>
+                <h5 class="card-title">@post.Title</h5>
                 <p class="card-text">@post.Description</p>
                 <p class="card-text">@post.Location</p>
             </div>
@@ -19,6 +20,16 @@ else
             {
                 <img src="@post.Picture" class="card-img-top" alt="Billede ikke fundet">
             }
+            <div style="display: flex; gap: 1rem;">
+                <InputSelect @bind-Value="allPosts">
+                    <option value="">Teknik</option>
+                </InputSelect>
+                <InputSelect @bind-Value="allPosts">
+                    <option value="">Blink</option>
+                </InputSelect>
+            </div>
+            <hr />
+            <a>KOMMENTARER</a>
         </div>
     }
 }
