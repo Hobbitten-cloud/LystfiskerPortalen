@@ -5,10 +5,10 @@ namespace LystFiskerPortalenWEB.Repo
     public interface ITechniqueRepo
     {
 
-        Task CreateTech(TechniqueRepo technique);
+        Task CreateTech(Technique technique);
         Task DeleteTech(int id);
-        Task<List<TechniqueRepo>> GetAllTechs();
-        Task<TechniqueRepo> GetTechById(int id);
-        Task UpdateTech(TechniqueRepo technique);
+        Task<List<Technique>> GetAllTechs();
+        Task<Technique> GetTechById(int id);
+        Task UpdateTech(Technique technique);
     }
 }
