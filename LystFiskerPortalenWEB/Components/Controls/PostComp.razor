@@ -1,6 +1,4 @@
-﻿@rendermode InteractiveServer
-
-@inject IPostRepo PostRepo
+﻿@inject IPostRepo PostRepo
 
 @if (allPosts == null)
 {
@@ -13,8 +11,8 @@ else
 		<div class="card" style="width: 18rem;">
 			<div class="card-body">
 				<h5 class="card-title">@post.Title</h5>
-				<p class="card-text">@post.Description</p>
 				<p class="card-text">@post.CreationDate</p>
+				<p class="card-text">@post.Description</p>
 			</div>
 			<img src="@post.Picture" class="card-img-top" alt="...">
 			<a href="#" class="btn btn-primary">Go somewhere</a>
