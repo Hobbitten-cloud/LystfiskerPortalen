@@ -57,7 +57,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En fantastisk dag ved søen med masser af fisk!",
                             Location = "Søen ved Skoven",
-                            Picture = "fisketur1.jpg",
+                            Picture = "public/TestPictures/TestFisk1.png",
                             Title = "Fisketur ved søen"
                         },
                         new
@@ -66,8 +66,24 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En spændende dag på havet med store fangster.",
                             Location = "Kysten ved Byen",
-                            Picture = "havfiskeri.jpg",
+                            Picture = "public/TestPictures/TestFisk2.jpg",
                             Title = "Havfiskeri eventyr"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
+                            Location = "Byens kyst",
+                            Picture = "public/TestPictures/TestFisk3.png",
+                            Title = "Kæmpe blæksprutte fanget!"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Søger single lystfiskere i Odense beliggenhed",
+                            Title = "Hej Fiskere!"
                         });
                 });
 

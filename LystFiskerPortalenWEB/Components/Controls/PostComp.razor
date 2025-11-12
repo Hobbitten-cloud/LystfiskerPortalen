@@ -2,33 +2,36 @@
 
 @if (allPosts == null)
 {
-	<p><em>Loading...</em></p>
+    <p><em>Loading...</em></p>
 }
 else
 {
-	@foreach (var post in allPosts)
-	{
-		<div class="card" style="width: 18rem;">
-			<div class="card-body">
-				<h5 class="card-title">@post.Title</h5>
-				<p class="card-text">@post.CreationDate</p>
-				<p class="card-text">@post.Description</p>
-			</div>
-			<img src="@post.Picture" class="card-img-top" alt="...">
-			<a href="#" class="btn btn-primary">Go somewhere</a>
-		</div>
-	}
+    @foreach (var post in allPosts)
+    {
+        <div class="card" style="width: 18rem; margin-bottom: 2%" >
+            <div class="card-body">
+                <h5 class="card-title">@post.Title</h5>
+                <p class="card-text">@post.CreationDate</p>
+                <p class="card-text">@post.Description</p>
+                <p class="card-text">@post.Location</p>
+            </div>
+            @if (post.Picture != null)
+            {
+                <img src="@post.Picture" class="card-img-top" alt="Billede ikke fundet">
+            }
+        </div>
+    }
 }
 
 @code {
-	[Inject]
-	private IPostRepo postRepo { get; set; }
+    [Inject]
+    private IPostRepo postRepo { get; set; }
 
-	private List<Post> allPosts { get; set; }
+    private List<Post> allPosts { get; set; }
 
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		allPosts = await postRepo.GetAllPosts();
-	}
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        allPosts = await postRepo.GetAllPosts();
+    }
 }
