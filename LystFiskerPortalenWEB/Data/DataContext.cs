@@ -17,7 +17,10 @@ namespace LystFiskerPortalenWEB.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Profile>().ToTable("Profiles");
+
             
+                
         }
     }
 }

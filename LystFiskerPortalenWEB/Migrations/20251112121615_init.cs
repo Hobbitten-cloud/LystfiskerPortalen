@@ -26,7 +26,7 @@ namespace LystFiskerPortalenWEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
+                name: "Profiles",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -49,7 +49,7 @@ namespace LystFiskerPortalenWEB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,9 +87,9 @@ namespace LystFiskerPortalenWEB.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        name: "FK_AspNetUserClaims_Profiles_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -107,9 +107,9 @@ namespace LystFiskerPortalenWEB.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        name: "FK_AspNetUserLogins_Profiles_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -131,9 +131,9 @@ namespace LystFiskerPortalenWEB.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        name: "FK_AspNetUserRoles_Profiles_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -151,9 +151,9 @@ namespace LystFiskerPortalenWEB.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        name: "FK_AspNetUserTokens_Profiles_UserId",
                         column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        principalTable: "Profiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -187,12 +187,12 @@ namespace LystFiskerPortalenWEB.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                table: "AspNetUsers",
+                table: "Profiles",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                table: "AspNetUsers",
+                table: "Profiles",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
@@ -220,7 +220,7 @@ namespace LystFiskerPortalenWEB.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Profiles");
         }
     }
 }

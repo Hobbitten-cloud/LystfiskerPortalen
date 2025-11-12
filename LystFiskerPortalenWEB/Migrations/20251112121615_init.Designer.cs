@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251110125031_init")]
+    [Migration("20251112121615_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -95,7 +95,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("Profiles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
