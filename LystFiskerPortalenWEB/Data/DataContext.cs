@@ -20,6 +20,7 @@ namespace LystFiskerPortalenWEB.Data
             base.OnModelCreating(builder);
 
             builder.Entity<Post>().ToTable("Posts");
+            builder.Entity<Technique>().ToTable("Techniques");
 
             builder.Entity<Post>().HasData(
                 new Post
@@ -41,6 +42,13 @@ namespace LystFiskerPortalenWEB.Data
                     CreationDate = new DateTime(2024, 5, 15)
                 }
             );
+            builder.Entity<Technique>().HasData(
+                new Technique
+                {
+                    Id = 1,
+                    Name = "Dennis",
+                    Description = "gay"
+                });
 
         }
     }
