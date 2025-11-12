@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Components\Services\**" />
+    <Compile Remove="wwwroot\Images\**" />
     <Content Remove="Components\Services\**" />
+    <Content Remove="wwwroot\Images\**" />
     <EmbeddedResource Remove="Components\Services\**" />
+    <EmbeddedResource Remove="wwwroot\Images\**" />
     <None Remove="Components\Services\**" />
+    <None Remove="wwwroot\Images\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,11 +32,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Images\" />
-    <Folder Include="wwwroot\public\TestPictures\" />
   </ItemGroup>
 
 </Project>
