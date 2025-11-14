@@ -17,7 +17,7 @@ namespace LystFiskerPortalenWEB
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorComponents();
+            builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
             builder.Services.AddDbContext<DataContext>(options =>
             {
@@ -39,6 +39,8 @@ namespace LystFiskerPortalenWEB
 
             builder.Services.AddScoped<IFileUploadService, FileUploadService>();
             builder.Services.AddScoped<IPostRepo, PostRepo>();
+            builder.Services.AddScoped<ITechniqueRepo, TechniqueRepo>();
+
 
             builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
@@ -74,7 +76,7 @@ namespace LystFiskerPortalenWEB
             app.UseAuthorization();
 
 
-            app.MapRazorComponents<App>();
+            app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 
             app.MapAdditionalIdentityEndpoints();
 
