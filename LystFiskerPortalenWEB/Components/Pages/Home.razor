@@ -1,9 +1,19 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
-
 <h1>Feed</h1>
+<hr />
+<div>
 
-<div style="margin: auto; width: 50%;">
-    <PostComp></PostComp>
+    @* Component for creating a new post *@
+    <div style="margin: auto; width: 50%;">
+        <PostCreateComp></PostCreateComp>
+    </div>
+
+    <hr />
+
+    @* Componet for viewing all posts - sorted after creationDate *@
+    <div style="margin: auto; width: 50%;">
+        <PostReadComp></PostReadComp>
+    </div>
 </div>
