@@ -1,12 +1,12 @@
 ﻿@inject IPostRepo PostRepo
 
-@if (allPosts == null)
+@if (posts == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    @foreach (var post in allPosts)
+    @foreach (var post in posts)
     {
         <div class="card" style="width: 32rem; margin-bottom: 2%">
             <div class="card-body">
@@ -23,12 +23,14 @@ else
             }
             <br />
             <div style="display: flex; gap: 1rem;">
-                <InputSelect @bind-Value="allPosts">
+@*                 <InputSelect @bind-Value="allPosts">
                     <option value="">Teknik</option>
                 </InputSelect>
                 <InputSelect @bind-Value="allPosts">
                     <option value="">Blink</option>
-                </InputSelect>
+                </InputSelect> *@
+                <p>Teknik</p>
+                <p>Blink</p>
             </div>
             <hr />
             <a>KOMMENTARER</a>
@@ -40,11 +42,11 @@ else
     [Inject]
     private IPostRepo postRepo { get; set; }
 
-    private List<Post> allPosts { get; set; }
+    private List<Post> posts { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        allPosts = await postRepo.GetAllPosts();
+        posts = await postRepo.GetAllPosts();
     }
 }
