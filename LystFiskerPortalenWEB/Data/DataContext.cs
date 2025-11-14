@@ -18,6 +18,7 @@ namespace LystFiskerPortalenWEB.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Profile>().ToTable("Profiles"); 
             builder.Entity<Post>().ToTable("Posts");
 
             builder.Entity<Post>().HasData(
