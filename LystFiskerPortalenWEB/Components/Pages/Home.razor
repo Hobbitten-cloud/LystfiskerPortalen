@@ -1,7 +1,19 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
+<h1>Feed</h1>
+<hr />
+<div>
 
-<h1>Hello, world!</h1>
+    @* Component for creating a new post *@
+    <div style="margin: auto; width: 50%;">
+        <PostCreateComp></PostCreateComp>
+    </div>
 
-Welcome to your new app.
+    <hr />
+
+    @* Componet for viewing all posts - sorted after creationDate *@
+    <div style="margin: auto; width: 50%;">
+        <PostReadComp></PostReadComp>
+    </div>
+</div>
