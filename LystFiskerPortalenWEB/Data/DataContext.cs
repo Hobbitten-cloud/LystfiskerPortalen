@@ -118,8 +118,6 @@ namespace LystFiskerPortalenWEB.Data
                 });
             #endregion
 
-            //seeder Blinks
-            #region
             builder.Entity<Lure>().HasData(
                new Lure
                {
@@ -210,7 +208,6 @@ namespace LystFiskerPortalenWEB.Data
                    Type = "Slankt long-distance blink – super til havørred, især i klart vand."
                }
                );
-               #endregion
         }
     }
 }
