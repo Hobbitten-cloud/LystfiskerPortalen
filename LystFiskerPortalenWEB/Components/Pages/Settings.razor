@@ -1,0 +1,52 @@
+﻿@page "/Settings/{id}"
+@inject IFileUploadService FileUploadService
+@inject IProfileRepo ProfileRepo
+
+@if (profile == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <EditForm Model="profile">
+            <h3>Settings Page</h3>
+            <div>
+            <img Row="1" width="200" height="200" src="@profile.ImagePath" class="rounded row" style="border-radius: 50%"/>
+            <button   @onclick = "ChangeProfilePicture" class ="btn btn-primary row">Change Profile Picture</button>
+            </div>
+            <p>This is a placeholder for the Settings page.</p
+            <div>
+
+            </div>
+        </EditForm>
+
+    </div>
+}
+@code {
+   
+    private IFormFile formFile { get; set; }
+
+    [Inject]
+    private IFileUploadService fileUploadService { get; set; }
+
+    [Inject]
+    private IProfileRepo profileRepo { get; set; }
+
+    [Parameter]
+    public string id { get; set; }
+
+     [SupplyParameterFromForm]
+    private Profile profile { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        profile = await profileRepo.GetProfileById(id);
+    }
+
+    public void ChangeProfilePicture()
+    {
+        
+    }
+    
+}

@@ -84,13 +84,13 @@
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
        
-        // Change implementation to get ImagePath and role from form
-        user.ImagePath = "Default.png";
-        // Change implementation to get ImagePath and role from form
+        
+        user.ImagePath = "/public/Images/DefaultProfileImage.png";
+     
         user.Role = "User";
 
 
-
+            
         //await profileRepo.AddProfile(user);
         var result = await UserManager.CreateAsync(user, Input.Password);
 
@@ -174,11 +174,11 @@
         public string ImagePath { get; set; } = "Default.png";
 
 
-        //public string ImagePath { get; set;  } = "default.png";
+       
 
         [Phone]
         [Display(Name = "Phone number")]
         [StringLength(15, ErrorMessage = "The Phone number must be at max 15 charecters long")]
         public string PhoneNumber { get; set; }
     }
-}
+}   
