@@ -15,12 +15,16 @@ namespace LystFiskerPortalenWEB.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Technique> Techniques { get; set; }
 
+        public DbSet<Lure> Lures { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<Post>().ToTable("Posts");
             builder.Entity<Technique>().ToTable("Techniques");
+            builder.Entity<Lure>().ToTable("Lures");
+
 
             builder.Entity<Post>().HasData(
                 new Post
@@ -42,6 +46,9 @@ namespace LystFiskerPortalenWEB.Data
                     CreationDate = new DateTime(2024, 5, 15)
                 }
             );
+
+            //seeder tech
+            #region
             builder.Entity<Technique>().HasData(
                 new Technique
                 {
@@ -109,6 +116,82 @@ namespace LystFiskerPortalenWEB.Data
                     Name = "Fladfiskerig",
                     Description = "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge."
                 });
+            #endregion
+
+            //seeder Blinks
+            builder.Entity<Lure>().HasData(
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               },
+               new Lure
+               {
+                   Id = 1,
+                   Name = "Blank",
+                   Color = "Blank",
+                   Weight = 0000,
+                   Type = "Blank"
+               });
         }
     }
 }
