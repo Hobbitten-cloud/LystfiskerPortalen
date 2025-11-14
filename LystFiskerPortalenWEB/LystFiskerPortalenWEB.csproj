@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Components\Services\**" />
+    <Compile Remove="wwwroot\Images\**" />
     <Content Remove="Components\Services\**" />
+    <Content Remove="wwwroot\Images\**" />
     <EmbeddedResource Remove="Components\Services\**" />
+    <EmbeddedResource Remove="wwwroot\Images\**" />
     <None Remove="Components\Services\**" />
+    <None Remove="wwwroot\Images\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\public\Images\" />
   </ItemGroup>
 
 </Project>
