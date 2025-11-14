@@ -26,10 +26,9 @@
 		<div class="card-footer">
 			<div>
 				<form FormName="UploadForm" enctype="multipart/form-data">
-					<input type="file" name="File" @* class="form-control" *@/>
+					<input type="file" name="File" @* class="form-control" *@ />
 					<button type="submit" @onsubmit="@AddImage">Upload</button>
 				</form>
-
 			</div>
 		</div>
 	</div>
@@ -45,5 +44,4 @@
 	private FileUploadService fileUploadService { get; set; }
 
 	public void AddImage() => fileUploadService.UploadFile(File);
-}
 }
