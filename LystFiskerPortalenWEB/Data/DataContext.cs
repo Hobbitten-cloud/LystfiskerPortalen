@@ -119,6 +119,7 @@ namespace LystFiskerPortalenWEB.Data
             #endregion
 
             //seeder Blinks
+            #region
             builder.Entity<Lure>().HasData(
                new Lure
                {
@@ -130,68 +131,86 @@ namespace LystFiskerPortalenWEB.Data
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
+                   Id = 2,
+                   Name = "Möresilda",
+                   Color = "Sølv/blå",
+                   Weight = 7,
+                   Type = "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt."
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
+                   Id = 3,
+                   Name = "Abu Garcia Toby",
+                   Color = "Sølv",
+                   Weight = 7,
+                   Type = "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre."
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
+                   Id = 4,
+                   Name = "Savage Gear Sandeel Surf Seeker",
+                   Color = "pearl/white",
+                   Weight = 35,
+                   Type = "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande."
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
+                   Id = 5,
+                   Name = "Hansen Flash",
+                   Color = "kobber/orange",
+                   Weight = 15,
+                   Type = "Kystblink med livlig gang. Godt til havørred på lavere vand."
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
+                   Id = 6,
+                   Name = "Snaps",
+                   Color = "chartreuse",
+                   Weight = 25,
+                   Type = "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk."
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
+                   Id = 7,
+                   Name = "Abu Garcia Atom",
+                   Color = "sølv/black stripes",
+                   Weight = 40,
+                   Type = "Geddeblink nr. 1 i mange år. Bred, vuggende gang – perfekt i søer og brakvand."
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
+                   Id = 8,
+                   Name = "Blue Fox Lucius",
+                   Color = "Firetiger",
+                   Weight = 27,
+                   Type = "Geddeblink til både lavt og dybt vand. God til at provokere hug i uklart vand."
                },
                new Lure
                {
-                   Id = 1,
-                   Name = "Blank",
-                   Color = "Blank",
-                   Weight = 0000,
-                   Type = "Blank"
-               });
+                   Id = 9,
+                   Name = "Solvkroken Stingsilda",
+                   Color = "rød/sølv",
+                   Weight = 18,
+                   Type = "Kraftigt, tungt blink til havfiskeri og kyst. Bruges ofte til torsk, makrel og havørred."
+               },
+               new Lure
+               {
+                   Id = 10,
+                   Name = "Mepps Syclops",
+                   Color = "sølv/blue stripes",
+                   Weight = 12,
+                   Type = "Allround blink med meget “flappende” gang. Bruges til både aborre, gedde og laks."
+               },
+               new Lure
+               {
+                   Id = 11,
+                   Name = "Westin D360",
+                   Color = "Pink Panther",
+                   Weight = 22,
+                   Type = "Slankt long-distance blink – super til havørred, især i klart vand."
+               }
+               );
+               #endregion
         }
     }
 }
