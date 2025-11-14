@@ -8,5 +8,6 @@
         public string Name { get; set; }
         public double Weight { get; set; }
         public string Type { get; set; }
+        private List<Lure> Lures { get; set; } = new List<Lure>();
     }
 }
