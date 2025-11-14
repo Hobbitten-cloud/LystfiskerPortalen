@@ -4,6 +4,7 @@ using LystFiskerPortalenWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251112121615_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,71 +24,6 @@ namespace LystFiskerPortalenWEB.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Picture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Posts", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreationDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "En fantastisk dag ved søen med masser af fisk!",
-                            Location = "Søen ved Skoven",
-                            Picture = "public/TestPictures/TestFisk1.png",
-                            Title = "Fisketur ved søen"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "En spændende dag på havet med store fangster.",
-                            Location = "Kysten ved Byen",
-                            Picture = "public/TestPictures/TestFisk2.jpg",
-                            Title = "Havfiskeri eventyr"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
-                            Location = "Byens kyst",
-                            Picture = "public/TestPictures/TestFisk3.png",
-                            Title = "Kæmpe blæksprutte fanget!"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Søger single lystfiskere i Odense beliggenhed",
-                            Title = "Hej Fiskere!"
-                        });
-                });
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>
                 {
