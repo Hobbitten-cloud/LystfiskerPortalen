@@ -14,6 +14,8 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject IFileUploadService FileUploadService
+@inject IProfileRepo ProfileRepo
 
 <PageTitle>Register</PageTitle>
 
@@ -42,12 +44,28 @@
                 <label for="confirm-password">Confirm Password</label>
                 <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
             </div>
+            <div class="form-floating mb-3">
+                <InputText type="username" @bind-Value="Input.username" class="form-control" autocomplete="new-username" aria-required="true" placeholder="Username" />
+                <label for="username">UserName</label>
+                <ValidationMessage For="() => Input.username" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText type="username" @bind-Value="Input.PhoneNumber" class="form-control" autocomplete="new-PhoneNumber" aria-required="true" placeholder="PhoneNumber" />
+                <label for="Phonenumber">PhoneNumber</label>
+                <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
+            </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </EditForm>
     </div>
 </div>
 
 @code {
+    [Inject]
+    private IFileUploadService fileUploadService { get; set; }
+
+    [Inject]
+    private IProfileRepo profileRepo { get; set; } 
+
     private IEnumerable<IdentityError>? identityErrors;
 
     [SupplyParameterFromForm]
@@ -65,6 +83,15 @@
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+       
+        
+        user.ImagePath = "/public/Images/DefaultProfileImage.png";
+     
+        user.Role = "User";
+
+
+            
+        //await profileRepo.AddProfile(user);
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)
@@ -90,6 +117,8 @@
                 "Account/RegisterConfirmation",
                 new() { ["email"] = Input.Email, ["returnUrl"] = ReturnUrl });
         }
+
+
 
         await SignInManager.SignInAsync(user, isPersistent: false);
         RedirectManager.RedirectTo(ReturnUrl);
@@ -134,5 +163,22 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
+
+        public string Role { get; set; } = "User"; 
+
+        [Required]
+        [Display(Name = "Username")]
+        [StringLength(10, ErrorMessage = "The Username must be between 4 and 10 charecters long", MinimumLength = 4)]
+        public string username { get; set; } = "";
+
+        public string ImagePath { get; set; } = "Default.png";
+
+
+       
+
+        [Phone]
+        [Display(Name = "Phone number")]
+        [StringLength(15, ErrorMessage = "The Phone number must be at max 15 charecters long")]
+        public string PhoneNumber { get; set; }
     }
-}
+}   
