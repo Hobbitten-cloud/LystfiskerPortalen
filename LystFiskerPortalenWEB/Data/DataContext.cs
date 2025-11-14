@@ -48,7 +48,7 @@ namespace LystFiskerPortalenWEB.Data
             );
 
             //seeder tech
-            #region
+            
             builder.Entity<Technique>().HasData(
                 new Technique
                 {
@@ -115,9 +115,12 @@ namespace LystFiskerPortalenWEB.Data
                     Id = 11,
                     Name = "Fladfiskerig",
                     Description = "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge."
-                });
-            #endregion
+                }
+            );
+            
 
+            
+            
             builder.Entity<Lure>().HasData(
                new Lure
                {
@@ -207,7 +210,7 @@ namespace LystFiskerPortalenWEB.Data
                    Weight = 22,
                    Type = "Slankt long-distance blink – super til havørred, især i klart vand."
                }
-               );
+            );              
         }
     }
 }

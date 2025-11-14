@@ -11,4 +11,4 @@ namespace LystFiskerPortalenWEB.Repo
         Task UpdateLure(Lure lure);
     }
 }
-}
+
