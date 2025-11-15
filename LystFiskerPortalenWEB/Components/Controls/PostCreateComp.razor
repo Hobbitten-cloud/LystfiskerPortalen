@@ -49,7 +49,7 @@
 				<form FormName="UploadForm" enctype="multipart/form-data">
 					<input type="file" name="File" class="form-control" />
 					<br />
-					<button type="submit" @onsubmit="@AddImage">Upload</button>
+					<button type="submit" @* @onsubmit="@AddImage" *@>Upload</button>
 				</form>
 			</div>
 		</div>
@@ -73,10 +73,10 @@
 
 	// Everything below is related to the image upload
 	// Check the class FileUploadService for more info about the path etc
-	[SupplyParameterFromForm(FormName = "UploadForm")]
-	IFormFile? File { get; set; }
+	// [SupplyParameterFromForm(FormName = "UploadForm")]
+	// IFormFile? File { get; set; }
 
-	private FileUploadService fileUploadService { get; set; }
+	// private FileUploadService fileUploadService { get; set; }
 
-	public void AddImage() => fileUploadService.UploadFile(File);
+	// public void AddImage() => fileUploadService.UploadFile(File);
 }
