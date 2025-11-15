@@ -1,6 +1,6 @@
 ﻿@inject IFileUploadService FileUploadService
 @inject IPostRepo PostRepo
-@inject NavigationManager NavigationManager
+@* @inject NavigationManager NavigationManager *@
 
 <h3>Opret en ny post</h3>
 
@@ -63,12 +63,12 @@
 	[Inject]
 	private IPostRepo postRepo { get; set; }
 
-	public void CreatePost()
+	private async Task CreatePost()
 	{
 		post.CreationDate = DateTime.Now;
-		postRepo.CreatePost(post);
+		await postRepo.CreatePost(post);
+		// NavigationManager.NavigateTo("/");
 	}
-
 
 	// Everything below is related to the image upload
 	// Check the class FileUploadService for more info about the path etc
