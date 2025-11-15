@@ -24,9 +24,10 @@
 			</div>
 		</div>
 		<div class="card-footer">
+			@* Doesnt work with submitting a picture *@
 			<div>
 				<form FormName="UploadForm" enctype="multipart/form-data">
-					<input type="file" name="File" @* class="form-control" *@ />
+					<input type="file" name="File" class="form-control" />
 					<button type="submit" @onsubmit="@AddImage">Upload</button>
 				</form>
 			</div>
@@ -38,6 +39,10 @@
 	[SupplyParameterFromForm(FormName = "CreateForm")]
 	public Post post { get; set; } = new Post();
 
+
+
+	// Everything below is related to the image upload
+		// Check the class FileUploadService for more info about the path etc
 	[SupplyParameterFromForm(FormName = "UploadForm")]
 	IFormFile? File { get; set; }
 

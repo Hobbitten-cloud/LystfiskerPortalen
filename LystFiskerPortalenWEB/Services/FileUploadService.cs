@@ -6,7 +6,7 @@
         {
             try
             {
-                var folderPath = Path.Combine("/Public/TestPictures/");
+                var folderPath = Path.Combine("Public/TestPictures/");
                 var filePath = Path.Combine(folderPath, file.FileName);
                 Directory.CreateDirectory(folderPath);
                 await using var stream = new FileStream(filePath, FileMode.Create);
