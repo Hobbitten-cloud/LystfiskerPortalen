@@ -1,0 +1,89 @@
+﻿@page "/Settings/{id}"
+@rendermode InteractiveServer
+
+@inject IFileUploadService FileUploadService
+@inject IProfileRepo ProfileRepo
+
+@if (profile == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="FileInput"  enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture">
+        <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" />
+        <button type="submit" class="btn btn-primary">Upload</button>
+
+   </EditForm>
+
+    <div>
+        <img src ="@profile.ImagePath" width="200" height="200" class="rounded" onchange="TestChange" />
+    </div>
+
+    <div>
+    
+    
+      @*       <h3>Settings Page</h3>
+            
+             
+                <div  Width="300">
+
+                <img Row="1" width="200" height="200" src="@profile.ImagePath" class="rounded row" style="border-radius: 50%"/>
+                <button  style="vertical-align: top" @onclick = "ChangeProfilePicture" class ="btn btn-primary row">Change Profile Picture</button>
+                </div>
+          
+            <p>This is a placeholder for the Settings page.</p
+            <div>
+
+            </div> *@
+        
+
+    </div>
+    
+}
+@code {
+
+
+
+    [SupplyParameterFromForm(FormName = "UploadFileForm")]
+    FileModel FileInput { get; set; } = new();
+
+    class FileModel
+    {
+        public IBrowserFile File { get; set; }
+    }
+    [Inject]
+    private IFileUploadService fileUploadService { get; set; }
+
+    [Inject]
+    private IProfileRepo profileRepo { get; set; }
+
+    [Parameter]
+    public string id { get; set; }
+
+    [SupplyParameterFromForm(FormName ="EditProfileForm")]
+    private Profile profile { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        profile = await profileRepo.GetProfileById(id);
+    }
+
+    public async Task ChangeProfilePicture()
+    {
+        if (FileInput.File != null)
+        {
+            profile.ImagePath = await fileUploadService.UploadFile(FileInput.File);
+            await profileRepo.UpdateProfile(profile);
+        }
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        FileInput.File = e.File;
+    }
+    
+ 
+  
+}
