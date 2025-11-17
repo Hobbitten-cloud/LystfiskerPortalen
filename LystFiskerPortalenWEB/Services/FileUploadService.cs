@@ -1,18 +1,27 @@
-﻿namespace LystFiskerPortalenWEB.Services
+﻿using Microsoft.AspNetCore.Components.Forms;
+
+namespace LystFiskerPortalenWEB.Services
 {
     public class FileUploadService : IFileUploadService
     {
-        public async Task<string> UploadFile(IFormFile file)
+        public async Task<string> UploadFile(IBrowserFile file)
         {
 
             try
             {
-                var folderPath = Path.Combine("/wwwroot/Images");
-                var filePath = Path.Combine(folderPath, file.FileName);
+                var folderPath = Path.Combine("wwwroot/public/Images");
+                
+                    var filePath = Path.Combine(folderPath, file.Name);
+                filePath = filePath.Replace(@"\", "/");
                 Directory.CreateDirectory(folderPath);
-                await using var stream = new FileStream(filePath, FileMode.Create);
-                await file.CopyToAsync(stream);
-                return filePath;
+                using ( var stream = new FileStream(filePath,FileMode.Create))
+                {
+                    await file.OpenReadStream(10 * 1024 * 1024).CopyToAsync(stream);
+                }
+                
+               
+                
+                return filePath.Replace("wwwroot","");
 
             }
             catch (Exception ex)
