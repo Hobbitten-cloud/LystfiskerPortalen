@@ -6,7 +6,6 @@ namespace LystFiskerPortalenWEB.Services
     {
         public async Task<string> UploadFile(IBrowserFile file)
         {
-
             try
             {
                 var folderPath = Path.Combine("wwwroot/public/Images");
@@ -28,7 +27,6 @@ namespace LystFiskerPortalenWEB.Services
             {
                 return ex.Message;
             }
-
         }
     }
 }

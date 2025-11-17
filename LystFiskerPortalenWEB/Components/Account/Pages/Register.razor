@@ -89,9 +89,8 @@
      
         user.Role = "User";
 
-
-            
-        //await profileRepo.AddProfile(user);
+        
+        
         var result = await UserManager.CreateAsync(user, Input.Password);
 
         if (!result.Succeeded)
