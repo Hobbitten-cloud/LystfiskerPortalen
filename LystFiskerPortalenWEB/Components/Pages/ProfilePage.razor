@@ -1,0 +1,37 @@
+﻿@page "/Profile/{id}"
+
+@inject IProfileRepo profileRepo
+
+
+@if (profile == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+<h3>@profile.UserName</h3>
+
+
+<div>
+<img Row="1" width="200" height="200" src="@profile.ImagePath" class="rounded row" style="border-radius: 50%"/>
+</div>
+
+
+@* Componet for viewing all posts - sorted after creationDate *@
+    <div style="margin: auto; width: 50%;">
+        <PostReadComp></PostReadComp>
+    </div> 
+}
+
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    private Profile profile { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        profile = await profileRepo.GetProfileById(id);
+    }
+
+}
