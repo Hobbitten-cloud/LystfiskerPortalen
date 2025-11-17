@@ -12,23 +12,31 @@
 else
 {
     <h2>Settings</h2>
-    <div width="300" Height="500">
-        <img src="@profile.ImagePath" style class="rounded row-cols-1" onchange="TestChange"/>
-    
-    <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture" style="width:fit-content">
-        <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" />
-        <button type="submit" class="btn btn-primary">Upload</button>
-
-   </EditForm>
-    </div>
-
-
     <div>
-        
+        <div class="border card" style="padding:20px; width:fit-content; height:fit-content" >
+            <img src="@profile.ImagePath" style="width:300px; height:300px" class="rounded-circle row-cols-1 align-content-center" onchange="TestChange" />
+    
+        <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture" style="width:fit-content; padding-top:10px">
+                <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected"  />
+            <button type="submit" class="btn btn-primary">Upload</button>
+
+       </EditForm>
+        </div>
+    </div>
+
+@*     <div>
+        <EditForm Model="profile" enctype="multipart/form-data"  style="align-content:center">
+            <div>
+                <InputText></InputText>
+                <label> </label>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Gem</button>
+        </EditForm>    
         
 
     </div>
-    
+     *@
 }
 @code {
 
