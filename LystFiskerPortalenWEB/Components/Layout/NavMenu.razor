@@ -1,5 +1,7 @@
 ﻿@implements IDisposable
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="" >LystFiskerPortalen &nbsp; <img src="/Public/LystFiskerLOGO.png" alt="alternatetext" style="float:right;width:28px;height:28px;"></a>
@@ -29,7 +31,7 @@
         </div>
 
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="Test">
+            <NavLink class="nav-link" href="@profileUrl">
                 <span aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -125,6 +127,21 @@
     public void Dispose()
     {
         NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+
+    private string profileUrl = "#";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        var userId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        if (!string.IsNullOrWhiteSpace(userId))
+        {
+            profileUrl = $"/Profile/{userId}";
+        }
     }
 
 }
