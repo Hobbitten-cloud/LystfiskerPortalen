@@ -1,32 +1,43 @@
 ﻿@page "/Settings/{id}"
+@rendermode InteractiveServer
+
 @inject IFileUploadService FileUploadService
 @inject IProfileRepo ProfileRepo
 
 @if (profile == null)
 {
     <p><em>Loading...</em></p>
+
 }
 else
 {
-    <div>
-        <EditForm Model="profile">
-            <h3>Settings Page</h3>
-            <div>
-            <img Row="1" width="200" height="200" src="@profile.ImagePath" class="rounded row" style="border-radius: 50%"/>
-            <button   @onclick = "ChangeProfilePicture" class ="btn btn-primary row">Change Profile Picture</button>
-            </div>
-            <p>This is a placeholder for the Settings page.</p
-            <div>
+    <h2>Settings</h2>
+    <div width="300" Height="500">
+        <img src="@profile.ImagePath" style class="rounded row-cols-1" onchange="TestChange" />
 
-            </div>
+        <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture" style="width:fit-content">
+            <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" />
+            <button type="submit" class="btn btn-primary">Upload</button>
+
         </EditForm>
-
     </div>
+
+
+    <div>
+    </div>
+
 }
 @code {
-   
-    private IFormFile formFile { get; set; }
 
+
+
+    [SupplyParameterFromForm(FormName = "UploadFileForm")]
+    FileModel FileInput { get; set; } = new();
+
+    class FileModel
+    {
+        public IBrowserFile File { get; set; }
+    }
     [Inject]
     private IFileUploadService fileUploadService { get; set; }
 
@@ -36,7 +47,7 @@ else
     [Parameter]
     public string id { get; set; }
 
-     [SupplyParameterFromForm]
+    [SupplyParameterFromForm(FormName = "EditProfileForm")]
     private Profile profile { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -44,9 +55,20 @@ else
         profile = await profileRepo.GetProfileById(id);
     }
 
-    public void ChangeProfilePicture()
+    public async Task ChangeProfilePicture()
     {
-        
+        if (FileInput.File != null)
+        {
+            profile.ImagePath = await fileUploadService.UploadFile(FileInput.File, "ProfileImages");
+            await profileRepo.UpdateProfile(profile);
+        }
     }
-    
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        FileInput.File = e.File;
+    }
+
+
+
 }

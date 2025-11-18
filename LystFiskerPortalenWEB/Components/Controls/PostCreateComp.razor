@@ -1,51 +1,107 @@
 ﻿@inject IFileUploadService FileUploadService
+@inject IPostRepo PostRepo
+@inject NavigationManager NavigationManager
 
 <h3>Opret en ny post</h3>
 
-<EditForm Model="post">
-    <div class="card" style="width: 32rem; margin-bottom: 2%">
+<div class="card" style="width: 32rem; margin-bottom: 2%">
+    <EditForm Model="post" FormName="CreateForm" OnValidSubmit="CreatePost">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <ValidationSummary></ValidationSummary>
+
         <div class="card-body">
             <div>
                 <div class="row mb-3">
-                    <label for="title" class="form-label">Titel</label>
-                    <InputText class="card-title" @bind-Value="post.Title"></InputText>
+                    <div class="col-2">
+                        <label for="title" class="form-label">Titel</label>
+                    </div>
+                    <div class="col-10">
+                        <InputText class="card-title" @bind-Value="post.Title"></InputText>
+                    </div>
                 </div>
 
                 <div class="row mb-3">
-                    <label for="description" class="form-label">Beskrivelse</label>
-                    <InputTextArea @bind-Value="post.Description"></InputTextArea>
+                    <div class="col-2">
+                        <label for="description" class="form-label">Beskrivelse</label>
+                    </div>
+                    <div class="col-10">
+                        <InputTextArea @bind-Value="post.Description"></InputTextArea>
+                    </div>
+                    <div class="col">
+                        <ValidationMessage For="@(() => post.Description)"></ValidationMessage>
+                    </div>
                 </div>
 
                 <div class="row mb-3">
-                    <label for="location" class="form-label">Lokalition</label>
-                    <InputText @bind-Value="post.Location"></InputText>
+                    <div class="col-2">
+                        <label for="location" class="form-label">Lokation</label>
+                    </div>
+                    <div class="col-10">
+                        <InputText @bind-Value="post.Location"></InputText>
+                    </div>
                 </div>
 
-                <button class="btn btn-primary" style="float: right; " type="submit">Opret</button>
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label for="picture" class="form-label">Billede</label>
+                    </div>
+                    <div class="col-10">
+                        <input type="text" readonly class="form-control-plaintext" value="@post.Picture" />
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" style="float: right;" type="submit">Opret</button>
             </div>
         </div>
+    </EditForm>
+    <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="AddImage">
         <div class="card-footer">
             <div>
-                @* <button onclick="@UploadFile"></button> *@
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
-                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
-                        <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1z" />
-                    </svg>
+                <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" style="width:fit-content" />
+                <br />
+                <button type="submit">Upload</button>
             </div>
         </div>
-    </div>
-</EditForm>
+    </EditForm>
+</div>
 
 @code {
-    [SupplyParameterFromForm]
+    [SupplyParameterFromForm(FormName = "CreateForm")]
     public Post post { get; set; } = new Post();
 
-    private IFileUploadService fileUploadService {get; set;}
+    [Inject]
+    private IPostRepo postRepo { get; set; }
 
+    private bool forceReloadPage = true;
+    private async Task CreatePost()
+    {
+        post.CreationDate = DateTime.Now;
+        await postRepo.CreatePost(post);
+        NavigationManager.NavigateTo("/", forceReloadPage);
+    }
 
-    // public void AddImage()
-    // {
+    // Everything below is related to the image upload
+    [SupplyParameterFromForm(FormName = "UploadFileForm")]
+    FileModel FileInput { get; set; } = new();
 
-    //     fileUploadService.UploadFile();
-    // }
+    class FileModel
+    {
+        public IBrowserFile File { get; set; }
+    }
+
+    private async Task AddImage()
+    {
+        if (FileInput.File != null)
+        {
+            post.Picture = await fileUploadService.UploadFile(FileInput.File, "PostImages");
+        }
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        FileInput.File = e.File;
+    }
+
+    [Inject]
+    private IFileUploadService fileUploadService { get; set; }
 }
