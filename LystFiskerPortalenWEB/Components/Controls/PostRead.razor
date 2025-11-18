@@ -8,6 +8,9 @@ else
 {
     @foreach (var post in posts)
     {
+        <div>
+            <button>Edit</button>
+        </div>
         <div class="card" style="width: 32rem; margin-bottom: 2%">
             <div class="card-body">
                 <a>BRUGER</a>
@@ -23,14 +26,15 @@ else
             }
             <br />
             <div style="display: flex; gap: 1rem;">
-@*                 <InputSelect @bind-Value="allPosts">
-                    <option value="">Teknik</option>
-                </InputSelect>
-                <InputSelect @bind-Value="allPosts">
-                    <option value="">Blink</option>
-                </InputSelect> *@
+                @*                 <InputSelect @bind-Value="allPosts">
+        <option value="">Teknik</option>
+        </InputSelect>
+        <InputSelect @bind-Value="allPosts">
+        <option value="">Blink</option>
+        </InputSelect> *@
                 <p>Teknik</p>
                 <p>Blink</p>
+                <button class="btn-warning" onclick="@EditPost">Edit</button>
             </div>
             <hr />
             <a>KOMMENTARER</a>
@@ -39,14 +43,24 @@ else
 }
 
 @code {
+
+    // Dependency Injection
     [Inject]
     private IPostRepo postRepo { get; set; }
 
     private List<Post> posts { get; set; }
 
+    // Read posts
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        posts = await postRepo.GetAllPosts();
+    }
+
+    // Edit posts
+    public async Task EditPost(Post post)
+    {
+        await postRepo.UpdatePost(post);
         posts = await postRepo.GetAllPosts();
     }
 }
