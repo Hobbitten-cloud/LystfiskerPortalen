@@ -5,6 +5,6 @@ namespace LystFiskerPortalenWEB.Services
 {
     public interface IFileUploadService
     {
-        Task<string> UploadFile(IBrowserFile file);
+        Task<string> UploadFile(IBrowserFile file, string endPath);
     }
 }

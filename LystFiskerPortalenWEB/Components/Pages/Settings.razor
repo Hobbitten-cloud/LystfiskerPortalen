@@ -13,22 +13,19 @@ else
 {
     <h2>Settings</h2>
     <div width="300" Height="500">
-        <img src="@profile.ImagePath" style class="rounded row-cols-1" onchange="TestChange"/>
-    
-    <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture" style="width:fit-content">
-        <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" />
-        <button type="submit" class="btn btn-primary">Upload</button>
+        <img src="@profile.ImagePath" style class="rounded row-cols-1" onchange="TestChange" />
 
-   </EditForm>
+        <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture" style="width:fit-content">
+            <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" />
+            <button type="submit" class="btn btn-primary">Upload</button>
+
+        </EditForm>
     </div>
 
 
     <div>
-        
-        
-
     </div>
-    
+
 }
 @code {
 
@@ -50,9 +47,8 @@ else
     [Parameter]
     public string id { get; set; }
 
-    [SupplyParameterFromForm(FormName ="EditProfileForm")]
+    [SupplyParameterFromForm(FormName = "EditProfileForm")]
     private Profile profile { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,7 +59,7 @@ else
     {
         if (FileInput.File != null)
         {
-            profile.ImagePath = await fileUploadService.UploadFile(FileInput.File);
+            profile.ImagePath = await fileUploadService.UploadFile(FileInput.File, "ProfileImages");
             await profileRepo.UpdateProfile(profile);
         }
     }
@@ -72,7 +68,7 @@ else
     {
         FileInput.File = e.File;
     }
-    
- 
-  
+
+
+
 }
