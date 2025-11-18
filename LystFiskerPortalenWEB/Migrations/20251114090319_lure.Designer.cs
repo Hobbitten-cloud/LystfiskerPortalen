@@ -4,6 +4,7 @@ using LystFiskerPortalenWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251114090319_lure")]
+    partial class lure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,7 +178,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En fantastisk dag ved søen med masser af fisk!",
                             Location = "Søen ved Skoven",
-                            Picture = "public/TestPictures/TestFisk1.png",
+                            Picture = "fisketur1.jpg",
                             Title = "Fisketur ved søen"
                         },
                         new
@@ -184,24 +187,8 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En spændende dag på havet med store fangster.",
                             Location = "Kysten ved Byen",
-                            Picture = "public/TestPictures/TestFisk2.jpg",
+                            Picture = "havfiskeri.jpg",
                             Title = "Havfiskeri eventyr"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
-                            Location = "Byens kyst",
-                            Picture = "public/TestPictures/TestFisk3.png",
-                            Title = "Kæmpe blæksprutte fanget!"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Søger single lystfiskere i Odense beliggenhed",
-                            Title = "Hej Fiskere!"
                         });
                 });
 
@@ -275,7 +262,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Technique", b =>

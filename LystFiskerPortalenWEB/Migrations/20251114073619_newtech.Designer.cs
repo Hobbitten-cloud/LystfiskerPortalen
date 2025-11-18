@@ -4,6 +4,7 @@ using LystFiskerPortalenWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251114073619_newtech")]
+    partial class newtech
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,124 +24,6 @@ namespace LystFiskerPortalenWEB.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Lure", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Lures", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Color = "Blank",
-                            Name = "Blank",
-                            Type = "Blank",
-                            Weight = 0.0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Color = "Sølv/blå",
-                            Name = "Möresilda",
-                            Type = "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt.",
-                            Weight = 7.0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Color = "Sølv",
-                            Name = "Abu Garcia Toby",
-                            Type = "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre.",
-                            Weight = 7.0
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Color = "pearl/white",
-                            Name = "Savage Gear Sandeel Surf Seeker",
-                            Type = "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande.",
-                            Weight = 35.0
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Color = "kobber/orange",
-                            Name = "Hansen Flash",
-                            Type = "Kystblink med livlig gang. Godt til havørred på lavere vand.",
-                            Weight = 15.0
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Color = "chartreuse",
-                            Name = "Snaps",
-                            Type = "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk.",
-                            Weight = 25.0
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Color = "sølv/black stripes",
-                            Name = "Abu Garcia Atom",
-                            Type = "Geddeblink nr. 1 i mange år. Bred, vuggende gang – perfekt i søer og brakvand.",
-                            Weight = 40.0
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Color = "Firetiger",
-                            Name = "Blue Fox Lucius",
-                            Type = "Geddeblink til både lavt og dybt vand. God til at provokere hug i uklart vand.",
-                            Weight = 27.0
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Color = "rød/sølv",
-                            Name = "Solvkroken Stingsilda",
-                            Type = "Kraftigt, tungt blink til havfiskeri og kyst. Bruges ofte til torsk, makrel og havørred.",
-                            Weight = 18.0
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Color = "sølv/blue stripes",
-                            Name = "Mepps Syclops",
-                            Type = "Allround blink med meget “flappende” gang. Bruges til både aborre, gedde og laks.",
-                            Weight = 12.0
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Color = "Pink Panther",
-                            Name = "Westin D360",
-                            Type = "Slankt long-distance blink – super til havørred, især i klart vand.",
-                            Weight = 22.0
-                        });
-                });
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
@@ -175,7 +60,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En fantastisk dag ved søen med masser af fisk!",
                             Location = "Søen ved Skoven",
-                            Picture = "public/TestPictures/TestFisk1.png",
+                            Picture = "fisketur1.jpg",
                             Title = "Fisketur ved søen"
                         },
                         new
@@ -184,24 +69,8 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En spændende dag på havet med store fangster.",
                             Location = "Kysten ved Byen",
-                            Picture = "public/TestPictures/TestFisk2.jpg",
+                            Picture = "havfiskeri.jpg",
                             Title = "Havfiskeri eventyr"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
-                            Location = "Byens kyst",
-                            Picture = "public/TestPictures/TestFisk3.png",
-                            Title = "Kæmpe blæksprutte fanget!"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Søger single lystfiskere i Odense beliggenhed",
-                            Title = "Hej Fiskere!"
                         });
                 });
 
@@ -275,7 +144,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Profiles", (string)null);
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Technique", b =>
