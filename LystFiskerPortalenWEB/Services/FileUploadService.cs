@@ -2,31 +2,28 @@
 
 namespace LystFiskerPortalenWEB.Services
 {
-    public class FileUploadService : IFileUploadService
-    {
-        public async Task<string> UploadFile(IBrowserFile file)
-        {
-            try
-            {
-                var folderPath = Path.Combine("wwwroot/public/Images");
-                
-                    var filePath = Path.Combine(folderPath, file.Name);
-                filePath = filePath.Replace(@"\", "/");
-                Directory.CreateDirectory(folderPath);
-                using ( var stream = new FileStream(filePath,FileMode.Create))
-                {
-                    await file.OpenReadStream(10 * 1024 * 1024).CopyToAsync(stream);
-                }
-                
-               
-                
-                return filePath.Replace("wwwroot","");
+	public class FileUploadService : IFileUploadService
+	{
+		public async Task<string> UploadFile(IBrowserFile file, string endPath)
+		{
+			try
+			{
+				var folderPath = Path.Combine($"wwwroot/public/Images/{endPath}");
 
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-        }
-    }
+				var filePath = Path.Combine(folderPath, file.Name);
+				filePath = filePath.Replace(@"\", "/");
+				Directory.CreateDirectory(folderPath);
+				using (var stream = new FileStream(filePath, FileMode.Create))
+				{
+					await file.OpenReadStream(10 * 1024 * 1024).CopyToAsync(stream);
+				}
+
+				return filePath.Replace("wwwroot", "");
+			}
+			catch (Exception ex)
+			{
+				return ex.Message;
+			}
+		}
+	}
 }
