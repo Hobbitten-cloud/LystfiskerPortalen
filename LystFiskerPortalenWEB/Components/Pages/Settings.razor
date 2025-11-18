@@ -50,7 +50,6 @@ else
     [SupplyParameterFromForm(FormName = "EditProfileForm")]
     private Profile profile { get; set; }
 
-
     protected override async Task OnInitializedAsync()
     {
         profile = await profileRepo.GetProfileById(id);
@@ -60,7 +59,7 @@ else
     {
         if (FileInput.File != null)
         {
-            profile.ImagePath = await fileUploadService.UploadFile(FileInput.File);
+            profile.ImagePath = await fileUploadService.UploadFile(FileInput.File, "ProfileImages");
             await profileRepo.UpdateProfile(profile);
         }
     }
