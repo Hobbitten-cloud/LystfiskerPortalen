@@ -13,7 +13,7 @@
         {
             <li>
                 <a class="dropdown-item"
-                @onclick="() => SelectTech(lure.Id)">
+                @onclick="() => SelectLure(lure.Id)">
                     @lure.Name
                 </a>
             </li>
@@ -36,9 +36,10 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        lures = await LureRepo.GetAllLures();
+        lures = await LureRepo.GetAllLures(); 
     }
-    public void SelectTech(int id)
+
+    public void SelectLure(int id)
     {
         selectedLureId = id;
         selectedLure = lures.FirstOrDefault(l => l.Id == id);

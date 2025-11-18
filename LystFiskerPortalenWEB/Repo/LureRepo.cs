@@ -7,7 +7,6 @@ namespace LystFiskerPortalenWEB.Repo
 {
     public class LureRepo : ILureRepo
     {
-        private List<Lure> Lures = new List<Lure>();
         private DataContext _context;
 
         public LureRepo(DataContext context)

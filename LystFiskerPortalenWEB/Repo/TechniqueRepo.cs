@@ -7,7 +7,6 @@ namespace LystFiskerPortalenWEB.Repo
 {
     public class TechniqueRepo : ITechniqueRepo
     {
-        private List<Technique> Techniques = new List<Technique>();
         private DataContext _context;
 
         public TechniqueRepo(DataContext context)
