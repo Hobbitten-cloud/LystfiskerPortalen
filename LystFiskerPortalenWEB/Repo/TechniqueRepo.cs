@@ -34,7 +34,7 @@ namespace LystFiskerPortalenWEB.Repo
 
         public async Task DeleteTech(int id)
         {
-            var techique = GetTechById(id).Result;
+            var techique = await GetTechById(id);
 
             if (techique != null)
             {

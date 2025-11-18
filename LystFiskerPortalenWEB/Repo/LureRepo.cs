@@ -34,7 +34,7 @@ namespace LystFiskerPortalenWEB.Repo
 
         public async Task DeleteLure(int id)
         {
-            var lure = GetLureById(id).Result;
+            var lure = await GetLureById(id);
 
             if (lure != null)
             {

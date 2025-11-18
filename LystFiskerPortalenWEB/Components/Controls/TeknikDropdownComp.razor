@@ -28,7 +28,7 @@
     private Technique? selectedTechnique;
     private string selectedTechName =>
        techniques.FirstOrDefault(t => t.Id == selectedTechniqueId)?.Name
-       ?? "Select technique";
+       ?? "Vælg Teknik";
     private int? selectedTechniqueId = null;
 
     [Inject]
@@ -42,6 +42,7 @@
     public void SelectTech(int id)
     {
         selectedTechniqueId = id;
+        selectedTechnique = techniques.FirstOrDefault(t => t.Id == id);
         StateHasChanged();
     }
 
