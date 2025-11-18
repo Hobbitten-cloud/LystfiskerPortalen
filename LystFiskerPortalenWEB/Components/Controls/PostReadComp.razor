@@ -1,4 +1,4 @@
-﻿@inject IPostRepo PostRepo
+﻿@inject IPostRepo postRepo
 
 @if (posts == null)
 {
@@ -8,36 +8,48 @@ else
 {
     @foreach (var post in posts)
     {
-        <div class="card" style="width: 32rem; margin-bottom: 2%">
+        <div class="card" style="width: 32rem; margin-bottom: 2%; position: relative;">
             <div class="card-body">
-                <a>BRUGER</a>
-                <select class="form-select" @onchange="@(e => DeletePost(post.Id))">
-                    <option value="">Vælg handling</option>
-                    <option value="delete">Slet opslag</option>
-                </select>
+
+                <!-- Header med bruger + dropdown-knap -->
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <a>BRUGER</a>
+
+                    <div class="dropdown" style="position: relative;">
+                        <button class="btn btn-light dropdown-toggle"
+                                style="border: none;"
+                                @onclick="() => ToggleDropdown(post.Id)">
+                            ⋮
+                        </button>
+
+                        @if (openDropdownId == post.Id)
+                        {
+                            <ul class="dropdown-menu show"
+                                style="display: block; right: 0; left: auto; position: absolute;">
+                                <li>
+                                    <a class="dropdown-item"
+                                       @onclick="() => DeletePost(post.Id)">
+                                        Slet opslag
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                </div>
+
                 <p class="card-text">@post.CreationDate</p>
                 <h5 class="card-title">@post.Title</h5>
                 <p class="card-text">@post.Description</p>
                 <p class="card-text">@post.Location</p>
             </div>
+
             @if (post.Picture != null)
             {
-                <img src="@post.Picture" class="card-img-top" alt="Billede ikke fundet"
+                <img src="@post.Picture" class="card-img-top"
+                     alt="Billede ikke fundet"
                      style="max-width: 100%; max-height: 80%;">
             }
-            <br />
-            <div style="display: flex; gap: 1rem;">
-@*                 <InputSelect @bind-Value="allPosts">
-                    <option value="">Teknik</option>
-                </InputSelect>
-                <InputSelect @bind-Value="allPosts">
-                    <option value="">Blink</option>
-                </InputSelect> *@
-                <p>Teknik</p>
-                <p>Blink</p>
 
-                <button class="btn btn-danger" style="float: right;" type="button" @onclick="() => DeletePost(post.Id)">Slet opslag</button>
-            </div>
             <hr />
             <a>KOMMENTARER</a>
         </div>
@@ -45,30 +57,36 @@ else
 }
 
 @code {
-    [Inject]
-    private IPostRepo postRepo { get; set; }
-
     private List<Post> posts { get; set; }
+    private int? openDropdownId = null;
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         posts = await postRepo.GetAllPosts();
     }
 
-	private async Task DeletePost(int postId)
-	{
-		await postRepo.DeletePost(postId);
-		posts = await postRepo.GetAllPosts();
-	}
+    private void ToggleDropdown(int postId)
+    {
+        if (openDropdownId == postId)
+            openDropdownId = null;
+        else
+            openDropdownId = postId;
+    }
 
-	// private async Task DeletePostDropDown(ChangeEventArgs e, int postId)
-	// {
-	// 	var selectedValue = e.Value?.ToString();
-	// 	if (selectedValue == "delete")
-	// 	{
-	// 		await postRepo.DeletePost(postId);
-	// 		posts = await postRepo.GetAllPosts();
-	// 	}
-	// }
+    private async Task DeletePost(int postId)
+    {
+        await postRepo.DeletePost(postId);
+        posts = await postRepo.GetAllPosts();
+        openDropdownId = null;
+    }
 }
+
+<style>
+    /* Simpel styling til dropdown-menu så den fungerer som Facebook */
+    .dropdown-menu {
+        position: absolute;
+        min-width: 150px;
+        margin-top: 5px;
+        z-index: 1000;
+    }
+</style>
