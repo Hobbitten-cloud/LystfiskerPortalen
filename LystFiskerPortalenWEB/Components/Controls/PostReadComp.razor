@@ -31,6 +31,8 @@ else
                 </InputSelect> *@
                 <p>Teknik</p>
                 <p>Blink</p>
+
+                <button class="btn btn-danger" style="float: right;" type="button" @onclick="() => DeletePost(post.Id)">Slet opslag</button>
             </div>
             <hr />
             <a>KOMMENTARER</a>
@@ -49,4 +51,10 @@ else
         await base.OnInitializedAsync();
         posts = await postRepo.GetAllPosts();
     }
+
+	private async Task DeletePost(int postId)
+	{
+		await postRepo.DeletePost(postId);
+		posts = await postRepo.GetAllPosts();
+	}
 }
