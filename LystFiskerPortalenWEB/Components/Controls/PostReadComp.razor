@@ -11,6 +11,10 @@ else
         <div class="card" style="width: 32rem; margin-bottom: 2%">
             <div class="card-body">
                 <a>BRUGER</a>
+                <select class="form-select" @onchange="@(e => DeletePost(post.Id))">
+                    <option value="">Vælg handling</option>
+                    <option value="delete">Slet opslag</option>
+                </select>
                 <p class="card-text">@post.CreationDate</p>
                 <h5 class="card-title">@post.Title</h5>
                 <p class="card-text">@post.Description</p>
@@ -57,4 +61,14 @@ else
 		await postRepo.DeletePost(postId);
 		posts = await postRepo.GetAllPosts();
 	}
+
+	// private async Task DeletePostDropDown(ChangeEventArgs e, int postId)
+	// {
+	// 	var selectedValue = e.Value?.ToString();
+	// 	if (selectedValue == "delete")
+	// 	{
+	// 		await postRepo.DeletePost(postId);
+	// 		posts = await postRepo.GetAllPosts();
+	// 	}
+	// }
 }
