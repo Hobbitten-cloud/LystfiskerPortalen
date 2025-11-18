@@ -40,6 +40,16 @@
                         <InputText @bind-Value="post.Location"></InputText>
                     </div>
                 </div>
+
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <label for="picture" class="form-label">Billede</label>
+                    </div>
+                    <div class="col-10">
+                        <input type="text" readonly class="form-control-plaintext" value="@post.Picture" />
+                    </div>
+                </div>
+
                 <button class="btn btn-primary" style="float: right;" type="submit">Opret</button>
             </div>
         </div>
@@ -47,7 +57,7 @@
     <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="AddImage">
         <div class="card-footer">
             <div>
-                <InputFile name="FileInput.File" class="form-control" style="width:fit-content" />
+                <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" style="width:fit-content" />
                 <br />
                 <button type="submit">Upload</button>
             </div>
@@ -85,6 +95,11 @@
         {
             post.Picture = await fileUploadService.UploadFile(FileInput.File, "PostImages");
         }
+    }
+
+    private void OnFileSelected(InputFileChangeEventArgs e)
+    {
+        FileInput.File = e.File;
     }
 
     [Inject]
