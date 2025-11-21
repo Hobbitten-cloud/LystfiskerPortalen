@@ -72,11 +72,12 @@ namespace LystFiskerPortalenWEB
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+         
             app.UseStaticFiles();
             app.UseAntiforgery();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
 
 
             app.MapRazorComponents<App>()
