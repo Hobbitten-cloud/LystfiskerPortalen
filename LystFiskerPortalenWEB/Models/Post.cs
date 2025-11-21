@@ -22,7 +22,7 @@ namespace LystFiskerPortalenWEB.Models
         [NotMapped]
         public bool IsEditing { get; set; }
 
-        public Comment Comment { get; set; }
+        public List<Comment> Comment { get; set; }
         public int CommentId { get; set; }
     }
 }

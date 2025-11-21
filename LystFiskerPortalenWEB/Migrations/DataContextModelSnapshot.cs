@@ -4,7 +4,6 @@ using LystFiskerPortalenWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,11 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251118083708_Init")]
-    partial class Init
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +22,175 @@ namespace LystFiskerPortalenWEB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreationDate = new DateTime(2024, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Fantastisk fangst! Tillykke med den store fisk.",
+                            PostId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreationDate = new DateTime(2024, 5, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Wow, det ser ud til at have været en spændende dag på havet!",
+                            PostId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreationDate = new DateTime(2024, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "En blæksprutte af den størrelse er virkelig imponerende!",
+                            PostId = 3
+                        });
+                });
+
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Lure", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Lures", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Color = "Blank",
+                            Name = "Blank",
+                            Type = "Blank",
+                            Weight = 0.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Color = "Sølv/blå",
+                            Name = "Möresilda",
+                            Type = "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt.",
+                            Weight = 7.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Color = "Sølv",
+                            Name = "Abu Garcia Toby",
+                            Type = "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre.",
+                            Weight = 7.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Color = "pearl/white",
+                            Name = "Savage Gear Sandeel Surf Seeker",
+                            Type = "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande.",
+                            Weight = 35.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Color = "kobber/orange",
+                            Name = "Hansen Flash",
+                            Type = "Kystblink med livlig gang. Godt til havørred på lavere vand.",
+                            Weight = 15.0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Color = "chartreuse",
+                            Name = "Snaps",
+                            Type = "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk.",
+                            Weight = 25.0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Color = "sølv/black stripes",
+                            Name = "Abu Garcia Atom",
+                            Type = "Geddeblink nr. 1 i mange år. Bred, vuggende gang – perfekt i søer og brakvand.",
+                            Weight = 40.0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Color = "Firetiger",
+                            Name = "Blue Fox Lucius",
+                            Type = "Geddeblink til både lavt og dybt vand. God til at provokere hug i uklart vand.",
+                            Weight = 27.0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Color = "rød/sølv",
+                            Name = "Solvkroken Stingsilda",
+                            Type = "Kraftigt, tungt blink til havfiskeri og kyst. Bruges ofte til torsk, makrel og havørred.",
+                            Weight = 18.0
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Color = "sølv/blue stripes",
+                            Name = "Mepps Syclops",
+                            Type = "Allround blink med meget “flappende” gang. Bruges til både aborre, gedde og laks.",
+                            Weight = 12.0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Color = "Pink Panther",
+                            Name = "Westin D360",
+                            Type = "Slankt long-distance blink – super til havørred, især i klart vand.",
+                            Weight = 22.0
+                        });
+                });
+
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +198,9 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -57,6 +226,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         new
                         {
                             Id = 1,
+                            CommentId = 0,
                             CreationDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En fantastisk dag ved søen med masser af fisk!",
                             Location = "Søen ved Skoven",
@@ -66,6 +236,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         new
                         {
                             Id = 2,
+                            CommentId = 0,
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En spændende dag på havet med store fangster.",
                             Location = "Kysten ved Byen",
@@ -75,6 +246,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         new
                         {
                             Id = 3,
+                            CommentId = 0,
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                             Location = "Byens kyst",
@@ -84,6 +256,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         new
                         {
                             Id = 4,
+                            CommentId = 0,
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Søger single lystfiskere i Odense beliggenhed",
                             Title = "Hej Fiskere!"
@@ -161,6 +334,94 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Profiles", (string)null);
+                });
+
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Technique", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Techniques", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Blank",
+                            Name = "Blank"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "En af de mest klassiske rigs i både salt- og ferskvand. Et lod sidder nederst, og 1–3 kroge sidder på korte forfang (”trembler”) over loddet.",
+                            Name = "Paternoster-rig"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Et kuglelod glider frit på hovedlinen foran en perle og en svirvel. Herefter kommer et langt forfang med en enkeltkrog.",
+                            Name = "Carolina-rig"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Ligner Carolina-rigget, men loddet sidder direkte foran agnen (typisk med en lille gummistopper). Agnen (ofte en softbait) kan rigges ”weedless”.",
+                            Name = "Texas-rig"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Et lod trækkes frit på hovedlinen, enten gennem et rør eller et glidelod, før en svirvel og et forfang.",
+                            Name = "Glidende bundrig"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "En aflange kasteflåd (bombarda) monteres på linen, så man kan kaste selv små fluer eller lette agn meget langt.",
+                            Name = "Bombarda-rig"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "En enkeltkrog bindes på linen, og loddet sidder i enden. Krogen kan justeres i præcis den ønskede højde.",
+                            Name = "Drop-shot-rig"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Krogen bindes på en speciel måde, hvor agnen (fx boilies) sidder på en lille “hair” efter krogen og ikke direkte på krogen.",
+                            Name = "Hair-rig"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Et simpelt rig med flåd, stopperknuder, lodder og krog.",
+                            Name = "Float-rig"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Bruges især til dødagn, hvor et spinnerblad eller rotator tilføjes for at give en livlig gang.",
+                            Name = "Spinner-rig"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Description = "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge.",
+                            Name = "Fladfiskerig"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -300,6 +561,17 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Comment", b =>
+                {
+                    b.HasOne("LystFiskerPortalenWEB.Models.Post", "Post")
+                        .WithMany("Comment")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -349,6 +621,11 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
+                {
+                    b.Navigation("Comment");
                 });
 #pragma warning restore 612, 618
         }

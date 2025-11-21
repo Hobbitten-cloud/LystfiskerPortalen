@@ -28,6 +28,22 @@ namespace LystFiskerPortalenWEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Lures",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lures", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -37,7 +53,8 @@ namespace LystFiskerPortalenWEB.Migrations
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CommentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,6 +89,20 @@ namespace LystFiskerPortalenWEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Techniques",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Techniques", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -88,6 +119,28 @@ namespace LystFiskerPortalenWEB.Migrations
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -178,14 +231,60 @@ namespace LystFiskerPortalenWEB.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Posts",
-                columns: new[] { "Id", "CreationDate", "Description", "Location", "Picture", "Title" },
+                table: "Lures",
+                columns: new[] { "Id", "Color", "Name", "Type", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", "Søen ved Skoven", "public/TestPictures/TestFisk1.png", "Fisketur ved søen" },
-                    { 2, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", "Kysten ved Byen", "public/TestPictures/TestFisk2.jpg", "Havfiskeri eventyr" },
-                    { 3, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", "Byens kyst", "public/TestPictures/TestFisk3.png", "Kæmpe blæksprutte fanget!" },
-                    { 4, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", null, null, "Hej Fiskere!" }
+                    { 1, "Blank", "Blank", "Blank", 0.0 },
+                    { 2, "Sølv/blå", "Möresilda", "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt.", 7.0 },
+                    { 3, "Sølv", "Abu Garcia Toby", "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre.", 7.0 },
+                    { 4, "pearl/white", "Savage Gear Sandeel Surf Seeker", "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande.", 35.0 },
+                    { 5, "kobber/orange", "Hansen Flash", "Kystblink med livlig gang. Godt til havørred på lavere vand.", 15.0 },
+                    { 6, "chartreuse", "Snaps", "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk.", 25.0 },
+                    { 7, "sølv/black stripes", "Abu Garcia Atom", "Geddeblink nr. 1 i mange år. Bred, vuggende gang – perfekt i søer og brakvand.", 40.0 },
+                    { 8, "Firetiger", "Blue Fox Lucius", "Geddeblink til både lavt og dybt vand. God til at provokere hug i uklart vand.", 27.0 },
+                    { 9, "rød/sølv", "Solvkroken Stingsilda", "Kraftigt, tungt blink til havfiskeri og kyst. Bruges ofte til torsk, makrel og havørred.", 18.0 },
+                    { 10, "sølv/blue stripes", "Mepps Syclops", "Allround blink med meget “flappende” gang. Bruges til både aborre, gedde og laks.", 12.0 },
+                    { 11, "Pink Panther", "Westin D360", "Slankt long-distance blink – super til havørred, især i klart vand.", 22.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Posts",
+                columns: new[] { "Id", "CommentId", "CreationDate", "Description", "Location", "Picture", "Title" },
+                values: new object[,]
+                {
+                    { 1, 0, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", "Søen ved Skoven", "public/TestPictures/TestFisk1.png", "Fisketur ved søen" },
+                    { 2, 0, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", "Kysten ved Byen", "public/TestPictures/TestFisk2.jpg", "Havfiskeri eventyr" },
+                    { 3, 0, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", "Byens kyst", "public/TestPictures/TestFisk3.png", "Kæmpe blæksprutte fanget!" },
+                    { 4, 0, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", null, null, "Hej Fiskere!" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Techniques",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Blank", "Blank" },
+                    { 2, "En af de mest klassiske rigs i både salt- og ferskvand. Et lod sidder nederst, og 1–3 kroge sidder på korte forfang (”trembler”) over loddet.", "Paternoster-rig" },
+                    { 3, "Et kuglelod glider frit på hovedlinen foran en perle og en svirvel. Herefter kommer et langt forfang med en enkeltkrog.", "Carolina-rig" },
+                    { 4, "Ligner Carolina-rigget, men loddet sidder direkte foran agnen (typisk med en lille gummistopper). Agnen (ofte en softbait) kan rigges ”weedless”.", "Texas-rig" },
+                    { 5, "Et lod trækkes frit på hovedlinen, enten gennem et rør eller et glidelod, før en svirvel og et forfang.", "Glidende bundrig" },
+                    { 6, "En aflange kasteflåd (bombarda) monteres på linen, så man kan kaste selv små fluer eller lette agn meget langt.", "Bombarda-rig" },
+                    { 7, "En enkeltkrog bindes på linen, og loddet sidder i enden. Krogen kan justeres i præcis den ønskede højde.", "Drop-shot-rig" },
+                    { 8, "Krogen bindes på en speciel måde, hvor agnen (fx boilies) sidder på en lille “hair” efter krogen og ikke direkte på krogen.", "Hair-rig" },
+                    { 9, "Et simpelt rig med flåd, stopperknuder, lodder og krog.", "Float-rig" },
+                    { 10, "Bruges især til dødagn, hvor et spinnerblad eller rotator tilføjes for at give en livlig gang.", "Spinner-rig" },
+                    { 11, "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge.", "Fladfiskerig" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Comments",
+                columns: new[] { "Id", "CreationDate", "Description", "Picture", "PostId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "Fantastisk fangst! Tillykke med den store fisk.", null, 1 },
+                    { 2, new DateTime(2024, 5, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wow, det ser ud til at have været en spændende dag på havet!", null, 2 },
+                    { 3, new DateTime(2024, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "En blæksprutte af den størrelse er virkelig imponerende!", null, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -214,6 +313,11 @@ namespace LystFiskerPortalenWEB.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostId",
+                table: "Comments",
+                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -247,13 +351,22 @@ namespace LystFiskerPortalenWEB.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Lures");
+
+            migrationBuilder.DropTable(
+                name: "Techniques");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Profiles");
+
+            migrationBuilder.DropTable(
+                name: "Posts");
         }
     }
 }
