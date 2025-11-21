@@ -1,0 +1,84 @@
+﻿@inject ITechniqueRepo TechniqueRepo
+@inject ILureRepo LureRepo
+@rendermode InteractiveServer
+
+
+
+<div class="dropdowntech d-inline-block">
+    <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+        @selectedTechName
+    </button>
+    <ul class="dropdown-menu">
+        @foreach (var tech in techniques)
+        {
+            <li>
+                <a class="dropdown-item" @onclick="() => SelectTech(tech.Id)">
+                    @tech.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="dropdownlure d-inline-block">
+    <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+        @selectedLureName
+    </button>
+    <ul class="dropdown-menu">
+        @foreach (var lure in lures)
+        {
+            <li>
+                <a class="dropdown-item" @onclick="() => SelectLure(lure.Id)">
+                    @lure.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+
+
+@code {
+    private Technique? selectedTechnique;
+    private string selectedTechName =>
+       techniques.FirstOrDefault(t => t.Id == selectedTechniqueId)?.Name
+       ?? "Vælg Teknik";
+    private int? selectedTechniqueId = null;
+
+    [Inject]
+    private ITechniqueRepo techniqueRepo { get; set; }
+    private List<Technique> techniques { get; set; } = new List<Technique>();
+
+    private Lure? selectedLure;
+    private string selectedLureName =>
+       lures.FirstOrDefault(t => t.Id == selectedLureId)?.Name
+       ?? "Vælg Blink";
+    private int? selectedLureId = null;
+
+    [Inject]
+    private ILureRepo lureRepo { get; set; }
+    private List<Lure> lures { get; set; } = new List<Lure>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Good: Wait for one operation to complete before starting the next
+        lures = await LureRepo.GetAllLures();
+        techniques = await TechniqueRepo.GetAllTechs();
+    }
+
+
+    public void SelectTech(int id)
+    {
+        selectedTechniqueId = id;
+        selectedTechnique = techniques.FirstOrDefault(t => t.Id == id);
+        StateHasChanged();
+    }
+    public void SelectLure(int id){
+        selectedLureId = id;
+        selectedLure = lures.FirstOrDefault(l => l.Id == id);
+        StateHasChanged();
+    }
+}
+
+
