@@ -31,7 +31,7 @@ namespace LystFiskerPortalenWEB.Repo
 
         public async Task DeletePost(int id)
         {
-            var post = GetPostById(id).Result;
+            var post = await GetPostById(id);
 
             if (post != null)
             {

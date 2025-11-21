@@ -1,0 +1,49 @@
+﻿@inject ILureRepo LureRepo
+@rendermode InteractiveServer
+
+
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle"
+    data-bs-toggle="dropdown">
+        @selectedLureName
+    </button>
+
+    <ul class="dropdown-menu">
+        @foreach (var lure in lures)
+        {
+            <li>
+                <a class="dropdown-item"
+                @onclick="() => SelectLure(lure.Id)">
+                    @lure.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+
+
+@code {
+    private Lure? selectedLure;
+    private string selectedLureName =>
+       lures.FirstOrDefault(t => t.Id == selectedLureId)?.Name
+       ?? "Vælg Blink";
+    private int? selectedLureId = null;
+
+    [Inject]
+    private ILureRepo lureRepo { get; set; }
+    private List<Lure> lures { get; set; } = new List<Lure>();
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        lures = await LureRepo.GetAllLures(); 
+    }
+
+    public void SelectLure(int id)
+    {
+        selectedLureId = id;
+        selectedLure = lures.FirstOrDefault(l => l.Id == id);
+        StateHasChanged();
+    }
+
+}

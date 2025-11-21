@@ -40,6 +40,9 @@ namespace LystFiskerPortalenWEB
 
             builder.Services.AddScoped<IFileUploadService, FileUploadService>();
             builder.Services.AddScoped<IPostRepo, PostRepo>();
+            builder.Services.AddScoped<ITechniqueRepo, TechniqueRepo>();
+            builder.Services.AddScoped<ILureRepo, LureRepo>();
+
 
             builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
@@ -69,11 +72,12 @@ namespace LystFiskerPortalenWEB
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+         
             app.UseStaticFiles();
             app.UseAntiforgery();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
 
 
             app.MapRazorComponents<App>()
