@@ -79,6 +79,7 @@
         post.ProfileID = await ProfileRepo.GetCurrentProfileId();
         post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
         post.CreationDate = DateTime.Now;
+        post.Likes = 0;
         await postRepo.CreatePost(post);
         NavigationManager.NavigateTo("/", forceReloadPage);
     }
