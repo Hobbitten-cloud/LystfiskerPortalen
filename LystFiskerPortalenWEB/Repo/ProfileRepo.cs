@@ -1,5 +1,6 @@
 ﻿using LystFiskerPortalenWEB.Data;
 using LystFiskerPortalenWEB.Models;
+using LystFiskerPortalenWEB.Repo.IRepos;
 using Microsoft.EntityFrameworkCore;
 namespace LystFiskerPortalenWEB.Repo
 {

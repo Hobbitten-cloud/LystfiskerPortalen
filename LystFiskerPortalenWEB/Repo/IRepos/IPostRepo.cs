@@ -1,6 +1,6 @@
 ﻿using LystFiskerPortalenWEB.Models;
 
-namespace LystFiskerPortalenWEB.Repo
+namespace LystFiskerPortalenWEB.Repo.IRepos
 {
     public interface IPostRepo
     {

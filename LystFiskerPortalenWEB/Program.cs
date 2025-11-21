@@ -7,6 +7,7 @@ using LystFiskerPortalenWEB.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
 using LystFiskerPortalenWEB.Repo;
 using LystFiskerPortalenWEB.Services;
+using LystFiskerPortalenWEB.Repo.IRepos;
 
 namespace LystFiskerPortalenWEB
 {
