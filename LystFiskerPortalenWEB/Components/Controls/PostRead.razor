@@ -88,8 +88,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+         posts = await PostRepo.GetAllPosts();
         await base.OnInitializedAsync();
-        posts = await PostRepo.GetAllPosts();
     }
 
     // Methods for editing posts

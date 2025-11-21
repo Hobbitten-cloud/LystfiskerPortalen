@@ -46,12 +46,6 @@ namespace LystFiskerPortalenWEB.Repo
             }
         }
 
-        public async Task<string> GetCurrentProfileId()
-        {
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
-
-            return user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        }
+     
     }
 }

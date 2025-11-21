@@ -2,6 +2,7 @@
 @inject IPostRepo PostRepo
 @inject NavigationManager NavigationManager
 @inject IProfileRepo ProfileRepo
+@inject AuthenticationStateProvider _authenticationStateProvider
 <h3>Opret en ny post</h3>
 
 <div class="card" style="width: 32rem; margin-bottom: 2%">
@@ -76,8 +77,7 @@
     private bool forceReloadPage = true;
     private async Task CreatePost()
     {
-        post.ProfileID = await ProfileRepo.GetCurrentProfileId();
-        post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
+        
         post.CreationDate = DateTime.Now;
         await postRepo.CreatePost(post);
         NavigationManager.NavigateTo("/", forceReloadPage);
@@ -107,4 +107,14 @@
 
     [Inject]
     private IFileUploadService fileUploadService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        
+        post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
+    }
 }
