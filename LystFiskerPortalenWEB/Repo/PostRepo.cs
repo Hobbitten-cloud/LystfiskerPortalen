@@ -43,7 +43,10 @@ namespace LystFiskerPortalenWEB.Repo
         public async Task<List<Post>> GetAllPosts()
         {
             // Sort by CreationDate ascending
-            return await _context.Posts.OrderByDescending(t => t.CreationDate).ToListAsync();
+            return await _context.Posts
+                .Include(p=>p.Technique)
+                .Include(p=>p.Lure)
+                .OrderByDescending(t => t.CreationDate).ToListAsync();
         }
 
         public async Task<Post> GetPostById(int id)

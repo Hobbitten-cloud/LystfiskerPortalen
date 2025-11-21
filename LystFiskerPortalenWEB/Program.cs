@@ -25,6 +25,7 @@ namespace LystFiskerPortalenWEB
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
             });
 
+
             builder.Services.AddDefaultIdentity<Profile>
                 (options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()

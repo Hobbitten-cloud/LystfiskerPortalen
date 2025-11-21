@@ -29,7 +29,7 @@ namespace LystFiskerPortalenWEB.Data
                 HasOne<Lure>(p => p.Lure).WithMany(b=> b.Post).HasForeignKey(b=>b.LureId);
 
             builder.Entity<Post>().
-                HasOne<Technique>(a => a.Technique).WithMany(k => k.Post).HasForeignKey(b => b.TechniqueID);
+                HasOne<Technique>(a => a.Technique).WithMany(k => k.Post).HasForeignKey(b => b.TechniqueId);
 
             builder.Entity<Post>().HasData(
                 new Post
@@ -41,7 +41,7 @@ namespace LystFiskerPortalenWEB.Data
                     Location = "Søen ved Skoven",
                     CreationDate = new DateTime(2024, 5, 10),
                     LureId = 1,
-                    TechniqueID = 1,
+                    TechniqueId = 1,
                 },
                 new Post
                 {
@@ -52,7 +52,7 @@ namespace LystFiskerPortalenWEB.Data
                     Location = "Kysten ved Byen",
                     CreationDate = new DateTime(2024, 5, 15),
                     LureId = 2,
-                    TechniqueID= 2,
+                    TechniqueId = 2,
                 },
                 new Post
                 {
@@ -63,7 +63,7 @@ namespace LystFiskerPortalenWEB.Data
                     Location = "Byens kyst",
                     CreationDate = new DateTime(2024, 5, 15),
                     LureId = 3,
-                    TechniqueID= 3,
+                    TechniqueId = 3,
                 },
                 new Post
                 {
@@ -72,7 +72,7 @@ namespace LystFiskerPortalenWEB.Data
                     Description = "Søger single lystfiskere i Odense beliggenhed",
                     CreationDate = new DateTime(2024, 5, 15),
                     LureId=4,
-                    TechniqueID = 4,
+                    TechniqueId = 4,
                 }
             );
 

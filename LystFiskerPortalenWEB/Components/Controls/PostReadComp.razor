@@ -1,5 +1,7 @@
 ﻿@inject IPostRepo PostRepo
 
+
+
 @if (posts == null)
 {
     <p><em>Loading...</em></p>
@@ -29,8 +31,8 @@ else
                 <InputSelect @bind-Value="allPosts">
                     <option value="">Blink</option>
                 </InputSelect> *@
-                <p>Teknik</p>
-                <p>Blink</p>
+                <p>Teknik: @post.Technique?.Name</p>
+                <p>Blink: @post.Lure?.Name</p>
             </div>
             <hr />
             <a>KOMMENTARER</a>
@@ -44,9 +46,19 @@ else
 
     private List<Post> posts { get; set; }
 
-    protected override async Task OnInitializedAsync()
+
+
+    private bool firstLoad = true;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnInitializedAsync();
-        posts = await postRepo.GetAllPosts();
+        if (firstRender)
+        {
+            await base.OnInitializedAsync();
+            posts = await postRepo.GetAllPosts();
+            firstLoad = false;
+            StateHasChanged();
+        }
     }
+
 }

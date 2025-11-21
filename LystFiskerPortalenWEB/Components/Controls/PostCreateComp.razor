@@ -53,36 +53,26 @@
                     </div>
                 </div>
 
-                <div class="dropdowntech d-inline-block">
-                    <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                        @selectedTechName
-                    </button>
-                    <ul class="dropdown-menu">
+                <div class="mb-3">
+                    <label class="form-label">Teknik</label>
+                    <InputSelect class="form-select" @bind-Value="post.TechniqueId">
+                        <option value="">Vælg Teknik</option>
                         @foreach (var tech in techniques)
                         {
-                            <li>
-                                <a class="dropdown-item" @onclick="() => SelectTech(tech.Id)">
-                                    @tech.Name
-                                </a>
-                            </li>
+                            <option value="@tech.Id">@tech.Name</option>
                         }
-                    </ul>
+                    </InputSelect>
                 </div>
 
-                <div class="dropdownlure d-inline-block">
-                    <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                        @selectedLureName
-                    </button>
-                    <ul class="dropdown-menu">
+                <div class="mb-3">
+                    <label class="form-label">Blink</label>
+                    <InputSelect class="form-select" @bind-Value="post.LureId">
+                        <option value="">Vælg Blink</option>
                         @foreach (var lure in lures)
                         {
-                            <li>
-                                <a class="dropdown-item" @onclick="() => SelectLure(lure.Id)">
-                                    @lure.Name
-                                </a>
-                            </li>
+                            <option value="@lure.Id">@lure.Name</option>
                         }
-                    </ul>
+                    </InputSelect>
                 </div>
 
                 <button class="btn btn-primary" style="float: right;" type="submit">Opret</button>
@@ -96,7 +86,7 @@
                 <br />
                 <button type="submit">Upload</button>
             </div>
-        </div>
+        </div> 
     </EditForm>
 </div>
 
@@ -108,6 +98,7 @@
     private IPostRepo postRepo { get; set; }
 
     private bool forceReloadPage = true;
+
     private async Task CreatePost()
     {
         post.CreationDate = DateTime.Now;
@@ -139,24 +130,9 @@
 
     [Inject]
     private IFileUploadService fileUploadService { get; set; }
-    private Technique? selectedTechnique;
-    private string selectedTechName =>
-       techniques.FirstOrDefault(t => t.Id == selectedTechniqueId)?.Name
-       ?? "Vælg Teknik";
-    private int? selectedTechniqueId = null;
 
-    [Inject]
-    private ITechniqueRepo techniqueRepo { get; set; }
     private List<Technique> techniques { get; set; } = new List<Technique>();
 
-    private Lure? selectedLure;
-    private string selectedLureName =>
-       lures.FirstOrDefault(t => t.Id == selectedLureId)?.Name
-       ?? "Vælg Blink";
-    private int? selectedLureId = null;
-
-    [Inject]
-    private ILureRepo lureRepo { get; set; }
     private List<Lure> lures { get; set; } = new List<Lure>();
 
 
@@ -168,16 +144,4 @@
     }
 
 
-    public void SelectTech(int id)
-    {
-        selectedTechniqueId = id;
-        selectedTechnique = techniques.FirstOrDefault(t => t.Id == id);
-        StateHasChanged();
-    }
-    public void SelectLure(int id)
-    {
-        selectedLureId = id;
-        selectedLure = lures.FirstOrDefault(l => l.Id == id);
-        StateHasChanged();
-    }
 }
