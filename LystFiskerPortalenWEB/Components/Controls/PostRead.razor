@@ -78,7 +78,7 @@ else
             <hr />
 
             <div class="card-footer bg-white border-0">
-                <EditForm Model="Comment" FormName="CreateCommentForm" OnValidSubmit="CreateComment">
+                <EditForm Model="@Comment" FormName="CreateCommentForm" OnValidSubmit="@(() => CreateComment(post.Id))">
                     <DataAnnotationsValidator></DataAnnotationsValidator>
                     <ValidationSummary></ValidationSummary>
                     <div class="input-group">
@@ -118,16 +118,21 @@ else
 
     // Kommentarfunktionalitet
     [SupplyParameterFromForm(FormName = "CreateCommentForm")]
-	public Comment Comment { get; set; } = new Comment();
+    public Comment Comment { get; set; } = new Comment();
 
     [Inject]
     private ICommentRepo commentRepo { get; set; }
 
     private bool forceReloadPage = true;
-    private async Task CreateComment()
+    private async Task CreateComment(int postId)
     {
+        Comment.PostId = postId;
         Comment.CreationDate = DateTime.Now;
+
         await commentRepo.CreateComment(Comment);
-        NavigationManager.NavigateTo("/", forceReloadPage);
+        
+		Comment = new Comment();
+        
+        NavigationManager.NavigateTo("/", true);
     }
 }
