@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251121075906_Init")]
+    [Migration("20251121082715_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -28,10 +28,7 @@ namespace LystFiskerPortalenWEB.Migrations
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Comment", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -47,8 +44,6 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PostId");
 
                     b.ToTable("Comments", (string)null);
 
@@ -568,7 +563,7 @@ namespace LystFiskerPortalenWEB.Migrations
                 {
                     b.HasOne("LystFiskerPortalenWEB.Models.Post", "Post")
                         .WithMany("Comment")
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
