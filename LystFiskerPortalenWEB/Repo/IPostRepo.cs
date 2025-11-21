@@ -4,6 +4,7 @@ namespace LystFiskerPortalenWEB.Repo
 {
     public interface IPostRepo
     {
+        Task LikePost(Post post);
         Task CreatePost(Post post);
         Task DeletePost(int id);
         Task<List<Post>> GetAllPosts();

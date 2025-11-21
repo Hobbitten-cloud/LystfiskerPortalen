@@ -41,7 +41,7 @@ namespace LystFiskerPortalenWEB.Data
                     ImagePath = "/public/Images/DefaultProfileImage.png",
                     UserName = "testuser",
                 }
-                );
+            );
 
             builder.Entity<Post>().HasData(
                     new Post
@@ -51,6 +51,7 @@ namespace LystFiskerPortalenWEB.Data
                         Picture = "public/TestPictures/TestFisk1.png",
                         Description = "En fantastisk dag ved søen med masser af fisk!",
                         Location = "Søen ved Skoven",
+                        Likes = 10,
                         CreationDate = new DateTime(2024, 5, 10),
                         ProfileID = "testid"
                     },
@@ -61,6 +62,7 @@ namespace LystFiskerPortalenWEB.Data
                         Picture = "public/TestPictures/TestFisk2.jpg",
                         Description = "En spændende dag på havet med store fangster.",
                         Location = "Kysten ved Byen",
+                        Likes = 4,
                         CreationDate = new DateTime(2024, 5, 15),
                         ProfileID = "testid"
                     },
@@ -71,6 +73,7 @@ namespace LystFiskerPortalenWEB.Data
                         Picture = "public/TestPictures/TestFisk3.png",
                         Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                         Location = "Byens kyst",
+                        Likes = 2,
                         CreationDate = new DateTime(2024, 5, 15),
                         ProfileID = "testid"
                     },
@@ -79,13 +82,14 @@ namespace LystFiskerPortalenWEB.Data
                         Id = 4,
                         Title = "Hej Fiskere!",
                         Description = "Søger single lystfiskere i Odense beliggenhed",
+                        Likes = 0,
                         CreationDate = new DateTime(2024, 5, 15),
                         ProfileID = "testid"
                     }
                 );
 
             //seeder tech
-            
+
             builder.Entity<Technique>().HasData(
                 new Technique
                 {
@@ -154,10 +158,10 @@ namespace LystFiskerPortalenWEB.Data
                     Description = "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge."
                 }
             );
-            
 
-            
-            
+
+
+
             builder.Entity<Lure>().HasData(
                new Lure
                {
@@ -247,7 +251,7 @@ namespace LystFiskerPortalenWEB.Data
                    Weight = 22,
                    Type = "Slankt long-distance blink – super til havørred, især i klart vand."
                }
-            );              
+            );
         }
     }
 }
