@@ -93,7 +93,7 @@ else
         //posts = await PostRepo.GetAllPosts();
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-
+       UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? null;
         if (UserId is not null)
         {
             // Filter posts only for the given user
