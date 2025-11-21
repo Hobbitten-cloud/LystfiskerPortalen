@@ -1,6 +1,7 @@
 ﻿using LystFiskerPortalenWEB.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace LystFiskerPortalenWEB.Data
 {
@@ -18,45 +19,63 @@ namespace LystFiskerPortalenWEB.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Profile>().ToTable("Profiles"); 
+            builder.Entity<Post>()
+                .HasOne<Profile>(x => x.Profile)
+                .WithMany(p => p.Posts)
+                .HasForeignKey(r => r.ProfileID);
+
+            builder.Entity<Profile>().ToTable("Profiles");
             builder.Entity<Post>().ToTable("Posts");
 
-            builder.Entity<Post>().HasData(
-                new Post
+            builder.Entity<Profile>().HasData(
+                new Profile
                 {
-                    Id = 1,
-                    Title = "Fisketur ved søen",
-                    Picture = "public/TestPictures/TestFisk1.png",
-                    Description = "En fantastisk dag ved søen med masser af fisk!",
-                    Location = "Søen ved Skoven",
-                    CreationDate = new DateTime(2024, 5, 10)
-                },
-                new Post
-                {
-                    Id = 2,
-                    Title = "Havfiskeri eventyr",
-                    Picture = "public/TestPictures/TestFisk2.jpg",
-                    Description = "En spændende dag på havet med store fangster.",
-                    Location = "Kysten ved Byen",
-                    CreationDate = new DateTime(2024, 5, 15)
-                },
-                new Post
-                {
-                    Id = 3,
-                    Title = "Kæmpe blæksprutte fanget!",
-                    Picture = "public/TestPictures/TestFisk3.png",
-                    Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
-                    Location = "Byens kyst",
-                    CreationDate = new DateTime(2024, 5, 15)
-                },
-                new Post
-                {
-                    Id = 4,
-                    Title = "Hej Fiskere!",
-                    Description = "Søger single lystfiskere i Odense beliggenhed",
-                    CreationDate = new DateTime(2024, 5, 15)
+                    Id = "testid",
+                    Role = "user",
+                    ImagePath = ""
                 }
-            );
+                );
+
+            builder.Entity<Post>().HasData(
+                    new Post
+                    {
+                        Id = 1,
+                        Title = "Fisketur ved søen",
+                        Picture = "public/TestPictures/TestFisk1.png",
+                        Description = "En fantastisk dag ved søen med masser af fisk!",
+                        Location = "Søen ved Skoven",
+                        CreationDate = new DateTime(2024, 5, 10),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 2,
+                        Title = "Havfiskeri eventyr",
+                        Picture = "public/TestPictures/TestFisk2.jpg",
+                        Description = "En spændende dag på havet med store fangster.",
+                        Location = "Kysten ved Byen",
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 3,
+                        Title = "Kæmpe blæksprutte fanget!",
+                        Picture = "public/TestPictures/TestFisk3.png",
+                        Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
+                        Location = "Byens kyst",
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 4,
+                        Title = "Hej Fiskere!",
+                        Description = "Søger single lystfiskere i Odense beliggenhed",
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    }
+                );
 
         }
     }

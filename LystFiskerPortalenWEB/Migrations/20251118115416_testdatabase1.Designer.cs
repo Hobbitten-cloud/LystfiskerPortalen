@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251115112601_NewInit")]
-    partial class NewInit
+    [Migration("20251118115416_testdatabase1")]
+    partial class testdatabase1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,10 +46,16 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ProfileID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileID");
 
                     b.ToTable("Posts", (string)null);
 
@@ -61,6 +67,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "En fantastisk dag ved søen med masser af fisk!",
                             Location = "Søen ved Skoven",
                             Picture = "public/TestPictures/TestFisk1.png",
+                            ProfileID = "testid",
                             Title = "Fisketur ved søen"
                         },
                         new
@@ -70,6 +77,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "En spændende dag på havet med store fangster.",
                             Location = "Kysten ved Byen",
                             Picture = "public/TestPictures/TestFisk2.jpg",
+                            ProfileID = "testid",
                             Title = "Havfiskeri eventyr"
                         },
                         new
@@ -79,6 +87,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                             Location = "Byens kyst",
                             Picture = "public/TestPictures/TestFisk3.png",
+                            ProfileID = "testid",
                             Title = "Kæmpe blæksprutte fanget!"
                         },
                         new
@@ -86,6 +95,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = 4,
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Søger single lystfiskere i Odense beliggenhed",
+                            ProfileID = "testid",
                             Title = "Hej Fiskere!"
                         });
                 });
@@ -161,6 +171,21 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Profiles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "testid",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ea909073-27f2-4558-aa6a-09715557e991",
+                            EmailConfirmed = false,
+                            ImagePath = "",
+                            LockoutEnabled = false,
+                            PhoneNumberConfirmed = false,
+                            Role = "user",
+                            SecurityStamp = "6924e69c-e7a4-418f-8f8a-abc1d4bad1e3",
+                            TwoFactorEnabled = false
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -300,6 +325,17 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
+                {
+                    b.HasOne("LystFiskerPortalenWEB.Models.Profile", "Profile")
+                        .WithMany("Posts")
+                        .HasForeignKey("ProfileID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -349,6 +385,11 @@ namespace LystFiskerPortalenWEB.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }
