@@ -27,6 +27,8 @@ namespace LystFiskerPortalenWEB.Data
             builder.Entity<Lure>().ToTable("Lures");
             builder.Entity<Comment>().ToTable("Comments");
 
+            builder.Entity<Post>().HasMany(c => c.Comment).WithOne(p => p.Post).HasForeignKey(c => c.Id);
+
             builder.Entity<Post>().HasData(
                 new Post
                 {

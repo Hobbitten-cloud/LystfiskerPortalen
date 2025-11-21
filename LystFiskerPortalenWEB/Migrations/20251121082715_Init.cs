@@ -127,8 +127,7 @@ namespace LystFiskerPortalenWEB.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -138,8 +137,8 @@ namespace LystFiskerPortalenWEB.Migrations
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_Posts_PostId",
-                        column: x => x.PostId,
+                        name: "FK_Comments_Posts_Id",
+                        column: x => x.Id,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -313,11 +312,6 @@ namespace LystFiskerPortalenWEB.Migrations
                 name: "IX_AspNetUserRoles_RoleId",
                 table: "AspNetUserRoles",
                 column: "RoleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_PostId",
-                table: "Comments",
-                column: "PostId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
