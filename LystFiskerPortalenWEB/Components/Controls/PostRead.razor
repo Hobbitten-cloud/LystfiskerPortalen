@@ -78,13 +78,36 @@ else
             <hr />
 
             <div class="card-footer bg-white border-0">
-                <EditForm Model="@Comment" FormName="CreateCommentForm" OnValidSubmit="@(() => CreateComment(post.Id))">
+                @if (post.Comments?.Any() == true)
+                {
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var comment in post.Comments)
+                        {
+                            <li class="list-group-item px-0">
+                                <div class="d-flex justify-content-between">
+                                    <span>@comment.Description</span>
+                                    <small class="text-muted">@comment.CreationDate.ToString("dd-MM-yyyy HH:mm")</small>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted mb-3">Ingen kommentarer endnu.</p>
+                }
+
+                @{
+                    var commentModel = GetCommentModel(post.Id);
+                }
+                <EditForm Model="@commentModel" FormName="CreateCommentForm" OnValidSubmit="@(() => CreateComment(post))">
                     <DataAnnotationsValidator></DataAnnotationsValidator>
                     <ValidationSummary></ValidationSummary>
                     <div class="input-group">
-                        <InputText class="form-control" @bind-Value="Comment.Description" placeholder="Skriv en kommentar..." />
+                        <InputText class="form-control" @bind-Value="commentModel.Description" placeholder="Skriv en kommentar..." />
                         <button class="btn btn-primary" type="submit">Send</button>
-                    </div></EditForm>
+                    </div>
+                </EditForm>
             </div>
         </div>
     }
@@ -92,6 +115,7 @@ else
 
 @code {
     private List<Post> posts { get; set; }
+    private readonly Dictionary<int, Comment> commentModels = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -116,23 +140,39 @@ else
         post.IsEditing = false;
     }
 
-    // Kommentarfunktionalitet
-    [SupplyParameterFromForm(FormName = "CreateCommentForm")]
-    public Comment Comment { get; set; } = new Comment();
-
-    [Inject]
-    private ICommentRepo commentRepo { get; set; }
-
-    private bool forceReloadPage = true;
-    private async Task CreateComment(int postId)
+    private Comment GetCommentModel(int postId)
     {
-        Comment.PostId = postId;
-        Comment.CreationDate = DateTime.Now;
+        if (!commentModels.TryGetValue(postId, out var comment))
+        {
+            comment = new Comment();
+            commentModels[postId] = comment;
+        }
 
-        await commentRepo.CreateComment(Comment);
-        
-		Comment = new Comment();
-        
-        NavigationManager.NavigateTo("/", true);
+        return comment;
+    }
+
+    private async Task CreateComment(Post post)
+    {
+        var commentModel = GetCommentModel(post.Id);
+        if (string.IsNullOrWhiteSpace(commentModel.Description))
+        {
+            return;
+        }
+
+        commentModel.PostId = post.Id;
+        commentModel.CreationDate = DateTime.Now;
+
+        await CommentRepo.CreateComment(commentModel);
+
+        post.Comments ??= new List<Comment>();
+        post.Comments.Add(new Comment
+        {
+            Id = commentModel.Id,
+            PostId = commentModel.PostId,
+            Description = commentModel.Description,
+            CreationDate = commentModel.CreationDate
+        });
+
+        commentModels[post.Id] = new Comment();
     }
 }
