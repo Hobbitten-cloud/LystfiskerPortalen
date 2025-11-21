@@ -1,0 +1,108 @@
+﻿@inject IPostRepo PostRepo
+
+@if (posts == null)
+{
+    <p>Loading posts....</p>
+}
+else if (posts.Count == 0)
+{
+    <p>Der er ingen posts at vise.</p>
+}
+else
+{
+    @foreach (var post in posts)
+    {
+        <div class="card mb-4 shadow-sm" style="max-width: 36rem;">
+            @if (!post.IsEditing)
+            {
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <p>BRUGER</p>
+                        <p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
+                    </div>
+
+                    <h5 class="card-title mt-2">@post.Title</h5>
+                    <p class="card-text mb-1">@post.Description</p>
+                    <p class="card-text mb-2">@post.Location</p>
+
+                    <img src="@post.Picture" class="card-img-top rounded mb-3" alt="Billede ikke fundet" style="object-fit: cover" />
+
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <div>
+                            <p class="badge bg-primary me-2">Teknik</p>
+                            <p class="badge bg-info text-dark">Blink</p>
+                        </div>
+
+                        <button class="btn btn-outline-warning btn-sm" @onclick="@(() => StartEdit(post))">Ændr</button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <p>Rediger post</p>
+                        <p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
+                    </div>
+
+                    <div class="mb-3 mt-2">
+                        <label class="form-label">Titel</label>
+                        <InputText class="form-control" @bind-Value="post.Title" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Beskrivelse</label>
+                        <InputTextArea class="form-control" @bind-Value="post.Description" rows="3" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Lokation</label>
+                        <InputText class="form-control" @bind-Value="post.Location" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Billede-URL</label>
+                        <InputText class="form-control" @bind-Value="post.Picture" />
+                        <img src="@post.Picture" class="img-fluid rounded mt-2" alt="Billede ikke fundet" style="max-height: 200px; max-width: auto;" />
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-success btn-sm me-2" @onclick="@(() => SavePost(post))">Gem</button>
+                        <button class="btn btn-outline-secondary btn-sm" @onclick="@(() => CancelEdit(post))">Annuller</button>
+                    </div>
+                </div>
+            }
+
+            <div class="card-footer bg-white border-0">
+                <p>KOMMENTARER</p>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private List<Post> posts { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        posts = await PostRepo.GetAllPosts();
+    }
+
+    // Methods for editing posts
+    private void StartEdit(Post post)
+    {
+        post.IsEditing = true;
+    }
+
+    private async Task SavePost(Post post)
+    {
+        await PostRepo.UpdatePost(post);
+        post.IsEditing = false;
+    }
+
+    private async Task CancelEdit(Post post)
+    {
+        post.IsEditing = false;
+    }
+}
