@@ -1,4 +1,6 @@
 ﻿@inject IPostRepo PostRepo
+@inject ICommentRepo CommentRepo
+@inject NavigationManager NavigationManager
 
 @if (posts == null)
 {
@@ -76,10 +78,12 @@ else
             <hr />
 
             <div class="card-footer bg-white border-0">
-                <EditForm Model="Comment">
+                <EditForm Model="Comment" FormName="CreateCommentForm" OnValidSubmit="CreateComment">
+                    <DataAnnotationsValidator></DataAnnotationsValidator>
+                    <ValidationSummary></ValidationSummary>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Skriv en kommentar..." />
-                        <button class="btn btn-primary" type="button">Send</button>
+                        <InputText class="form-control" @bind-Value="Comment.Description" placeholder="Skriv en kommentar..." />
+                        <button class="btn btn-primary" type="submit">Send</button>
                     </div></EditForm>
             </div>
         </div>
@@ -112,5 +116,18 @@ else
         post.IsEditing = false;
     }
 
+    // Kommentarfunktionalitet
+    [SupplyParameterFromForm(FormName = "CreateCommentForm")]
 	public Comment Comment { get; set; } = new Comment();
+
+    [Inject]
+    private ICommentRepo commentRepo { get; set; }
+
+    private bool forceReloadPage = true;
+    private async Task CreateComment()
+    {
+        Comment.CreationDate = DateTime.Now;
+        await commentRepo.CreateComment(Comment);
+        NavigationManager.NavigateTo("/", forceReloadPage);
+    }
 }
