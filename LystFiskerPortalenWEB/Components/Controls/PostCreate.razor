@@ -1,7 +1,7 @@
 ﻿@inject IFileUploadService FileUploadService
 @inject IPostRepo PostRepo
 @inject NavigationManager NavigationManager
-
+@inject IProfileRepo ProfileRepo
 <h3>Opret en ny post</h3>
 
 <div class="card" style="width: 32rem; margin-bottom: 2%">
@@ -69,12 +69,15 @@
     [SupplyParameterFromForm(FormName = "CreateForm")]
     public Post post { get; set; } = new Post();
 
+    
     [Inject]
     private IPostRepo postRepo { get; set; }
 
     private bool forceReloadPage = true;
     private async Task CreatePost()
     {
+        post.ProfileID = await ProfileRepo.GetCurrentProfileId();
+        post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
         post.CreationDate = DateTime.Now;
         await postRepo.CreatePost(post);
         NavigationManager.NavigateTo("/", forceReloadPage);

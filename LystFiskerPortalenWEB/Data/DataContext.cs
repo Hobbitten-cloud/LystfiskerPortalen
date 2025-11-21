@@ -38,7 +38,8 @@ namespace LystFiskerPortalenWEB.Data
                 {
                     Id = "testid",
                     Role = "user",
-                    ImagePath = ""
+                    ImagePath = "/public/Images/DefaultProfileImage.png",
+                    UserName = "testuser",
                 }
                 );
 
