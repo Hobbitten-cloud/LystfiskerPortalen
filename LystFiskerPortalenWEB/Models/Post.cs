@@ -21,5 +21,7 @@ namespace LystFiskerPortalenWEB.Models
 
         [NotMapped]
         public bool IsEditing { get; set; }
+        public Profile Profile { get; set; }
+        public string ProfileID {  get; set; }
     }
 }
