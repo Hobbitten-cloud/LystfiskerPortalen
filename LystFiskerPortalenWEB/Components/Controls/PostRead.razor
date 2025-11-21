@@ -86,6 +86,8 @@ else
 
     [Parameter]
     public string? UserId { get; set; }
+    [Parameter]
+    public bool IsProfilePage{ get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -94,7 +96,7 @@ else
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
        UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? null;
-        if (UserId is not null)
+        if (UserId is not null && IsProfilePage)
         {
             // Filter posts only for the given user
             posts = await PostRepo.GetPostsByUser(UserId);
