@@ -51,5 +51,12 @@ namespace LystFiskerPortalenWEB.Repo
             return await _context.Posts.FindAsync(id);
         }
 
+        public async Task<List<Post>> GetPostsByUser(string userId)
+        {
+            return await _context.Posts
+                .Where(p => p.ProfileID == userId)
+                .OrderByDescending(p => p.CreationDate)
+                .ToListAsync();
+        }
     }
 }

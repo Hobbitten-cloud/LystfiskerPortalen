@@ -1,4 +1,5 @@
 ﻿@inject IPostRepo PostRepo
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @if (posts == null)
 {
@@ -83,10 +84,26 @@ else
 @code {
     private List<Post> posts { get; set; }
 
+    [Parameter]
+    public string? UserId { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        posts = await PostRepo.GetAllPosts();
+        //posts = await PostRepo.GetAllPosts();
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (UserId is not null)
+        {
+            // Filter posts only for the given user
+            posts = await PostRepo.GetPostsByUser(UserId);
+        }
+        else
+        {
+            // Load all posts
+            posts = await PostRepo.GetAllPosts();
+        }
     }
 
     // Methods for editing posts
@@ -105,4 +122,5 @@ else
     {
         post.IsEditing = false;
     }
+
 }

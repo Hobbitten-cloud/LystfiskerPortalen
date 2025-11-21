@@ -1,4 +1,5 @@
 ﻿using LystFiskerPortalenWEB.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LystFiskerPortalenWEB.Repo
 {
@@ -9,5 +10,7 @@ namespace LystFiskerPortalenWEB.Repo
         Task<List<Post>> GetAllPosts();
         Task<Post> GetPostById(int id);
         Task UpdatePost(Post post);
+        Task<List<Post>> GetPostsByUser(string userId);
+        
     }
 }
