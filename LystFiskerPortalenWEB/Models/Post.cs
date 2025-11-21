@@ -16,6 +16,8 @@ namespace LystFiskerPortalenWEB.Models
 
         public string? Location { get; set; }
 
+        public int? Likes { get; set; }
+
         [Required]
         public DateTime CreationDate { get; set; }
 
