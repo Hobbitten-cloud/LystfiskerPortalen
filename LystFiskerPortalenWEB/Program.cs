@@ -1,4 +1,12 @@
 using LystFiskerPortalenWEB.Components;
+using LystFiskerPortalenWEB.Data;
+using LystFiskerPortalenWEB.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using LystFiskerPortalenWEB.Components.Account;
+using Microsoft.AspNetCore.Components.Authorization;
+using LystFiskerPortalenWEB.Repo;
+using LystFiskerPortalenWEB.Services;
 
 namespace LystFiskerPortalenWEB
 {
@@ -9,8 +17,55 @@ namespace LystFiskerPortalenWEB
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddRazorComponents();
+            builder.Services.AddRazorComponents()
+                .AddInteractiveServerComponents();
 
+            builder.Services.AddDbContextFactory<DataContext>(options =>
+            {
+                { 
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
+                   
+                }
+            }
+            , ServiceLifetime.Transient
+        
+            );
+
+            builder.Services.AddDefaultIdentity<Profile>
+                (options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>();
+
+            builder.Services.AddCascadingAuthenticationState();
+
+            builder.Services.AddScoped<IdentityUserAccessor>();
+
+            builder.Services.AddScoped<IdentityRedirectManager>();
+
+            builder.Services.AddScoped<IProfileRepo, ProfileRepo>();
+
+            builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+            builder.Services.AddScoped<IPostRepo, PostRepo>();
+            builder.Services.AddScoped<ITechniqueRepo, TechniqueRepo>();
+            builder.Services.AddScoped<ILureRepo, LureRepo>();
+
+
+            builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            });
+
+            //.AddIdentityCookies();
+
+            //builder.Services.AddIdentityCore<Profile>(options => options.SignIn.RequireConfirmedAccount = true)
+            //.AddEntityFrameworkStores<DataContext>()
+            //.AddSignInManager()
+            //.AddDefaultTokenProviders();
+
+            builder.Services.AddScoped<IEmailSender<Profile>, IdentityNoOpEmailSender>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,10 +78,18 @@ namespace LystFiskerPortalenWEB
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+         
             app.UseStaticFiles();
             app.UseAntiforgery();
 
-            app.MapRazorComponents<App>();
+
+
+            app.MapRazorComponents<App>()
+                .AddInteractiveServerRenderMode();
+
+            app.MapAdditionalIdentityEndpoints();
 
             app.Run();
         }
