@@ -123,7 +123,7 @@ else
 
 @code {
 	[Parameter]
-	private List<Post> posts { get; set; }
+	public List<Post> Posts { get; set; }
 	private readonly Dictionary<int, Comment> commentModels = new();
 
     [Parameter]
@@ -133,7 +133,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-         posts = await PostRepo.GetAllPosts();
+         Posts = await PostRepo.GetAllPosts();
         await base.OnInitializedAsync();
     }
 
@@ -148,12 +148,12 @@ else
         if (UserId is not null && IsProfilePage)
         {
             // Filter posts only for the given user
-            posts = await PostRepo.GetPostsByUser(UserId);
+			Posts = await PostRepo.GetPostsByUser(UserId);
         }
         else
         {
             // Load all posts
-            posts = await PostRepo.GetAllPosts();
+			Posts = await PostRepo.GetAllPosts();
         }
     }
 
@@ -172,7 +172,7 @@ else
 	private async Task DeletePost(int id)
 	{
 		await PostRepo.DeletePost(id);
-		posts = await PostRepo.GetAllPosts();
+		Posts = await PostRepo.GetAllPosts();
 	}
 
 	private async Task CancelEdit(Post post)
@@ -214,7 +214,7 @@ else
 
 	private async Task RefreshPost(int postId)
 	{
-		if (posts == null)
+		if (Posts == null)
 		{
 			return;
 		}
@@ -225,11 +225,11 @@ else
 			return;
 		}
 
-		var index = posts.FindIndex(p => p.Id == postId);
+		var index = Posts.FindIndex(p => p.Id == postId);
 		if (index >= 0)
 		{
-			updatedPost.IsEditing = posts[index].IsEditing;
-			posts[index] = updatedPost;
+			updatedPost.IsEditing = Posts[index].IsEditing;
+			Posts[index] = updatedPost;
 		}
 	}
 }
