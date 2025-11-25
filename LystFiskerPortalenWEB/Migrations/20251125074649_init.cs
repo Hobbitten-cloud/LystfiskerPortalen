@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LystFiskerPortalenWEB.Migrations
 {
     /// <inheritdoc />
-    public partial class Profile : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -200,6 +200,7 @@ namespace LystFiskerPortalenWEB.Migrations
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Likes = table.Column<int>(type: "int", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ProfileID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -235,7 +236,7 @@ namespace LystFiskerPortalenWEB.Migrations
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "cd63e3f3-9961-4f18-9b0c-66aed6bd4534", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "9cf1bf26-c506-448e-83c1-258e695072ea", false, "testuser" });
+                values: new object[] { "testid", 0, "bfcbe28d-5567-471e-a4b3-bf35f0bbdb27", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "55d989ce-74cd-49a7-903d-2add41839aa9", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",
@@ -257,13 +258,13 @@ namespace LystFiskerPortalenWEB.Migrations
 
             migrationBuilder.InsertData(
                 table: "Posts",
-                columns: new[] { "Id", "CreationDate", "Description", "Location", "Picture", "ProfileID", "Title" },
+                columns: new[] { "Id", "CreationDate", "Description", "Likes", "Location", "Picture", "ProfileID", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", "Søen ved Skoven", "public/TestPictures/TestFisk1.png", "testid", "Fisketur ved søen" },
-                    { 2, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", "Kysten ved Byen", "public/TestPictures/TestFisk2.jpg", "testid", "Havfiskeri eventyr" },
-                    { 3, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", "Byens kyst", "public/TestPictures/TestFisk3.png", "testid", "Kæmpe blæksprutte fanget!" },
-                    { 4, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", null, null, "testid", "Hej Fiskere!" }
+                    { 1, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", 10, "Søen ved Skoven", "public/TestPictures/TestFisk1.png", "testid", "Fisketur ved søen" },
+                    { 2, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", 4, "Kysten ved Byen", "public/TestPictures/TestFisk2.jpg", "testid", "Havfiskeri eventyr" },
+                    { 3, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", 2, "Byens kyst", "public/TestPictures/TestFisk3.png", "testid", "Kæmpe blæksprutte fanget!" },
+                    { 4, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", 0, null, null, "testid", "Hej Fiskere!" }
                 });
 
             migrationBuilder.CreateIndex(

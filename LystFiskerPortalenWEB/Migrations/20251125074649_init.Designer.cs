@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251121081037_Profile")]
-    partial class Profile
+    [Migration("20251125074649_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -158,6 +158,9 @@ namespace LystFiskerPortalenWEB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("Likes")
+                        .HasColumnType("int");
+
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
@@ -183,6 +186,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = 1,
                             CreationDate = new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En fantastisk dag ved søen med masser af fisk!",
+                            Likes = 10,
                             Location = "Søen ved Skoven",
                             Picture = "public/TestPictures/TestFisk1.png",
                             ProfileID = "testid",
@@ -193,6 +197,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = 2,
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "En spændende dag på havet med store fangster.",
+                            Likes = 4,
                             Location = "Kysten ved Byen",
                             Picture = "public/TestPictures/TestFisk2.jpg",
                             ProfileID = "testid",
@@ -203,6 +208,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = 3,
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
+                            Likes = 2,
                             Location = "Byens kyst",
                             Picture = "public/TestPictures/TestFisk3.png",
                             ProfileID = "testid",
@@ -213,6 +219,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = 4,
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Søger single lystfiskere i Odense beliggenhed",
+                            Likes = 0,
                             ProfileID = "testid",
                             Title = "Hej Fiskere!"
                         });
@@ -295,13 +302,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cd63e3f3-9961-4f18-9b0c-66aed6bd4534",
+                            ConcurrencyStamp = "bfcbe28d-5567-471e-a4b3-bf35f0bbdb27",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "9cf1bf26-c506-448e-83c1-258e695072ea",
+                            SecurityStamp = "55d989ce-74cd-49a7-903d-2add41839aa9",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });

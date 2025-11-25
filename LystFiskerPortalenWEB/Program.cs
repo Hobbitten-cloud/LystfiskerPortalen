@@ -27,7 +27,7 @@ namespace LystFiskerPortalenWEB
                    
                 }
             }
-            , ServiceLifetime.Scoped
+            , ServiceLifetime.Transient
         
             );
 
