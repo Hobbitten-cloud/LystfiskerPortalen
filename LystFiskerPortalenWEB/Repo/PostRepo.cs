@@ -13,6 +13,17 @@ namespace LystFiskerPortalenWEB.Repo
             _context = context;
         }
 
+        public async Task LikePost(Post post)
+        {
+            if (post == null)
+            {
+                return;
+            }
+            post.Likes = (post.Likes ?? 0) + 1;
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task CreatePost(Post post)
         {
             if (post == null)
@@ -42,13 +53,13 @@ namespace LystFiskerPortalenWEB.Repo
 
         public async Task<List<Post>> GetAllPosts()
         {
-            // Sort by CreationDate ascending
-            return await _context.Posts.OrderByDescending(t => t.CreationDate).ToListAsync();
+            return await _context.Posts.Include(p=>p.Profile).OrderByDescending(t => t.CreationDate).ToListAsync();
+            
         }
 
         public async Task<Post> GetPostById(int id)
         {
-            return await _context.Posts.FindAsync(id);
+            return await _context.Posts.Include(p=>p.Profile).FirstAsync(p => p.Id == id);
         }
 
         public async Task<List<Post>> GetPostsByUser(string userId)

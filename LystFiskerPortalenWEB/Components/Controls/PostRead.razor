@@ -18,7 +18,10 @@ else
             {
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <p>BRUGER</p>
+                        <span> 
+                            <img src="@post.Profile.ImagePath" class="rounded-circle me-2" alt="Profilbillede ikke fundet" style="width: 40px; height: 40px; object-fit: cover;" >
+                            @post.Profile.UserName
+                        </span>
                         <p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
                     </div>
 
@@ -32,6 +35,10 @@ else
                         <div>
                             <p class="badge bg-primary me-2">Teknik</p>
                             <p class="badge bg-info text-dark">Blink</p>
+                        </div>
+                        <div>
+                            <p>Likes @post.Likes</p>
+                            <button class="btn-primary" @onclick="@(() => LikePost(post))">Like Post</button>
                         </div>
 
                         <button class="btn btn-outline-warning btn-sm" @onclick="@(() => StartEdit(post))">Ændr</button>
@@ -91,7 +98,14 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+         posts = await PostRepo.GetAllPosts();
         await base.OnInitializedAsync();
+    }
+
+    private async Task LikePost(Post post)
+    {
+        await PostRepo.LikePost(post);
+
         //posts = await PostRepo.GetAllPosts();
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;

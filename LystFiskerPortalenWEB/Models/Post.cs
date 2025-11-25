@@ -16,11 +16,15 @@ namespace LystFiskerPortalenWEB.Models
 
         public string? Location { get; set; }
 
+        public int? Likes { get; set; }
+
         [Required]
         public DateTime CreationDate { get; set; }
 
         [NotMapped]
         public bool IsEditing { get; set; }
+
+        // Foreign Keys
         public Profile Profile { get; set; }
         public string ProfileID {  get; set; }
     }
