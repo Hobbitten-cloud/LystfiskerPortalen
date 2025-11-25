@@ -159,20 +159,37 @@ else
             return;
         }
 
-        commentModel.PostId = post.Id;
-        commentModel.CreationDate = DateTime.Now;
-
-        await CommentRepo.CreateComment(commentModel);
-
-        post.Comments ??= new List<Comment>();
-        post.Comments.Add(new Comment
+        var newComment = new Comment
         {
-            Id = commentModel.Id,
-            PostId = commentModel.PostId,
             Description = commentModel.Description,
-            CreationDate = commentModel.CreationDate
-        });
+            PostId = post.Id,
+            CreationDate = DateTime.Now
+        };
+
+        await CommentRepo.CreateComment(newComment);
+        await RefreshPost(post.Id);
 
         commentModels[post.Id] = new Comment();
+    }
+
+    private async Task RefreshPost(int postId)
+    {
+        if (posts == null)
+        {
+            return;
+        }
+
+        var updatedPost = await PostRepo.GetPostWithComments(postId);
+        if (updatedPost == null)
+        {
+            return;
+        }
+
+        var index = posts.FindIndex(p => p.Id == postId);
+        if (index >= 0)
+        {
+            updatedPost.IsEditing = posts[index].IsEditing;
+            posts[index] = updatedPost;
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace LystFiskerPortalenWEB.Repo.IRepos
         Task DeletePost(int id);
         Task<List<Post>> GetAllPosts();
         Task<Post> GetPostById(int id);
+        Task<Post?> GetPostWithComments(int id);
         Task UpdatePost(Post post);
     }
 }
