@@ -55,6 +55,7 @@ namespace LystFiskerPortalenWEB.Repo
         public async Task<List<Post>> GetAllPosts()
         {
             var posts = await _context.Posts
+                .Include(p => p.Profile)
                 .Include(p => p.Comments)
                 .OrderByDescending(t => t.CreationDate)
                 .ToListAsync();
@@ -78,12 +79,14 @@ namespace LystFiskerPortalenWEB.Repo
         {
             return await _context.Posts
                 .Where(p => p.ProfileID == userId)
+                .Include(p => p.Profile)
                 .OrderByDescending(p => p.CreationDate)
                 .ToListAsync();
         }
         public async Task<Post?> GetPostWithComments(int id)
         {
             return await _context.Posts
+                .Include(p => p.Profile)
                 .Include(p => p.Comments)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }

@@ -21,8 +21,8 @@ else
 				<div class="card-body">
 					<div class="d-flex justify-content-between">
 						<span>
-							<img src="@post.Profile.ImagePath" class="rounded-circle me-2" alt="Profilbillede ikke fundet" style="width: 40px; height: 40px; object-fit: cover;">
-							@post.Profile.UserName
+							<img src="@post.Profile?.ImagePath" class="rounded-circle me-2" alt="Profilbillede ikke fundet" style="width: 40px; height: 40px; object-fit: cover;">
+							@post.Profile?.UserName
 						</span>
 						<p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
 					</div>
@@ -131,12 +131,6 @@ else
     [Parameter]
     public bool IsProfilePage{ get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-         Posts = await PostRepo.GetAllPosts();
-        await base.OnInitializedAsync();
-    }
-
     private async Task LikePost(Post post)
     {
         await PostRepo.LikePost(post);
@@ -232,9 +226,4 @@ else
 			Posts[index] = updatedPost;
 		}
 	}
-}
-        commentModels[post.Id] = new Comment();
-    }
-}
-
 }
