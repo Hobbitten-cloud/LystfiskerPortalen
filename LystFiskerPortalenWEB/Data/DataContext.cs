@@ -31,12 +31,18 @@ namespace LystFiskerPortalenWEB.Data
             builder.Entity<Post>().ToTable("Posts");
             builder.Entity<Technique>().ToTable("Techniques");
             builder.Entity<Lure>().ToTable("Lures");
-            builder.Entity<Comment>().ToTable("Comments");
+            builder.Entity<Comment>(entity =>
+            {
+                entity.ToTable("Comments");
+                entity.HasKey(c => c.Id);
+                entity.Property(c => c.Id).ValueGeneratedOnAdd();
+                entity.Property(c => c.Description).IsRequired();
 
-            builder.Entity<Post>()
-                .HasMany(p => p.Comments)
-                .WithOne(c => c.Post)
-                .HasForeignKey(c => c.PostId);
+                entity.HasOne(c => c.Post)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(c => c.PostId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
 
             builder.Entity<Post>().
