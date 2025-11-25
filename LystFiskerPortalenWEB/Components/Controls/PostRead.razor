@@ -1,4 +1,7 @@
 ﻿@inject IPostRepo PostRepo
+@inject ICommentRepo CommentRepo
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 @if (Posts == null)
 {
@@ -39,8 +42,8 @@ else
 							<p>Likes @post.Likes</p>
 							<button class="btn-primary" @onclick="@(() => LikePost(post))">Like Post</button>
 						</div>
-
 						<button class="btn btn-outline-warning btn-sm" @onclick="@(() => StartEdit(post))">Ændr</button>
+						<button class="btn btn-outline-danger btn-sm ms-2" @onclick="@(() => DeletePost(post.Id))">Slet</button>
 					</div>
 				</div>
 			}
@@ -80,8 +83,39 @@ else
 				</div>
 			}
 
+			<hr />
+
 			<div class="card-footer bg-white border-0">
-				<p>KOMMENTARER</p>
+				@if (post.Comments?.Any() == true)
+				{
+					<ul class="list-group list-group-flush mb-3">
+						@foreach (var comment in post.Comments)
+						{
+							<li class="list-group-item px-0">
+								<div class="d-flex justify-content-between">
+									<span>@comment.Description</span>
+									<small class="text-muted">@comment.CreationDate.ToString("dd-MM-yyyy HH:mm")</small>
+								</div>
+							</li>
+						}
+					</ul>
+				}
+				else
+				{
+					<p class="text-muted mb-3">Ingen kommentarer endnu.</p>
+				}
+
+				@{
+					var commentModel = GetCommentModel(post.Id);
+				}
+				<EditForm Model="@commentModel" FormName="CreateCommentForm" OnValidSubmit="@(() => CreateComment(post))">
+					<DataAnnotationsValidator></DataAnnotationsValidator>
+					<ValidationSummary></ValidationSummary>
+					<div class="input-group">
+						<InputText class="form-control" @bind-Value="commentModel.Description" placeholder="Skriv en kommentar..." />
+						<button class="btn btn-primary" type="submit">Send</button>
+					</div>
+				</EditForm>
 			</div>
 		</div>
 	}
@@ -89,12 +123,39 @@ else
 
 @code {
 	[Parameter]
-	public List<Post> Posts { get; set; }
+	private List<Post> posts { get; set; }
+	private readonly Dictionary<int, Comment> commentModels = new();
 
-	private async Task LikePost(Post post)
-	{
-		await PostRepo.LikePost(post);
-	}
+    [Parameter]
+    public string? UserId { get; set; }
+    [Parameter]
+    public bool IsProfilePage{ get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+         posts = await PostRepo.GetAllPosts();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task LikePost(Post post)
+    {
+        await PostRepo.LikePost(post);
+
+        //posts = await PostRepo.GetAllPosts();
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+       UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? null;
+        if (UserId is not null && IsProfilePage)
+        {
+            // Filter posts only for the given user
+            posts = await PostRepo.GetPostsByUser(UserId);
+        }
+        else
+        {
+            // Load all posts
+            posts = await PostRepo.GetAllPosts();
+        }
+    }
 
 	// Methods for editing posts
 	private void StartEdit(Post post)
@@ -108,8 +169,72 @@ else
 		post.IsEditing = false;
 	}
 
+	private async Task DeletePost(int id)
+	{
+		await PostRepo.DeletePost(id);
+		posts = await PostRepo.GetAllPosts();
+	}
+
 	private async Task CancelEdit(Post post)
 	{
 		post.IsEditing = false;
 	}
+
+	private Comment GetCommentModel(int postId)
+	{
+		if (!commentModels.TryGetValue(postId, out var comment))
+		{
+			comment = new Comment();
+			commentModels[postId] = comment;
+		}
+
+		return comment;
+	}
+
+	private async Task CreateComment(Post post)
+	{
+		var commentModel = GetCommentModel(post.Id);
+		if (string.IsNullOrWhiteSpace(commentModel.Description))
+		{
+			return;
+		}
+
+		var newComment = new Comment
+			{
+				Description = commentModel.Description,
+				PostId = post.Id,
+				CreationDate = DateTime.Now
+			};
+
+		await CommentRepo.CreateComment(newComment);
+		await RefreshPost(post.Id);
+
+		commentModels[post.Id] = new Comment();
+	}
+
+	private async Task RefreshPost(int postId)
+	{
+		if (posts == null)
+		{
+			return;
+		}
+
+		var updatedPost = await PostRepo.GetPostWithComments(postId);
+		if (updatedPost == null)
+		{
+			return;
+		}
+
+		var index = posts.FindIndex(p => p.Id == postId);
+		if (index >= 0)
+		{
+			updatedPost.IsEditing = posts[index].IsEditing;
+			posts[index] = updatedPost;
+		}
+	}
+}
+        commentModels[post.Id] = new Comment();
+    }
+}
+
 }

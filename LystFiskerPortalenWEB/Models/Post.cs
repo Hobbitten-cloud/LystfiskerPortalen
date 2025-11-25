@@ -21,11 +21,19 @@ namespace LystFiskerPortalenWEB.Models
         [Required]
         public DateTime CreationDate { get; set; }
 
+        //Forgin Keys
+        public Lure? Lure { get; set; } 
+        public Technique? Technique { get; set; }
+        public int? LureId { get; set; }
+        public int? TechniqueId { get; set; }
+
         [NotMapped]
         public bool IsEditing { get; set; }
+        public List<Comment> Comments { get; set; } = new List<Comment>();
 
         // Foreign Keys
         public Profile Profile { get; set; }
         public string ProfileID {  get; set; }
+
     }
 }

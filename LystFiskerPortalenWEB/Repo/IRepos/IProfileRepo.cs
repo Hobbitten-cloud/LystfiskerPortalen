@@ -1,6 +1,6 @@
 ﻿using LystFiskerPortalenWEB.Models;
 
-namespace LystFiskerPortalenWEB.Repo
+namespace LystFiskerPortalenWEB.Repo.IRepos
 {
     public interface IProfileRepo
     {
@@ -9,6 +9,6 @@ namespace LystFiskerPortalenWEB.Repo
         Task<List<Profile>> GetAllProfiles();
         Task<Profile> GetProfileById(string id);
         Task UpdateProfile(Profile profile);
-        Task<string> GetCurrentProfileId();
+        
     }
 }

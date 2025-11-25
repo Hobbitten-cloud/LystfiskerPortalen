@@ -1,6 +1,7 @@
 ﻿using LystFiskerPortalenWEB.Data;
 using LystFiskerPortalenWEB.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using LystFiskerPortalenWEB.Repo.IRepos;
 using Microsoft.EntityFrameworkCore;
 namespace LystFiskerPortalenWEB.Repo
 {
@@ -46,12 +47,6 @@ namespace LystFiskerPortalenWEB.Repo
             }
         }
 
-        public async Task<string> GetCurrentProfileId()
-        {
-            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
-
-            return user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        }
+     
     }
 }

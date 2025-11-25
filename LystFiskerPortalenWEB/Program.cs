@@ -7,6 +7,7 @@ using LystFiskerPortalenWEB.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
 using LystFiskerPortalenWEB.Repo;
 using LystFiskerPortalenWEB.Services;
+using LystFiskerPortalenWEB.Repo.IRepos;
 
 namespace LystFiskerPortalenWEB
 {
@@ -20,10 +21,17 @@ namespace LystFiskerPortalenWEB
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddDbContext<DataContext>(options =>
+            builder.Services.AddDbContextFactory<DataContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
-            });
+                { 
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
+                   
+                }
+            }
+            , ServiceLifetime.Transient
+        
+            );
+
 
             builder.Services.AddDefaultIdentity<Profile>
                 (options => options.SignIn.RequireConfirmedAccount = false)
@@ -36,6 +44,7 @@ namespace LystFiskerPortalenWEB
 
             builder.Services.AddScoped<IdentityRedirectManager>();
 
+            builder.Services.AddScoped<IProfileRepo, ProfileRepo>();
             builder.Services.AddScoped<IFileUploadService, FileUploadService>();
             builder.Services.AddScoped<ISortService, SortService>();
 
@@ -43,7 +52,7 @@ namespace LystFiskerPortalenWEB
             builder.Services.AddScoped<IPostRepo, PostRepo>();
             builder.Services.AddScoped<ITechniqueRepo, TechniqueRepo>();
             builder.Services.AddScoped<ILureRepo, LureRepo>();
-
+            builder.Services.AddScoped<ICommentRepo, CommentRepo>();
 
             builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
@@ -60,7 +69,7 @@ namespace LystFiskerPortalenWEB
             //.AddSignInManager()
             //.AddDefaultTokenProviders();
 
-            builder.Services.AddSingleton<IEmailSender<Profile>, IdentityNoOpEmailSender>();
+            builder.Services.AddScoped<IEmailSender<Profile>, IdentityNoOpEmailSender>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
