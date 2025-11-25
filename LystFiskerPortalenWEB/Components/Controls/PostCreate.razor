@@ -146,23 +146,13 @@
 
     private List<Lure> lures { get; set; } = new List<Lure>();
 
-    private bool hej = false;
-
-    protected override async Task OnInitializedAsync()
-    {
-        
-        lures = await LureRepo.GetAllLures();
-        techniques = await TechniqueRepo.GetAllTechs();
-    }
-
-
-
     protected override async Task OnInitializedAsync()
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
         post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-
+        lures = await LureRepo.GetAllLures();
+        techniques = await TechniqueRepo.GetAllTechs();
         
         post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
     }

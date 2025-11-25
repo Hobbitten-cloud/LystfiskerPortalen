@@ -46,7 +46,7 @@ namespace LystFiskerPortalenWEB.Data
 
 
             builder.Entity<Post>().
-                HasOne<Lure>(p => p.Lure).WithMany(b=> b.Post).HasForeignKey(b=>b.LureId);
+                HasOne<Lure>(p => p.Lure).WithMany(b => b.Post).HasForeignKey(b => b.LureId);
 
             builder.Entity<Post>().
                 HasOne<Technique>(a => a.Technique).WithMany(k => k.Post).HasForeignKey(b => b.TechniqueId);
@@ -104,49 +104,6 @@ namespace LystFiskerPortalenWEB.Data
                         CreationDate = new DateTime(2024, 5, 15),
                         ProfileID = "testid"
                     }
-                );
-                new Post
-                {
-                    Id = 1,
-                    Title = "Fisketur ved søen",
-                    Picture = "public/TestPictures/TestFisk1.png",
-                    Description = "En fantastisk dag ved søen med masser af fisk!",
-                    Location = "Søen ved Skoven",
-                    CreationDate = new DateTime(2024, 5, 10),
-                    LureId = 1,
-                    TechniqueId = 1,
-                },
-                new Post
-                {
-                    Id = 2,
-                    Title = "Havfiskeri eventyr",
-                    Picture = "public/TestPictures/TestFisk2.jpg",
-                    Description = "En spændende dag på havet med store fangster.",
-                    Location = "Kysten ved Byen",
-                    CreationDate = new DateTime(2024, 5, 15),
-                    LureId = 2,
-                    TechniqueId = 2,
-                },
-                new Post
-                {
-                    Id = 3,
-                    Title = "Kæmpe blæksprutte fanget!",
-                    Picture = "public/TestPictures/TestFisk3.png",
-                    Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
-                    Location = "Byens kyst",
-                    CreationDate = new DateTime(2024, 5, 15),
-                    LureId = 3,
-                    TechniqueId = 3,
-                },
-                new Post
-                {
-                    Id = 4,
-                    Title = "Hej Fiskere!",
-                    Description = "Søger single lystfiskere i Odense beliggenhed",
-                    CreationDate = new DateTime(2024, 5, 15),
-                    LureId=4,
-                    TechniqueId = 4,
-                }
             );
 
             //seeder tech
@@ -158,7 +115,7 @@ namespace LystFiskerPortalenWEB.Data
                     Name = "Blank",
                     Description = "Blank",
                     PostId = 1,
-                    
+
                 },
                 new Technique
                 {
@@ -179,7 +136,8 @@ namespace LystFiskerPortalenWEB.Data
                     Id = 4,
                     Name = "Texas-rig",
                     Description = "Ligner Carolina-rigget, men loddet sidder direkte foran agnen (typisk med en lille gummistopper). Agnen (ofte en softbait) kan rigges ”weedless”."
-                    , PostId = 4,
+                    ,
+                    PostId = 4,
                 },
                 new Technique
                 {
