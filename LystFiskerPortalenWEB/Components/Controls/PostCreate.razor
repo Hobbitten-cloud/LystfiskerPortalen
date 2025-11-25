@@ -1,6 +1,8 @@
 ﻿@inject IFileUploadService FileUploadService
 @inject IPostRepo PostRepo
 @inject NavigationManager NavigationManager
+@inject IProfileRepo ProfileRepo
+@inject AuthenticationStateProvider _authenticationStateProvider
 @inject ITechniqueRepo TechniqueRepo
 @inject ILureRepo LureRepo
 @rendermode InteractiveServer
@@ -94,6 +96,7 @@
     [SupplyParameterFromForm(FormName = "CreateForm")]
     public Post post { get; set; } = new Post();
 
+    
     [Inject]
     private IPostRepo postRepo { get; set; }
 
@@ -101,6 +104,7 @@
 
     private async Task CreatePost()
     {
+        
         post.CreationDate = DateTime.Now;
         if (post.TechniqueId is null)
             post.TechniqueId = 1;
@@ -108,6 +112,7 @@
         if (post.LureId is null)
             post.LureId = 1;
 
+        post.Likes = 0;
         await postRepo.CreatePost(post);
         NavigationManager.NavigateTo("/", forceReloadPage);
     }
@@ -151,4 +156,14 @@
     }
 
 
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        
+        post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
+    }
 }

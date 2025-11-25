@@ -9,5 +9,6 @@ namespace LystFiskerPortalenWEB.Repo
         Task<List<Profile>> GetAllProfiles();
         Task<Profile> GetProfileById(string id);
         Task UpdateProfile(Profile profile);
+        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LystFiskerPortalenWEB.Data;
 using LystFiskerPortalenWEB.Models;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 namespace LystFiskerPortalenWEB.Repo
 {
@@ -8,10 +9,11 @@ namespace LystFiskerPortalenWEB.Repo
         private static List<Profile> profiles = new List<Profile>();
 
         private DataContext _context;
-
-        public ProfileRepo(DataContext context)
+        private AuthenticationStateProvider _authenticationStateProvider;
+        public ProfileRepo(DataContext context,AuthenticationStateProvider authstateprovider)
         {
             _context = context;
+            _authenticationStateProvider = authstateprovider;
         }
         public async Task<List<Profile>> GetAllProfiles()
         {
@@ -43,5 +45,7 @@ namespace LystFiskerPortalenWEB.Repo
                 await _context.SaveChangesAsync();
             }
         }
+
+     
     }
 }

@@ -1,15 +1,23 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LystFiskerPortalenWEB.Models
 {
     public class Post
     {
         public int Id { get; set; }
+
         public string? Title { get; set; }
+
         public string? Picture { get; set; }
+
         [Required]
         public string Description { get; set; }
+
         public string? Location { get; set; }
+
+        public int? Likes { get; set; }
+
         [Required]
         public DateTime CreationDate { get; set; }
 
@@ -18,5 +26,12 @@ namespace LystFiskerPortalenWEB.Models
         public Technique? Technique { get; set; }
         public int? LureId { get; set; }
         public int? TechniqueId { get; set; }
+
+        [NotMapped]
+        public bool IsEditing { get; set; }
+
+        // Foreign Keys
+        public Profile Profile { get; set; }
+        public string ProfileID {  get; set; }
     }
 }

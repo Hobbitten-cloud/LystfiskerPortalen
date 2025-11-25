@@ -1,6 +1,7 @@
 ﻿@page "/Profile/{id}"
 
 @inject IProfileRepo profileRepo
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 
 @if (profile == null)
@@ -9,9 +10,6 @@
 }
 else
 {
-
-
-
     <div class="row align-items-center">
         <div class="col-auto">
             <img width="200" height="200" src="@profile.ImagePath" class="rounded-circle" />
@@ -24,7 +22,7 @@ else
 
     @* Componet for viewing all posts - sorted after creationDate *@
     <div style="margin: auto; width: 50%;">
-        <PostReadComp></PostReadComp>
+        <PostRead UserId="@id" IsProfilePage="@true"></PostRead>
     </div>
 }
 
@@ -37,6 +35,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         profile = await profileRepo.GetProfileById(id);
-    }
+        var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        id = state.User.FindFirst("sub")?.Value; // or ClaimTypes.NameIdentifier
 
+    }
+      // private string? userId;
 }
