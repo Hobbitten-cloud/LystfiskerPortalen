@@ -7,6 +7,7 @@ using LystFiskerPortalenWEB.Components.Account;
 using Microsoft.AspNetCore.Components.Authorization;
 using LystFiskerPortalenWEB.Repo;
 using LystFiskerPortalenWEB.Services;
+using LystFiskerPortalenWEB.Hubs;
 
 namespace LystFiskerPortalenWEB
 {
@@ -19,6 +20,8 @@ namespace LystFiskerPortalenWEB
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddSignalR();
 
             builder.Services.AddDbContextFactory<DataContext>(options =>
             {
@@ -58,12 +61,6 @@ namespace LystFiskerPortalenWEB
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
             });
 
-            //.AddIdentityCookies();
-
-            //builder.Services.AddIdentityCore<Profile>(options => options.SignIn.RequireConfirmedAccount = true)
-            //.AddEntityFrameworkStores<DataContext>()
-            //.AddSignInManager()
-            //.AddDefaultTokenProviders();
 
             builder.Services.AddScoped<IEmailSender<Profile>, IdentityNoOpEmailSender>();
             var app = builder.Build();
@@ -84,7 +81,7 @@ namespace LystFiskerPortalenWEB
             app.UseStaticFiles();
             app.UseAntiforgery();
 
-
+            app.MapHub<ChatHub>("/chathub");
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
