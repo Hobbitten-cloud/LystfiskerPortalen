@@ -20,10 +20,16 @@ namespace LystFiskerPortalenWEB
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddDbContext<DataContext>(options =>
+            builder.Services.AddDbContextFactory<DataContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
-            });
+                { 
+                    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
+                   
+                }
+            }
+            , ServiceLifetime.Transient
+        
+            );
 
 
             builder.Services.AddDefaultIdentity<Profile>
@@ -60,7 +66,7 @@ namespace LystFiskerPortalenWEB
             //.AddSignInManager()
             //.AddDefaultTokenProviders();
 
-            builder.Services.AddSingleton<IEmailSender<Profile>, IdentityNoOpEmailSender>();
+            builder.Services.AddScoped<IEmailSender<Profile>, IdentityNoOpEmailSender>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -73,11 +79,12 @@ namespace LystFiskerPortalenWEB
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+         
             app.UseStaticFiles();
             app.UseAntiforgery();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
 
 
             app.MapRazorComponents<App>()

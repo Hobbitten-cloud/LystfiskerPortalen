@@ -1,6 +1,7 @@
 ﻿using LystFiskerPortalenWEB.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace LystFiskerPortalenWEB.Data
 {
@@ -21,6 +22,15 @@ namespace LystFiskerPortalenWEB.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Post>()
+                .HasOne<Profile>(x => x.Profile)
+                .WithMany(p => p.Posts)
+                .HasForeignKey(r => r.ProfileID);
+
+            builder.Entity<Profile>().ToTable("Profiles");
+            builder.Entity<Post>().ToTable("Posts");
+            builder.Entity<Technique>().ToTable("Techniques");
+            builder.Entity<Lure>().ToTable("Lures");
             builder.Entity<Profile>().ToTable("Profiles"); 
 
 
@@ -31,7 +41,60 @@ namespace LystFiskerPortalenWEB.Data
             builder.Entity<Post>().
                 HasOne<Technique>(a => a.Technique).WithMany(k => k.Post).HasForeignKey(b => b.TechniqueId);
 
+            builder.Entity<Profile>().HasData(
+                new Profile
+                {
+                    Id = "testid",
+                    Role = "user",
+                    ImagePath = "/public/Images/DefaultProfileImage.png",
+                    UserName = "testuser",
+                }
+            );
+
             builder.Entity<Post>().HasData(
+                    new Post
+                    {
+                        Id = 1,
+                        Title = "Fisketur ved søen",
+                        Picture = "public/TestPictures/TestFisk1.png",
+                        Description = "En fantastisk dag ved søen med masser af fisk!",
+                        Location = "Søen ved Skoven",
+                        Likes = 10,
+                        CreationDate = new DateTime(2024, 5, 10),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 2,
+                        Title = "Havfiskeri eventyr",
+                        Picture = "public/TestPictures/TestFisk2.jpg",
+                        Description = "En spændende dag på havet med store fangster.",
+                        Location = "Kysten ved Byen",
+                        Likes = 4,
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 3,
+                        Title = "Kæmpe blæksprutte fanget!",
+                        Picture = "public/TestPictures/TestFisk3.png",
+                        Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
+                        Location = "Byens kyst",
+                        Likes = 2,
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 4,
+                        Title = "Hej Fiskere!",
+                        Description = "Søger single lystfiskere i Odense beliggenhed",
+                        Likes = 0,
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    }
+                );
                 new Post
                 {
                     Id = 1,
@@ -77,7 +140,7 @@ namespace LystFiskerPortalenWEB.Data
             );
 
             //seeder tech
-            
+
             builder.Entity<Technique>().HasData(
                 new Technique
                 {
@@ -151,10 +214,10 @@ namespace LystFiskerPortalenWEB.Data
                     Description = "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge."
                 }
             );
-            
 
-            
-            
+
+
+
             builder.Entity<Lure>().HasData(
                new Lure
                {
@@ -251,7 +314,7 @@ namespace LystFiskerPortalenWEB.Data
                    Weight = 22,
                    Type = "Slankt long-distance blink – super til havørred, især i klart vand."
                }
-            );              
+            );
         }
     }
 }
