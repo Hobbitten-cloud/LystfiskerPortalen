@@ -29,9 +29,11 @@ namespace LystFiskerPortalenWEB.Models
 
         [NotMapped]
         public bool IsEditing { get; set; }
+        public List<Comment> Comments { get; set; } = new List<Comment>();
 
         // Foreign Keys
         public Profile Profile { get; set; }
         public string ProfileID {  get; set; }
+
     }
 }

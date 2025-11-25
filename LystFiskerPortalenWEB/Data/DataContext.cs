@@ -15,8 +15,8 @@ namespace LystFiskerPortalenWEB.Data
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Technique> Techniques { get; set; }
-
         public DbSet<Lure> Lures { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,8 +31,18 @@ namespace LystFiskerPortalenWEB.Data
             builder.Entity<Post>().ToTable("Posts");
             builder.Entity<Technique>().ToTable("Techniques");
             builder.Entity<Lure>().ToTable("Lures");
-            builder.Entity<Profile>().ToTable("Profiles"); 
+            builder.Entity<Comment>(entity =>
+            {
+                entity.ToTable("Comments");
+                entity.HasKey(c => c.Id);
+                entity.Property(c => c.Id).ValueGeneratedOnAdd();
+                entity.Property(c => c.Description).IsRequired();
 
+                entity.HasOne(c => c.Post)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(c => c.PostId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
 
 
             builder.Entity<Post>().
@@ -315,6 +325,30 @@ namespace LystFiskerPortalenWEB.Data
                    Type = "Slankt long-distance blink – super til havørred, især i klart vand."
                }
             );
+
+            builder.Entity<Comment>().HasData(
+               new Comment
+               {
+                   Id = 1,
+                   CreationDate = new DateTime(2024, 5, 11),
+                   Description = "Fantastisk fangst! Tillykke med den store fisk.",
+                   PostId = 1
+               },
+                new Comment
+                {
+                    Id = 2,
+                    CreationDate = new DateTime(2024, 5, 16),
+                    Description = "Wow, det ser ud til at have været en spændende dag på havet!",
+                    PostId = 2
+                },
+                new Comment
+                {
+                    Id = 3,
+                    CreationDate = new DateTime(2024, 5, 17),
+                    Description = "En blæksprutte af den størrelse er virkelig imponerende!",
+                    PostId = 3
+                }
+                );
         }
     }
 }

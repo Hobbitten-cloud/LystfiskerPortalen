@@ -1,7 +1,7 @@
 ﻿using LystFiskerPortalenWEB.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace LystFiskerPortalenWEB.Repo
+namespace LystFiskerPortalenWEB.Repo.IRepos
 {
     public interface IPostRepo
     {
@@ -10,6 +10,7 @@ namespace LystFiskerPortalenWEB.Repo
         Task DeletePost(int id);
         Task<List<Post>> GetAllPosts();
         Task<Post> GetPostById(int id);
+        Task<Post?> GetPostWithComments(int id);
         Task UpdatePost(Post post);
         Task<List<Post>> GetPostsByUser(string userId);
         
