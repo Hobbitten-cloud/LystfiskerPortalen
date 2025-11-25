@@ -1,6 +1,7 @@
 ﻿using LystFiskerPortalenWEB.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace LystFiskerPortalenWEB.Data
 {
@@ -21,6 +22,11 @@ namespace LystFiskerPortalenWEB.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Post>()
+                .HasOne<Profile>(x => x.Profile)
+                .WithMany(p => p.Posts)
+                .HasForeignKey(r => r.ProfileID);
+
             builder.Entity<Profile>().ToTable("Profiles");
             builder.Entity<Post>().ToTable("Posts");
             builder.Entity<Technique>().ToTable("Techniques");
@@ -32,7 +38,67 @@ namespace LystFiskerPortalenWEB.Data
                 .WithOne(c => c.Post)
                 .HasForeignKey(c => c.PostId);
 
+
+            builder.Entity<Post>().
+                HasOne<Lure>(p => p.Lure).WithMany(b=> b.Post).HasForeignKey(b=>b.LureId);
+
+            builder.Entity<Post>().
+                HasOne<Technique>(a => a.Technique).WithMany(k => k.Post).HasForeignKey(b => b.TechniqueId);
+
+            builder.Entity<Profile>().HasData(
+                new Profile
+                {
+                    Id = "testid",
+                    Role = "user",
+                    ImagePath = "/public/Images/DefaultProfileImage.png",
+                    UserName = "testuser",
+                }
+            );
+
             builder.Entity<Post>().HasData(
+                    new Post
+                    {
+                        Id = 1,
+                        Title = "Fisketur ved søen",
+                        Picture = "public/TestPictures/TestFisk1.png",
+                        Description = "En fantastisk dag ved søen med masser af fisk!",
+                        Location = "Søen ved Skoven",
+                        Likes = 10,
+                        CreationDate = new DateTime(2024, 5, 10),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 2,
+                        Title = "Havfiskeri eventyr",
+                        Picture = "public/TestPictures/TestFisk2.jpg",
+                        Description = "En spændende dag på havet med store fangster.",
+                        Location = "Kysten ved Byen",
+                        Likes = 4,
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 3,
+                        Title = "Kæmpe blæksprutte fanget!",
+                        Picture = "public/TestPictures/TestFisk3.png",
+                        Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
+                        Location = "Byens kyst",
+                        Likes = 2,
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    },
+                    new Post
+                    {
+                        Id = 4,
+                        Title = "Hej Fiskere!",
+                        Description = "Søger single lystfiskere i Odense beliggenhed",
+                        Likes = 0,
+                        CreationDate = new DateTime(2024, 5, 15),
+                        ProfileID = "testid"
+                    }
+                );
                 new Post
                 {
                     Id = 1,
@@ -40,7 +106,9 @@ namespace LystFiskerPortalenWEB.Data
                     Picture = "public/TestPictures/TestFisk1.png",
                     Description = "En fantastisk dag ved søen med masser af fisk!",
                     Location = "Søen ved Skoven",
-                    CreationDate = new DateTime(2024, 5, 10)
+                    CreationDate = new DateTime(2024, 5, 10),
+                    LureId = 1,
+                    TechniqueId = 1,
                 },
                 new Post
                 {
@@ -49,7 +117,9 @@ namespace LystFiskerPortalenWEB.Data
                     Picture = "public/TestPictures/TestFisk2.jpg",
                     Description = "En spændende dag på havet med store fangster.",
                     Location = "Kysten ved Byen",
-                    CreationDate = new DateTime(2024, 5, 15)
+                    CreationDate = new DateTime(2024, 5, 15),
+                    LureId = 2,
+                    TechniqueId = 2,
                 },
                 new Post
                 {
@@ -58,14 +128,18 @@ namespace LystFiskerPortalenWEB.Data
                     Picture = "public/TestPictures/TestFisk3.png",
                     Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                     Location = "Byens kyst",
-                    CreationDate = new DateTime(2024, 5, 15)
+                    CreationDate = new DateTime(2024, 5, 15),
+                    LureId = 3,
+                    TechniqueId = 3,
                 },
                 new Post
                 {
                     Id = 4,
                     Title = "Hej Fiskere!",
                     Description = "Søger single lystfiskere i Odense beliggenhed",
-                    CreationDate = new DateTime(2024, 5, 15)
+                    CreationDate = new DateTime(2024, 5, 15),
+                    LureId=4,
+                    TechniqueId = 4,
                 }
             );
 
@@ -76,25 +150,30 @@ namespace LystFiskerPortalenWEB.Data
                 {
                     Id = 1,
                     Name = "Blank",
-                    Description = "Blank"
+                    Description = "Blank",
+                    PostId = 1,
+                    
                 },
                 new Technique
                 {
                     Id = 2,
                     Name = "Paternoster-rig",
-                    Description = "En af de mest klassiske rigs i både salt- og ferskvand. Et lod sidder nederst, og 1–3 kroge sidder på korte forfang (”trembler”) over loddet."
+                    Description = "En af de mest klassiske rigs i både salt- og ferskvand. Et lod sidder nederst, og 1–3 kroge sidder på korte forfang (”trembler”) over loddet.",
+                    PostId = 2,
                 },
                 new Technique
                 {
                     Id = 3,
                     Name = "Carolina-rig",
-                    Description = "Et kuglelod glider frit på hovedlinen foran en perle og en svirvel. Herefter kommer et langt forfang med en enkeltkrog."
+                    Description = "Et kuglelod glider frit på hovedlinen foran en perle og en svirvel. Herefter kommer et langt forfang med en enkeltkrog.",
+                    PostId = 3,
                 },
                 new Technique
                 {
                     Id = 4,
                     Name = "Texas-rig",
                     Description = "Ligner Carolina-rigget, men loddet sidder direkte foran agnen (typisk med en lille gummistopper). Agnen (ofte en softbait) kan rigges ”weedless”."
+                    , PostId = 4,
                 },
                 new Technique
                 {
@@ -140,6 +219,9 @@ namespace LystFiskerPortalenWEB.Data
                 }
             );
 
+
+
+
             builder.Entity<Lure>().HasData(
                new Lure
                {
@@ -147,7 +229,8 @@ namespace LystFiskerPortalenWEB.Data
                    Name = "Blank",
                    Color = "Blank",
                    Weight = 0000,
-                   Type = "Blank"
+                   Type = "Blank",
+                   PostId = 1,
                },
                new Lure
                {
@@ -155,7 +238,8 @@ namespace LystFiskerPortalenWEB.Data
                    Name = "Möresilda",
                    Color = "Sølv/blå",
                    Weight = 7,
-                   Type = "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt."
+                   Type = "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt.",
+                   PostId = 2
                },
                new Lure
                {
@@ -163,7 +247,9 @@ namespace LystFiskerPortalenWEB.Data
                    Name = "Abu Garcia Toby",
                    Color = "Sølv",
                    Weight = 7,
-                   Type = "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre."
+                   Type = "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre.",
+                   PostId = 3,
+
                },
                new Lure
                {
@@ -171,7 +257,8 @@ namespace LystFiskerPortalenWEB.Data
                    Name = "Savage Gear Sandeel Surf Seeker",
                    Color = "pearl/white",
                    Weight = 35,
-                   Type = "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande."
+                   Type = "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande.",
+                   PostId = 4,
                },
                new Lure
                {
@@ -179,7 +266,8 @@ namespace LystFiskerPortalenWEB.Data
                    Name = "Hansen Flash",
                    Color = "kobber/orange",
                    Weight = 15,
-                   Type = "Kystblink med livlig gang. Godt til havørred på lavere vand."
+                   Type = "Kystblink med livlig gang. Godt til havørred på lavere vand.",
+                   PostId = 5,
                },
                new Lure
                {
@@ -187,7 +275,8 @@ namespace LystFiskerPortalenWEB.Data
                    Name = "Snaps",
                    Color = "chartreuse",
                    Weight = 25,
-                   Type = "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk."
+                   Type = "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk.",
+                   PostId = 6,
                },
                new Lure
                {

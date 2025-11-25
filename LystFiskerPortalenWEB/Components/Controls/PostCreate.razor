@@ -1,6 +1,11 @@
 ﻿@inject IFileUploadService FileUploadService
 @inject IPostRepo PostRepo
 @inject NavigationManager NavigationManager
+@inject IProfileRepo ProfileRepo
+@inject AuthenticationStateProvider _authenticationStateProvider
+@inject ITechniqueRepo TechniqueRepo
+@inject ILureRepo LureRepo
+@rendermode InteractiveServer
 
 <h3>Opret en ny post</h3>
 
@@ -50,6 +55,28 @@
                     </div>
                 </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Teknik</label>
+                    <InputSelect class="form-select" @bind-Value="post.TechniqueId">
+                        <option value="">Vælg Teknik</option>
+                        @foreach (var tech in techniques)
+                        {
+                            <option value="@tech.Id">@tech.Name</option>
+                        }
+                    </InputSelect>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Blink</label>
+                    <InputSelect class="form-select" @bind-Value="post.LureId">
+                        <option value="">Vælg Blink</option>
+                        @foreach (var lure in lures)
+                        {
+                            <option value="@lure.Id">@lure.Name</option>
+                        }
+                    </InputSelect>
+                </div>
+
                 <button class="btn btn-primary" style="float: right;" type="submit">Opret</button>
             </div>
         </div>
@@ -61,7 +88,7 @@
                 <br />
                 <button type="submit">Upload</button>
             </div>
-        </div>
+        </div> 
     </EditForm>
 </div>
 
@@ -69,13 +96,23 @@
     [SupplyParameterFromForm(FormName = "CreateForm")]
     public Post post { get; set; } = new Post();
 
+    
     [Inject]
     private IPostRepo postRepo { get; set; }
 
     private bool forceReloadPage = true;
+
     private async Task CreatePost()
     {
+        
         post.CreationDate = DateTime.Now;
+        if (post.TechniqueId is null)
+            post.TechniqueId = 1;
+
+        if (post.LureId is null)
+            post.LureId = 1;
+
+        post.Likes = 0;
         await postRepo.CreatePost(post);
         NavigationManager.NavigateTo("/", forceReloadPage);
     }
@@ -104,4 +141,29 @@
 
     [Inject]
     private IFileUploadService fileUploadService { get; set; }
+
+    private List<Technique> techniques { get; set; } = new List<Technique>();
+
+    private List<Lure> lures { get; set; } = new List<Lure>();
+
+    private bool hej = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        lures = await LureRepo.GetAllLures();
+        techniques = await TechniqueRepo.GetAllTechs();
+    }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        
+        post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
+    }
 }

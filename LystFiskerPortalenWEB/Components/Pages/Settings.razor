@@ -12,19 +12,36 @@
 else
 {
     <h2>Settings</h2>
-    <div width="300" Height="500">
-        <img src="@profile.ImagePath" style class="rounded row-cols-1" onchange="TestChange" />
-
-        <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture" style="width:fit-content">
-            <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" />
-            <button type="submit" class="btn btn-primary">Upload</button>
-
-        </EditForm>
-    </div>
-
-
     <div>
+        <div>
+
+            <EditForm Model="profile"  enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="ChangeProfilePicture">
+                <div class="border card" style="padding:20px; width:fit-content; height:fit-content">
+                    <img src="@profile.ImagePath" style="width:300px; height:300px" class="rounded-circle row-cols-1 align-content-center" onchange="TestChange" />
+          
+                        <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected"  />
+                </div>
+                <div class="container">
+                    <div class="row justify-content-center" style="margin-left:200px; margin-right:200px">
+                        <label class="row justify-content-start" for="username">Ændre Username</label>
+                        <InputText @bind-Value="profile.UserName" class="form-control row justify-content-center" />
+                </div>
+                    <div class="row justify-content-center" style="margin-left:200px; margin-right:200px">
+                        <label for="phonenumber" class="justify-content-center">Ændre Telefonnummer</label>
+                        <InputText @bind-Value="profile.PhoneNumber" class="form-control row justify-content-center" />
+                </div>
+                    <div class="row justify-content-center" style="padding-bottom:5px; margin-left:200px; margin-right:200px">
+                        <label class="row justify-content-start" for="email">Ændre Email</label>
+                        <InputText @bind-Value="profile.Email" class="form-control row justify-content-center" />
+                </div>
+
+
+                    <button type="submit" style="margin-left:200px" class="btn btn-primary row justify-content-center">Gem</button>
+              </div>
+           </EditForm>
+        </div>
     </div>
+
 
 }
 @code {

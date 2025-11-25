@@ -9,5 +9,8 @@
         public double Weight { get; set; }
         public string Type { get; set; }
         
+
+        public int PostId { get; set; }
+        public List<Post>? Post { get; set; }
     }
 }
