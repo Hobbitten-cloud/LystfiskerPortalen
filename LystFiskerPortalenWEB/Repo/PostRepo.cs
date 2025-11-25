@@ -70,5 +70,14 @@ namespace LystFiskerPortalenWEB.Repo
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public async Task DeleteComment(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            if (comment != null)
+            {
+                _context.Comments.Remove(comment);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
