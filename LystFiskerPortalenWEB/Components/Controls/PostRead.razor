@@ -1,4 +1,6 @@
 ﻿@inject IPostRepo PostRepo
+@inject ITechniqueRepo TechniqueRepo
+@inject ILureRepo LureRepo
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @if (posts == null)
@@ -33,8 +35,8 @@ else
 
                     <div class="d-flex justify-content-between align-items-center mt-2">
                         <div>
-                            <p class="badge bg-primary me-2">Teknik</p>
-                            <p class="badge bg-info text-dark">Blink</p>
+                            <p class="badge bg-primary me-2">Teknik: @post.Technique?.Name</p>
+                            <p class="badge bg-info text-dark">Blink: @post.Lure?.Name</p>
                         </div>
                         <div>
                             <p>Likes @post.Likes</p>
@@ -68,6 +70,28 @@ else
                         <InputText class="form-control" @bind-Value="post.Location" />
                     </div>
 
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Teknik</label>
+                            <InputSelect class="form-select" @bind-Value="post.TechniqueId">
+                                @foreach (var tech in techniques)
+                                {
+                                    <option value="@tech.Id">@tech.Name</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div class="mb-3">
+                        <label class="form-label">Blink</label>
+                            <InputSelect class="form-select" @bind-Value="post.LureId">
+                                @foreach (var lure in lures)
+                                {
+                                    <option value="@lure.Id">@lure.Name</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        
+
                     <div class="mb-3">
                         <label class="form-label">Billede-URL</label>
                         <InputText class="form-control" @bind-Value="post.Picture" />
@@ -75,8 +99,8 @@ else
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-success btn-sm me-2" @onclick="@(() => SavePost(post))">Gem</button>
-                        <button class="btn btn-outline-secondary btn-sm" @onclick="@(() => CancelEdit(post))">Annuller</button>
+                        <button class="btn btn-success btn-sm me-2" @onclick="@(() => SavePost(post))" @onclick:preventDefault>Gem</button>
+                        <button class="btn btn-outline-secondary btn-sm" @onclick="@(() => CancelEdit(post))" @onclick:preventDefault>Annuller</button>
                     </div>
                 </div>
             }
@@ -95,10 +119,15 @@ else
     public string? UserId { get; set; }
     [Parameter]
     public bool IsProfilePage{ get; set; }
+    private List<Technique> techniques { get; set; } = new List<Technique>(); //listen af tech
+
+    private List<Lure> lures { get; set; } = new List<Lure>(); //listen af lures
 
     protected override async Task OnInitializedAsync()
     {
          posts = await PostRepo.GetAllPosts();
+        techniques = await TechniqueRepo.GetAllTechs();
+        lures = await LureRepo.GetAllLures();
         await base.OnInitializedAsync();
     }
 
@@ -131,7 +160,10 @@ else
     private async Task SavePost(Post post)
     {
         await PostRepo.UpdatePost(post);
+        post.Technique = techniques.FirstOrDefault(t => t.Id == post.TechniqueId);//gemmer ændre på tech
+        post.Lure = lures.FirstOrDefault(l => l.Id == post.LureId);//gemmer ændre på lure
         post.IsEditing = false;
+        StateHasChanged();
     }
 
     private async Task CancelEdit(Post post)

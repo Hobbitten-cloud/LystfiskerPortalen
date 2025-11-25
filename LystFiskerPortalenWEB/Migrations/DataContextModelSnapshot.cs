@@ -50,7 +50,6 @@ namespace LystFiskerPortalenWEB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lures");
                     b.ToTable("Lures", (string)null);
 
                     b.HasData(
@@ -176,17 +175,18 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LureId")
+                    b.Property<int?>("LureId")
                         .HasColumnType("int");
 
                     b.Property<string>("Picture")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TechniqueID")
-                        .HasColumnType("int");
                     b.Property<string>("ProfileID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("TechniqueId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -194,11 +194,11 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LureId");
+
                     b.HasIndex("ProfileID");
 
-                    b.HasIndex("TechniqueID");
+                    b.HasIndex("TechniqueId");
 
-                    b.ToTable("Posts");
                     b.ToTable("Posts", (string)null);
 
                     b.HasData(
@@ -211,8 +211,8 @@ namespace LystFiskerPortalenWEB.Migrations
                             Location = "Søen ved Skoven",
                             LureId = 1,
                             Picture = "public/TestPictures/TestFisk1.png",
-                            TechniqueID = 1,
                             ProfileID = "testid",
+                            TechniqueId = 1,
                             Title = "Fisketur ved søen"
                         },
                         new
@@ -225,7 +225,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             LureId = 2,
                             Picture = "public/TestPictures/TestFisk2.jpg",
                             ProfileID = "testid",
-                            TechniqueID = 2,
+                            TechniqueId = 2,
                             Title = "Havfiskeri eventyr"
                         },
                         new
@@ -237,8 +237,8 @@ namespace LystFiskerPortalenWEB.Migrations
                             Location = "Byens kyst",
                             LureId = 3,
                             Picture = "public/TestPictures/TestFisk3.png",
-                            TechniqueID = 3,
                             ProfileID = "testid",
+                            TechniqueId = 3,
                             Title = "Kæmpe blæksprutte fanget!"
                         },
                         new
@@ -247,9 +247,9 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Søger single lystfiskere i Odense beliggenhed",
                             Likes = 0,
-                            ProfileID = "testid",
                             LureId = 4,
-                            TechniqueID = 4,
+                            ProfileID = "testid",
+                            TechniqueId = 4,
                             Title = "Hej Fiskere!"
                         });
                 });
@@ -331,13 +331,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bfcbe28d-5567-471e-a4b3-bf35f0bbdb27",
+                            ConcurrencyStamp = "3c33c21b-c6da-4341-b80f-1d469a133df3",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "55d989ce-74cd-49a7-903d-2add41839aa9",
+                            SecurityStamp = "2db6ec6c-351c-4c00-a356-320fd4abb557",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
@@ -363,7 +363,6 @@ namespace LystFiskerPortalenWEB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Techniques");
                     b.ToTable("Techniques", (string)null);
 
                     b.HasData(
@@ -372,32 +371,28 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = 1,
                             Description = "Blank",
                             Name = "Blank",
-                            PostId = 0
-                            Name = "Blank"
+                            PostId = 1
                         },
                         new
                         {
                             Id = 2,
                             Description = "En af de mest klassiske rigs i både salt- og ferskvand. Et lod sidder nederst, og 1–3 kroge sidder på korte forfang (”trembler”) over loddet.",
                             Name = "Paternoster-rig",
-                            PostId = 0
-                            Name = "Paternoster-rig"
+                            PostId = 2
                         },
                         new
                         {
                             Id = 3,
                             Description = "Et kuglelod glider frit på hovedlinen foran en perle og en svirvel. Herefter kommer et langt forfang med en enkeltkrog.",
                             Name = "Carolina-rig",
-                            PostId = 0
-                            Name = "Carolina-rig"
+                            PostId = 3
                         },
                         new
                         {
                             Id = 4,
                             Description = "Ligner Carolina-rigget, men loddet sidder direkte foran agnen (typisk med en lille gummistopper). Agnen (ofte en softbait) kan rigges ”weedless”.",
-                            Name = "Texas-rig"
                             Name = "Texas-rig",
-                            PostId = 0
+                            PostId = 4
                         },
                         new
                         {
@@ -405,7 +400,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "Et lod trækkes frit på hovedlinen, enten gennem et rør eller et glidelod, før en svirvel og et forfang.",
                             Name = "Glidende bundrig",
                             PostId = 0
-                            Name = "Glidende bundrig"
                         },
                         new
                         {
@@ -413,13 +407,11 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "En aflange kasteflåd (bombarda) monteres på linen, så man kan kaste selv små fluer eller lette agn meget langt.",
                             Name = "Bombarda-rig",
                             PostId = 0
-                            Name = "Bombarda-rig"
                         },
                         new
                         {
                             Id = 7,
                             Description = "En enkeltkrog bindes på linen, og loddet sidder i enden. Krogen kan justeres i præcis den ønskede højde.",
-                            Name = "Drop-shot-rig"
                             Name = "Drop-shot-rig",
                             PostId = 0
                         },
@@ -429,7 +421,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "Krogen bindes på en speciel måde, hvor agnen (fx boilies) sidder på en lille “hair” efter krogen og ikke direkte på krogen.",
                             Name = "Hair-rig",
                             PostId = 0
-                            Name = "Hair-rig"
                         },
                         new
                         {
@@ -437,13 +428,13 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "Et simpelt rig med flåd, stopperknuder, lodder og krog.",
                             Name = "Float-rig",
                             PostId = 0
-                            Name = "Float-rig"
                         },
                         new
                         {
                             Id = 10,
                             Description = "Bruges især til dødagn, hvor et spinnerblad eller rotator tilføjes for at give en livlig gang.",
-                            Name = "Spinner-rig"
+                            Name = "Spinner-rig",
+                            PostId = 0
                         },
                         new
                         {
@@ -451,7 +442,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge.",
                             Name = "Fladfiskerig",
                             PostId = 0
-                            Name = "Fladfiskerig"
                         });
                 });
 
@@ -594,25 +584,25 @@ namespace LystFiskerPortalenWEB.Migrations
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
+                    b.HasOne("LystFiskerPortalenWEB.Models.Lure", "Lure")
+                        .WithMany("Post")
+                        .HasForeignKey("LureId");
+
                     b.HasOne("LystFiskerPortalenWEB.Models.Profile", "Profile")
                         .WithMany("Posts")
                         .HasForeignKey("ProfileID")
-                    b.HasOne("LystFiskerPortalenWEB.Models.Lure", "Lure")
-                        .WithMany("Post")
-                        .HasForeignKey("LureId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LystFiskerPortalenWEB.Models.Technique", "Technique")
                         .WithMany("Post")
-                        .HasForeignKey("TechniqueID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TechniqueId");
 
                     b.Navigation("Lure");
 
-                    b.Navigation("Technique");
                     b.Navigation("Profile");
+
+                    b.Navigation("Technique");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -671,11 +661,14 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Technique", b =>
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>
                 {
-                    b.Navigation("Post");
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Technique", b =>
+                {
+                    b.Navigation("Post");
                 });
 #pragma warning restore 612, 618
         }

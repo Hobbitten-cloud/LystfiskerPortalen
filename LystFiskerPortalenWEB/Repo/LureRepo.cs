@@ -2,54 +2,61 @@
 using LystFiskerPortalenWEB.Models;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace LystFiskerPortalenWEB.Repo
 {
     public class LureRepo : ILureRepo
     {
-        private DataContext _context;
+        private readonly IDbContextFactory<DataContext> _factory;
 
-        public LureRepo(DataContext context)
+        public LureRepo(IDbContextFactory<DataContext> factory)
         {
-            _context = context;
+            _factory = factory;
         }
 
         public async Task CreateLure(Lure lure)
         {
             if (lure == null)
-            {
                 return;
-            }
-            _context.Lures
-                .Add(lure);
-            await _context.SaveChangesAsync();
+
+            using var context = _factory.CreateDbContext();
+
+            context.Lures.Add(lure);
+            await context.SaveChangesAsync();
         }
 
         public async Task UpdateLure(Lure lure)
         {
-            _context.Lures.Update(lure);
-            await _context.SaveChangesAsync();
+            using var context = _factory.CreateDbContext();
+
+            context.Lures.Update(lure);
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteLure(int id)
         {
-            var lure = await GetLureById(id);
+            using var context = _factory.CreateDbContext();
+
+            var lure = await context.Lures.FindAsync(id);
 
             if (lure != null)
             {
-                _context.Lures.Remove(lure);
-                await _context.SaveChangesAsync();
+                context.Lures.Remove(lure);
+                await context.SaveChangesAsync();
             }
         }
 
         public async Task<List<Lure>> GetAllLures()
         {
-            return await _context.Lures.ToListAsync();
+            using var context = _factory.CreateDbContext();
+
+            return await context.Lures.ToListAsync();
         }
 
-        public async Task<Lure> GetLureById(int id)
+        public async Task<Lure?> GetLureById(int id)
         {
-            return await _context.Lures.FindAsync(id);
+            using var context = _factory.CreateDbContext();
+
+            return await context.Lures.FindAsync(id);
         }
     }
 }
