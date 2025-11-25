@@ -2,19 +2,66 @@
 @rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
-<h1>Feed</h1>
-<hr />
+<div class="d-flex align-items-center">
+	<h1>Feed</h1>
+
+	<div class="ms-auto">
+		<p class="me-2">@sortMethod</p>
+
+		<div class="dropdown d-inline-block">
+			<button class="btn-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
+			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="filterDropdown">
+				<li>
+					<button onclick="@(() => SortByMostLikes())" class="dropdown-item">Most liked</button>
+				</li>
+				<li>
+					<button onclick="@(() => SortByNewest())" class="dropdown-item">Newest</button>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
 <div>
+	<hr />
 
-    @* Component for creating a new post *@
-    <div style="margin: auto; width: 50%;">
-        <PostCreate ></PostCreate>
-    </div>
+	@* Component for creating a new post *@
+	<div style="margin: auto; width: 50%;">
+		<PostCreate></PostCreate>
+	</div>
 
-    <hr />
+	<hr />
 
-    @* Componet for viewing all posts - sorted after creationDate *@
-    <div style="margin: auto; width: 50%;">
-        <PostRead IsProfilePage="@false"></PostRead>
-    </div>
+	@* Componet for viewing all posts - sorted after creationDate *@
+	<div style="margin: auto; width: 50%;">
+		<PostRead Posts="posts"></PostRead>
+	</div>
+</div>
+
+
+@code {
+	[Inject]
+	private ISortService SortService { get; set; }
+	private string sortMethod { get; set; } = "Nyeste";
+	private List<Post> posts { get; set; }
+
+	// Loads all posts to feed
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		posts = await SortService.SortByCreationDate();
+	}
+
+	// Methods for sorting posts
+	private async Task SortByMostLikes()
+	{
+		posts = await SortService.SortByLikes();
+		sortMethod = "Mest likede";
+	}
+
+	private async Task SortByNewest()
+	{
+		posts = await SortService.SortByCreationDate();
+		sortMethod = "Nyeste";
+	}
+}
 </div>

@@ -71,7 +71,7 @@ namespace LystFiskerPortalenWEB.Repo
 
         public async Task<Post> GetPostById(int id)
         {
-            return await _context.Posts.Include(p=>p.Profile).FirstAsync(p => p.Id == id);
+            return await _context.Posts.Include(p => p.Profile).FirstAsync(p => p.Id == id);
         }
 
         public async Task<List<Post>> GetPostsByUser(string userId)

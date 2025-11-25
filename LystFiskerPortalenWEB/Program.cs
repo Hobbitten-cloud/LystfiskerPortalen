@@ -46,6 +46,9 @@ namespace LystFiskerPortalenWEB
 
             builder.Services.AddScoped<IProfileRepo, ProfileRepo>();
             builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+            builder.Services.AddScoped<ISortService, SortService>();
+
+            builder.Services.AddScoped<IProfileRepo, ProfileRepo>();
             builder.Services.AddScoped<IPostRepo, PostRepo>();
             builder.Services.AddScoped<ITechniqueRepo, TechniqueRepo>();
             builder.Services.AddScoped<ILureRepo, LureRepo>();
