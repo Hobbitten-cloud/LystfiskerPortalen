@@ -71,7 +71,9 @@ namespace LystFiskerPortalenWEB.Data
                         Location = "Søen ved Skoven",
                         Likes = 10,
                         CreationDate = new DateTime(2024, 5, 10),
-                        ProfileID = "testid"
+                        ProfileID = "testid",
+                        TechniqueId = 1,
+                        LureId = 1,
                     },
                     new Post
                     {
@@ -82,7 +84,9 @@ namespace LystFiskerPortalenWEB.Data
                         Location = "Kysten ved Byen",
                         Likes = 4,
                         CreationDate = new DateTime(2024, 5, 15),
-                        ProfileID = "testid"
+                        ProfileID = "testid",
+                        TechniqueId = 2,
+                        LureId = 2,
                     },
                     new Post
                     {
@@ -94,6 +98,8 @@ namespace LystFiskerPortalenWEB.Data
                         Likes = 2,
                         CreationDate = new DateTime(2024, 5, 15),
                         ProfileID = "testid"
+                        , LureId = 3,
+                        TechniqueId=3,
                     },
                     new Post
                     {
@@ -102,7 +108,9 @@ namespace LystFiskerPortalenWEB.Data
                         Description = "Søger single lystfiskere i Odense beliggenhed",
                         Likes = 0,
                         CreationDate = new DateTime(2024, 5, 15),
-                        ProfileID = "testid"
+                        ProfileID = "testid",
+                        TechniqueId = 4,
+                        LureId = 4,
                     }
             );
 

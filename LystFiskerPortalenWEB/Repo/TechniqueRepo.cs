@@ -3,56 +3,61 @@ using LystFiskerPortalenWEB.Models;
 using LystFiskerPortalenWEB.Repo.IRepos;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace LystFiskerPortalenWEB.Repo
 {
     public class TechniqueRepo : ITechniqueRepo
     {
-        private DataContext _context;
+        private readonly IDbContextFactory<DataContext> _factory;
 
-        public TechniqueRepo(DataContext context)
+        public TechniqueRepo(IDbContextFactory<DataContext> factory)
         {
-            _context = context;
+            _factory = factory;
         }
 
         public async Task CreateTech(Technique technique)
         {
             if (technique == null)
-            {
                 return;
-            }
-            _context.Techniques
-                .Add(technique);
-            await _context.SaveChangesAsync();
+
+            using var context = _factory.CreateDbContext();
+
+            context.Techniques.Add(technique);
+            await context.SaveChangesAsync();
         }
 
         public async Task UpdateTech(Technique technique)
         {
-            _context.Techniques.Update(technique);
-            await _context.SaveChangesAsync();
+            using var context = _factory.CreateDbContext();
+
+            context.Techniques.Update(technique);
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteTech(int id)
         {
-            var techique = await GetTechById(id);
+            using var context = _factory.CreateDbContext();
 
-            if (techique != null)
+            var technique = await context.Techniques.FindAsync(id);
+
+            if (technique != null)
             {
-                _context.Techniques.Remove(techique);
-                await _context.SaveChangesAsync();
+                context.Techniques.Remove(technique);
+                await context.SaveChangesAsync();
             }
         }
 
         public async Task<List<Technique>> GetAllTechs()
         {
-            return await _context.Techniques.ToListAsync();
+            using var context = _factory.CreateDbContext();
+
+            return await context.Techniques.ToListAsync();
         }
 
-        public async Task<Technique> GetTechById(int id)
+        public async Task<Technique?> GetTechById(int id)
         {
-            return await _context.Techniques.FindAsync(id);
-        }
+            using var context = _factory.CreateDbContext();
 
-        
+            return await context.Techniques.FindAsync(id);
+        }
     }
 }

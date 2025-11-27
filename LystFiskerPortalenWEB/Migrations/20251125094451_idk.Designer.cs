@@ -4,6 +4,7 @@ using LystFiskerPortalenWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251125094451_idk")]
+    partial class idk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,57 +24,6 @@ namespace LystFiskerPortalenWEB.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Picture")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PostId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreationDate = new DateTime(2024, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Fantastisk fangst! Tillykke med den store fisk.",
-                            PostId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreationDate = new DateTime(2024, 5, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Wow, det ser ud til at have været en spændende dag på havet!",
-                            PostId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreationDate = new DateTime(2024, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "En blæksprutte af den størrelse er virkelig imponerende!",
-                            PostId = 3
-                        });
-                });
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Lure", b =>
                 {
@@ -260,6 +212,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "En fantastisk dag ved søen med masser af fisk!",
                             Likes = 10,
                             Location = "Søen ved Skoven",
+                            LureId = 1,
                             Picture = "public/TestPictures/TestFisk1.png",
                             ProfileID = "testid",
                             TechniqueId = 1,
@@ -272,6 +225,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "En spændende dag på havet med store fangster.",
                             Likes = 4,
                             Location = "Kysten ved Byen",
+                            LureId = 2,
                             Picture = "public/TestPictures/TestFisk2.jpg",
                             ProfileID = "testid",
                             TechniqueId = 2,
@@ -284,6 +238,7 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                             Likes = 2,
                             Location = "Byens kyst",
+                            LureId = 3,
                             Picture = "public/TestPictures/TestFisk3.png",
                             ProfileID = "testid",
                             TechniqueId = 3,
@@ -298,7 +253,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             LureId = 4,
                             ProfileID = "testid",
                             TechniqueId = 4,
-                            ProfileID = "testid",
                             Title = "Hej Fiskere!"
                         });
                 });
@@ -381,14 +335,12 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = "testid",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "3c33c21b-c6da-4341-b80f-1d469a133df3",
-                            ConcurrencyStamp = "8ac6ee30-9527-49d5-abc1-1662e4db9ace",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
                             SecurityStamp = "2db6ec6c-351c-4c00-a356-320fd4abb557",
-                            SecurityStamp = "e7577b24-1e9b-4c39-9ef4-217b0aae135d",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
@@ -633,17 +585,6 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Comment", b =>
-                {
-                    b.HasOne("LystFiskerPortalenWEB.Models.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Post");
-                });
-
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
                     b.HasOne("LystFiskerPortalenWEB.Models.Lure", "Lure")
@@ -721,11 +662,6 @@ namespace LystFiskerPortalenWEB.Migrations
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Lure", b =>
                 {
                     b.Navigation("Post");
-                });
-
-            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
-                {
-                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>

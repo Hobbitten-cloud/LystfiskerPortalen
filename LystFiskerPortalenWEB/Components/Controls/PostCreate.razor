@@ -58,7 +58,7 @@
                 <div class="mb-3">
                     <label class="form-label">Teknik</label>
                     <InputSelect class="form-select" @bind-Value="post.TechniqueId">
-                        <option value="">Vælg Teknik</option>
+                        <option value="none" selected hidden disabled>Vælg Teknik</option>
                         @foreach (var tech in techniques)
                         {
                             <option value="@tech.Id">@tech.Name</option>
@@ -69,7 +69,7 @@
                 <div class="mb-3">
                     <label class="form-label">Blink</label>
                     <InputSelect class="form-select" @bind-Value="post.LureId">
-                        <option value="">Vælg Blink</option>
+                        <option value="none" selected disabled hidden>Vælg Blink</option>
                         @foreach (var lure in lures)
                         {
                             <option value="@lure.Id">@lure.Name</option>
@@ -145,6 +145,8 @@
     private List<Technique> techniques { get; set; } = new List<Technique>();
 
     private List<Lure> lures { get; set; } = new List<Lure>();
+
+
 
     protected override async Task OnInitializedAsync()
     {
