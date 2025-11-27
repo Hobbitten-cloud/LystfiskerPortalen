@@ -4,6 +4,7 @@ using LystFiskerPortalenWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251125101715_NewDev")]
+    partial class NewDev
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,7 +265,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             Location = "Søen ved Skoven",
                             Picture = "public/TestPictures/TestFisk1.png",
                             ProfileID = "testid",
-                            TechniqueId = 1,
                             Title = "Fisketur ved søen"
                         },
                         new
@@ -274,7 +276,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             Location = "Kysten ved Byen",
                             Picture = "public/TestPictures/TestFisk2.jpg",
                             ProfileID = "testid",
-                            TechniqueId = 2,
                             Title = "Havfiskeri eventyr"
                         },
                         new
@@ -286,7 +287,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             Location = "Byens kyst",
                             Picture = "public/TestPictures/TestFisk3.png",
                             ProfileID = "testid",
-                            TechniqueId = 3,
                             Title = "Kæmpe blæksprutte fanget!"
                         },
                         new
@@ -295,9 +295,6 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Søger single lystfiskere i Odense beliggenhed",
                             Likes = 0,
-                            LureId = 4,
-                            ProfileID = "testid",
-                            TechniqueId = 4,
                             ProfileID = "testid",
                             Title = "Hej Fiskere!"
                         });
@@ -380,14 +377,12 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3c33c21b-c6da-4341-b80f-1d469a133df3",
                             ConcurrencyStamp = "8ac6ee30-9527-49d5-abc1-1662e4db9ace",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "2db6ec6c-351c-4c00-a356-320fd4abb557",
                             SecurityStamp = "e7577b24-1e9b-4c39-9ef4-217b0aae135d",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
