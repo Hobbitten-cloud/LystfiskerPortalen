@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LystFiskerPortalenWEB.Migrations
 {
     /// <inheritdoc />
-    public partial class NewDev : Migration
+    public partial class AddPostImages : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -251,6 +251,26 @@ namespace LystFiskerPortalenWEB.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PostImage",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostImage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PostImage_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Lures",
                 columns: new[] { "Id", "Color", "Name", "PostId", "Type", "Weight" },
@@ -272,7 +292,7 @@ namespace LystFiskerPortalenWEB.Migrations
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "dfa6bad6-399b-42a8-81f8-b92b7f555313", false, "testuser" });
+                values: new object[] { "testid", 0, "b51bb245-593b-484c-9082-70e77b9da341", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "79431a34-66c1-43f3-971d-9547a54ddf23", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",
@@ -346,6 +366,11 @@ namespace LystFiskerPortalenWEB.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PostImage_PostId",
+                table: "PostImage",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_LureId",
                 table: "Posts",
                 column: "LureId");
@@ -393,6 +418,9 @@ namespace LystFiskerPortalenWEB.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "PostImage");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

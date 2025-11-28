@@ -1,7 +1,6 @@
 ﻿using LystFiskerPortalenWEB.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace LystFiskerPortalenWEB.Data
 {
@@ -17,6 +16,7 @@ namespace LystFiskerPortalenWEB.Data
         public DbSet<Technique> Techniques { get; set; }
         public DbSet<Lure> Lures { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<PostImage> PostImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,6 +44,19 @@ namespace LystFiskerPortalenWEB.Data
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            builder.Entity<Post>()
+                .HasMany(p => p.Images)
+                .WithOne(pi => pi.Post)
+                .HasForeignKey(pi => pi.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PostImage>(entity =>
+            {
+                entity.ToTable("PostImage");
+                entity.HasKey(pi => pi.Id);
+                entity.Property(pi => pi.ImageUrl).IsRequired();
+            });
+
 
             builder.Entity<Post>().
                 HasOne<Lure>(p => p.Lure).WithMany(b => b.Post).HasForeignKey(b => b.LureId);
@@ -66,7 +79,7 @@ namespace LystFiskerPortalenWEB.Data
                     {
                         Id = 1,
                         Title = "Fisketur ved søen",
-                        Picture = "public/TestPictures/TestFisk1.png",
+                        //Images = "public/TestPictures/TestFisk1.png",
                         Description = "En fantastisk dag ved søen med masser af fisk!",
                         Location = "Søen ved Skoven",
                         Likes = 10,
@@ -79,7 +92,7 @@ namespace LystFiskerPortalenWEB.Data
                     {
                         Id = 2,
                         Title = "Havfiskeri eventyr",
-                        Picture = "public/TestPictures/TestFisk2.jpg",
+                        //Picture = "public/TestPictures/TestFisk2.jpg",
                         Description = "En spændende dag på havet med store fangster.",
                         Location = "Kysten ved Byen",
                         Likes = 4,
@@ -92,7 +105,7 @@ namespace LystFiskerPortalenWEB.Data
                     {
                         Id = 3,
                         Title = "Kæmpe blæksprutte fanget!",
-                        Picture = "public/TestPictures/TestFisk3.png",
+                        //Picture = "public/TestPictures/TestFisk3.png",
                         Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                         Location = "Byens kyst",
                         Likes = 2,

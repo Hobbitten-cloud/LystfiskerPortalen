@@ -36,7 +36,40 @@ else
 					<p class="card-text mb-1">@post.Description</p>
 					<p class="card-text mb-2">@post.Location</p>
 
-					<img src="@post.Picture" class="card-img-top rounded mb-3" alt="Billede ikke fundet" style="object-fit: cover" />
+					@{
+						var carouselId = $"post-carousel-{post.Id}";
+					}
+					@if (post.Images?.Any() == true)
+					{
+						<div id="@carouselId" class="carousel slide mb-3" data-bs-ride="carousel">
+							<div class="carousel-inner">
+								@for (var i = 0; i < post.Images.Count; i++)
+								{
+									var image = post.Images[i];
+									<div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+										<img src="@image.ImageUrl" class="d-block w-100 rounded" alt="Billede ikke fundet" style="object-fit: cover; max-height: 22rem;" />
+									</div>
+								}
+							</div>
+							@if (post.Images.Count > 1)
+							{
+								<button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Forrige</span>
+								</button>
+								<button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Næste</span>
+								</button>
+							}
+						</div>
+					}
+					else
+					{
+						<div class="bg-light text-center rounded mb-3 py-5">
+							<span class="text-muted">Ingen billeder tilføjet endnu.</span>
+						</div>
+					}
 
 					<div class="d-flex justify-content-between align-items-center mt-2">
 						<div>
@@ -110,9 +143,21 @@ else
 					</div>
 
 					<div class="mb-3">
-						<label class="form-label">Billede-URL</label>
-						<InputText class="form-control" @bind-Value="post.Picture" />
-						<img src="@post.Picture" class="img-fluid rounded mt-2" alt="Billede ikke fundet" style="max-height: 200px; max-width: auto;" />
+						<label class="form-label">Billeder</label>
+						@if (post.Images?.Any() == true)
+						{
+							<div class="d-flex flex-wrap gap-2">
+								@foreach (var image in post.Images)
+								{
+									<img src="@image.ImageUrl" class="rounded border" style="width: 80px; height: 80px; object-fit: cover;" />
+								}
+							</div>
+							<small class="text-muted d-block mt-2">Billeder kan i øjeblikket kun tilføjes ved oprettelse af en ny post.</small>
+						}
+						else
+						{
+							<p class="text-muted mb-0">Ingen billeder tilføjet endnu.</p>
+						}
 					</div>
 
 					<div class="d-flex justify-content-end">
