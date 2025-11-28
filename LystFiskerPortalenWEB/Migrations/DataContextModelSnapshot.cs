@@ -140,6 +140,38 @@ namespace LystFiskerPortalenWEB.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateSend")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -299,13 +331,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bfcbe28d-5567-471e-a4b3-bf35f0bbdb27",
+                            ConcurrencyStamp = "11d8390a-0a63-4a66-9af1-feb00bcf3c4c",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "55d989ce-74cd-49a7-903d-2add41839aa9",
+                            SecurityStamp = "eb41ce7c-48da-4e63-8540-3cff7b576c9f",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
@@ -536,6 +568,25 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Message", b =>
+                {
+                    b.HasOne("LystFiskerPortalenWEB.Models.Profile", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LystFiskerPortalenWEB.Models.Profile", "Sender")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
                     b.HasOne("LystFiskerPortalenWEB.Models.Profile", "Profile")
@@ -601,6 +652,10 @@ namespace LystFiskerPortalenWEB.Migrations
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>
                 {
                     b.Navigation("Posts");
+
+                    b.Navigation("ReceivedMessages");
+
+                    b.Navigation("SentMessages");
                 });
 #pragma warning restore 612, 618
         }

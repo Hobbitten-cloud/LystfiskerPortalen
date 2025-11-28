@@ -18,6 +18,7 @@ namespace LystFiskerPortalenWEB.Data
 
         public DbSet<Lure> Lures { get; set; }
 
+        public DbSet<Message> Messages { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

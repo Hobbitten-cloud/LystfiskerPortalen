@@ -191,6 +191,34 @@ namespace LystFiskerPortalenWEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateSend = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ReceiverId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Profiles_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_Profiles_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -236,7 +264,7 @@ namespace LystFiskerPortalenWEB.Migrations
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "bfcbe28d-5567-471e-a4b3-bf35f0bbdb27", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "55d989ce-74cd-49a7-903d-2add41839aa9", false, "testuser" });
+                values: new object[] { "testid", 0, "11d8390a-0a63-4a66-9af1-feb00bcf3c4c", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "eb41ce7c-48da-4e63-8540-3cff7b576c9f", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",
@@ -295,6 +323,16 @@ namespace LystFiskerPortalenWEB.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_ReceiverId",
+                table: "Messages",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderId",
+                table: "Messages",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_ProfileID",
                 table: "Posts",
                 column: "ProfileID");
@@ -332,6 +370,9 @@ namespace LystFiskerPortalenWEB.Migrations
 
             migrationBuilder.DropTable(
                 name: "Lures");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Posts");
