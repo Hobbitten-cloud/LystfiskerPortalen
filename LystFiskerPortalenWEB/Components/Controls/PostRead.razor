@@ -69,27 +69,27 @@ else
 						<label class="form-label">Beskrivelse</label>
 						<InputTextArea class="form-control" @bind-Value="post.Description" rows="3" />
 					</div>
-          
-                                  <div class="mb-3">
-                            <label class="form-label">Teknik</label>
-                            <InputSelect class="form-select" @bind-Value="post.TechniqueId">
-                                @foreach (var tech in techniques)
-                                {
-                                    <option value="@tech.Id">@tech.Name</option>
-                                }
-                            </InputSelect>
-                        </div>
 
-                        <div class="mb-3">
-                        <label class="form-label">Blink</label>
-                            <InputSelect class="form-select" @bind-Value="post.LureId">
-                                @foreach (var lure in lures)
-                                {
-                                    <option value="@lure.Id">@lure.Name</option>
-                                }
-                            </InputSelect>
-                        </div>
-          
+					<div class="mb-3">
+						<label class="form-label">Teknik</label>
+						<InputSelect class="form-select" @bind-Value="post.TechniqueId">
+							@foreach (var tech in techniques)
+							{
+								<option value="@tech.Id">@tech.Name</option>
+							}
+						</InputSelect>
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Blink</label>
+						<InputSelect class="form-select" @bind-Value="post.LureId">
+							@foreach (var lure in lures)
+							{
+								<option value="@lure.Id">@lure.Name</option>
+							}
+						</InputSelect>
+					</div>
+
 					<div class="mb-3">
 						<label class="form-label">Lokation</label>
 						<InputText class="form-control" @bind-Value="post.Location" />
@@ -151,53 +151,33 @@ else
 	public List<Post> Posts { get; set; }
 	private readonly Dictionary<int, Comment> commentModels = new();
 
-    [Parameter]
-    public string? UserId { get; set; }
-    [Parameter]
-    public bool IsProfilePage{ get; set; }
-    private List<Technique> techniques { get; set; } = new List<Technique>(); //listen af tech
+	[Parameter]
+	public string? UserId { get; set; }
+	[Parameter]
+	public bool IsProfilePage { get; set; }
+	private List<Technique> techniques { get; set; } = new List<Technique>(); //listen af tech
 
-    private List<Lure> lures { get; set; } = new List<Lure>(); //listen af lures
+	private List<Lure> lures { get; set; } = new List<Lure>(); //listen af lures
 
-    private async Task LikePost(Post post)
-    {
-        await PostRepo.LikePost(post);
+	private async Task LikePost(Post post)
+	{
+		await PostRepo.LikePost(post);
 
-        //posts = await PostRepo.GetAllPosts();
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-       UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? null;
-        if (UserId is not null && IsProfilePage)
-        {
-            // Filter posts only for the given user
+		//posts = await PostRepo.GetAllPosts();
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? null;
+		if (UserId is not null && IsProfilePage)
+		{
+			// Filter posts only for the given user
 			Posts = await PostRepo.GetPostsByUser(UserId);
-        }
-        else
-        {
-            // Load all posts
+		}
+		else
+		{
+			// Load all posts
 			Posts = await PostRepo.GetAllPosts();
-        }
-    }
-
-    // Methods for editing posts
-    private void StartEdit(Post post)
-    {
-        post.IsEditing = true;
-    }
-
-    private async Task SavePost(Post post)
-    {
-        await PostRepo.UpdatePost(post);
-        post.Technique = techniques.FirstOrDefault(t => t.Id == post.TechniqueId);//gemmer ændre på tech
-        post.Lure = lures.FirstOrDefault(l => l.Id == post.LureId);//gemmer ændre på lure
-        post.IsEditing = false;
-        StateHasChanged();
-    }
-
-    private async Task CancelEdit(Post post)
-    {
-        post.IsEditing = false;
-    }
+		}
+	}
 
 	// Methods for editing posts
 	private void StartEdit(Post post)
@@ -205,10 +185,18 @@ else
 		post.IsEditing = true;
 	}
 
+	private async Task CancelEdit(Post post)
+	{
+		post.IsEditing = false;
+	}
+
 	private async Task SavePost(Post post)
 	{
 		await PostRepo.UpdatePost(post);
+		post.Technique = techniques.FirstOrDefault(t => t.Id == post.TechniqueId);//gemmer ændre på tech
+		post.Lure = lures.FirstOrDefault(l => l.Id == post.LureId);//gemmer ændre på lure
 		post.IsEditing = false;
+		StateHasChanged();
 	}
 
 	private async Task DeletePost(int id)
@@ -217,11 +205,7 @@ else
 		Posts = await PostRepo.GetAllPosts();
 	}
 
-	private async Task CancelEdit(Post post)
-	{
-		post.IsEditing = false;
-	}
-
+	// Methods related to commenting
 	private Comment GetCommentModel(int postId)
 	{
 		if (!commentModels.TryGetValue(postId, out var comment))

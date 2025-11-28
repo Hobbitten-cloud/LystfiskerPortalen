@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251125101715_NewDev")]
+    [Migration("20251128065733_NewDev")]
     partial class NewDev
     {
         /// <inheritdoc />
@@ -263,8 +263,10 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "En fantastisk dag ved søen med masser af fisk!",
                             Likes = 10,
                             Location = "Søen ved Skoven",
+                            LureId = 1,
                             Picture = "public/TestPictures/TestFisk1.png",
                             ProfileID = "testid",
+                            TechniqueId = 1,
                             Title = "Fisketur ved søen"
                         },
                         new
@@ -274,8 +276,10 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "En spændende dag på havet med store fangster.",
                             Likes = 4,
                             Location = "Kysten ved Byen",
+                            LureId = 2,
                             Picture = "public/TestPictures/TestFisk2.jpg",
                             ProfileID = "testid",
+                            TechniqueId = 2,
                             Title = "Havfiskeri eventyr"
                         },
                         new
@@ -285,8 +289,10 @@ namespace LystFiskerPortalenWEB.Migrations
                             Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                             Likes = 2,
                             Location = "Byens kyst",
+                            LureId = 3,
                             Picture = "public/TestPictures/TestFisk3.png",
                             ProfileID = "testid",
+                            TechniqueId = 3,
                             Title = "Kæmpe blæksprutte fanget!"
                         },
                         new
@@ -295,7 +301,9 @@ namespace LystFiskerPortalenWEB.Migrations
                             CreationDate = new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "Søger single lystfiskere i Odense beliggenhed",
                             Likes = 0,
+                            LureId = 4,
                             ProfileID = "testid",
+                            TechniqueId = 4,
                             Title = "Hej Fiskere!"
                         });
                 });
@@ -377,13 +385,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8ac6ee30-9527-49d5-abc1-1662e4db9ace",
+                            ConcurrencyStamp = "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "e7577b24-1e9b-4c39-9ef4-217b0aae135d",
+                            SecurityStamp = "dfa6bad6-399b-42a8-81f8-b92b7f555313",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });

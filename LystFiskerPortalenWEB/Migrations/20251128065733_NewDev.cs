@@ -272,7 +272,7 @@ namespace LystFiskerPortalenWEB.Migrations
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "8ac6ee30-9527-49d5-abc1-1662e4db9ace", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "e7577b24-1e9b-4c39-9ef4-217b0aae135d", false, "testuser" });
+                values: new object[] { "testid", 0, "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "dfa6bad6-399b-42a8-81f8-b92b7f555313", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",
@@ -297,10 +297,10 @@ namespace LystFiskerPortalenWEB.Migrations
                 columns: new[] { "Id", "CreationDate", "Description", "Likes", "Location", "LureId", "Picture", "ProfileID", "TechniqueId", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", 10, "Søen ved Skoven", null, "public/TestPictures/TestFisk1.png", "testid", null, "Fisketur ved søen" },
-                    { 2, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", 4, "Kysten ved Byen", null, "public/TestPictures/TestFisk2.jpg", "testid", null, "Havfiskeri eventyr" },
-                    { 3, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", 2, "Byens kyst", null, "public/TestPictures/TestFisk3.png", "testid", null, "Kæmpe blæksprutte fanget!" },
-                    { 4, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", 0, null, null, null, "testid", null, "Hej Fiskere!" }
+                    { 1, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", 10, "Søen ved Skoven", 1, "public/TestPictures/TestFisk1.png", "testid", 1, "Fisketur ved søen" },
+                    { 2, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", 4, "Kysten ved Byen", 2, "public/TestPictures/TestFisk2.jpg", "testid", 2, "Havfiskeri eventyr" },
+                    { 3, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", 2, "Byens kyst", 3, "public/TestPictures/TestFisk3.png", "testid", 3, "Kæmpe blæksprutte fanget!" },
+                    { 4, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", 0, null, 4, null, "testid", 4, "Hej Fiskere!" }
                 });
 
             migrationBuilder.InsertData(
