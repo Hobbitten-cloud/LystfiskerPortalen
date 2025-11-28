@@ -25,12 +25,15 @@ namespace LystFiskerPortalenWEB.Repo
 
             await _context.SaveChangesAsync();
         }
+
         public async Task CreatePost(Post post)
         {
             if (post == null)
             {
                 return;
             }
+
+            _context.Posts.Attach(post);
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
         }

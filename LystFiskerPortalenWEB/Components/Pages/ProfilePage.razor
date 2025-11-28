@@ -1,6 +1,7 @@
 ﻿@page "/Profile/{id}"
 
 @inject IProfileRepo profileRepo
+@inject IPostRepo postRepo
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 
@@ -22,7 +23,7 @@ else
 
     @* Componet for viewing all posts - sorted after creationDate *@
     <div style="margin: auto; width: 50%;">
-        <PostRead UserId="@id" IsProfilePage="@true"></PostRead>
+        <PostRead Posts="posts"  UserId="@id" IsProfilePage="@true"></PostRead>
     </div>
 }
 
@@ -31,10 +32,13 @@ else
     [Parameter]
     public string id { get; set; }
     private Profile profile { get; set; }
+    private List<Post> posts { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
         profile = await profileRepo.GetProfileById(id);
+        posts = await postRepo.GetPostsByUser(id);
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         id = state.User.FindFirst("sub")?.Value; // or ClaimTypes.NameIdentifier
 
