@@ -18,7 +18,6 @@ namespace LystFiskerPortalenWEB.Models
 
         public int? Likes { get; set; }
 
-        [Required]
         public DateTime CreationDate { get; set; }
 
         [NotMapped]
