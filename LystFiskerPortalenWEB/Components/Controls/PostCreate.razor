@@ -170,9 +170,7 @@
         if (user.Identity?.IsAuthenticated == true)
         {
             post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            post.Profile = !string.IsNullOrEmpty(post.ProfileID)
-                ? await ProfileRepo.GetProfileById(post.ProfileID)
-                : null;
+            post.Profile = !string.IsNullOrEmpty(post.ProfileID) ? await ProfileRepo.GetProfileById(post.ProfileID) : null;
         }
         else
         {
