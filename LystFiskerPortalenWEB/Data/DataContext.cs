@@ -1,7 +1,6 @@
 ﻿using LystFiskerPortalenWEB.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 namespace LystFiskerPortalenWEB.Data
 {
@@ -17,6 +16,7 @@ namespace LystFiskerPortalenWEB.Data
         public DbSet<Technique> Techniques { get; set; }
         public DbSet<Lure> Lures { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<PostImage> PostImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,6 +42,19 @@ namespace LystFiskerPortalenWEB.Data
                     .WithMany(p => p.Comments)
                     .HasForeignKey(c => c.PostId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<Post>()
+                .HasMany(p => p.Images)
+                .WithOne(pi => pi.Post)
+                .HasForeignKey(pi => pi.PostId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<PostImage>(entity =>
+            {
+                entity.ToTable("PostImage");
+                entity.HasKey(pi => pi.Id);
+                entity.Property(pi => pi.ImageUrl).IsRequired();
             });
 
 

@@ -102,6 +102,7 @@ namespace LystFiskerPortalenWEB.Repo
             return await _context.Posts
                 .Include(p => p.Profile)
                 .Include(p => p.Comments)
+                .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 

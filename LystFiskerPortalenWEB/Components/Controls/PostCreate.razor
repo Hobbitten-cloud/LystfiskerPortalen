@@ -48,10 +48,29 @@
 
 				<div class="row mb-3">
 					<div class="col-2">
-						<label for="picture" class="form-label">Billede</label>
+						<label for="picture" class="form-label">Billeder</label>
 					</div>
 					<div class="col-10">
-						<input type="text" readonly class="form-control-plaintext" value="@post.Images" />
+						<InputFile OnChange="OnFilesSelected" class="form-control" multiple accept="image/*" />
+						<small class="text-muted">Du kan vælge flere billeder ad gangen.</small>
+
+						@if (post.Images?.Any() == true)
+						{
+							<div class="d-flex flex-wrap gap-2 mt-2">
+								@foreach (var image in post.Images)
+								{
+									<div class="position-relative">
+										<img src="@image.ImageUrl" class="rounded shadow-sm" style="width: 90px; height: 90px; object-fit: cover;" />
+										<button type="button"
+												class="btn btn-sm btn-light border position-absolute top-0 end-0"
+												title="Fjern billede"
+												@onclick="() => RemoveImage(image)">
+											&times;
+										</button>
+									</div>
+								}
+							</div>
+						}
 					</div>
 				</div>
 
@@ -81,14 +100,6 @@
 			</div>
 		</div>
 	</EditForm>
-	@* <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="AddImage">
-		<div class="card-footer">
-			<div>
-				<InputFile name="FileInput.File" class="form-control" OnChange="OnFilesSelected" style="width:fit-content" multiple />
-				<br />
-			</div>
-		</div>
-	</EditForm> *@
 </div>
 
 @code {
@@ -116,35 +127,31 @@
 		NavigationManager.NavigateTo("/", forceReloadPage);
 	}
 
-	// Everything below is related to the image upload
-	[SupplyParameterFromForm(FormName = "UploadFileForm")]
-	FileModel FileInput { get; set; } = new();
-
-	class FileModel
-	{
-		public IBrowserFile File { get; set; }
-	}
-
-	// private async Task AddImage()
-	// {
-	// 	if (FileInput.File != null)
-	// 	{
-	// 		post.Picture = await fileUploadService.UploadFile(FileInput.File, "PostImages");
-	// 	}
-	// }
-
-	private void OnFileSelected(InputFileChangeEventArgs e)
-	{
-		FileInput.File = e.File;
-	}
-
 	private async Task OnFilesSelected(InputFileChangeEventArgs e)
 	{
 		foreach (var file in e.GetMultipleFiles())
 		{
 			var url = await fileUploadService.UploadFile(file, "PostImages");
 
+			if (string.IsNullOrWhiteSpace(url))
+			{
+				continue;
+			}
+
+			if (post.Images.Any(img => img.ImageUrl.Equals(url, StringComparison.OrdinalIgnoreCase)))
+			{
+				continue;
+			}
+
 			post.Images.Add(new PostImage { ImageUrl = url });
+		}
+	}
+
+	private void RemoveImage(PostImage image)
+	{
+		if (post.Images.Contains(image))
+		{
+			post.Images.Remove(image);
 		}
 	}
 
