@@ -40,8 +40,22 @@ else
 
 					<div class="d-flex justify-content-between align-items-center mt-2">
 						<div>
-							<p class="badge bg-primary me-2">Teknik</p>
-							<p class="badge bg-info text-dark">Blink</p>
+							@if (post.Technique != null)
+							{
+								<p class="badge bg-primary me-2">@post.Technique.Name</p>
+							}
+							else
+							{
+								<p class="badge bg-primary me-2">Ukendt Teknik</p>
+							}
+							@if (post.Lure != null)
+							{
+								<p class="badge bg-info text-dark">@post.Lure.Name</p>
+							}
+							else
+							{
+								<p class="badge bg-info text-dark">Ukendt Blink</p>
+							}
 						</div>
 						<div>
 							<p>Likes @post.Likes</p>
@@ -155,10 +169,17 @@ else
 	public string? UserId { get; set; }
 	[Parameter]
 	public bool IsProfilePage { get; set; }
-	private List<Technique> techniques { get; set; } = new List<Technique>(); //listen af tech
 
-	private List<Lure> lures { get; set; } = new List<Lure>(); //listen af lures
+	private List<Technique> techniques { get; set; } = new();
+	private List<Lure> lures { get; set; } = new();
 
+	protected override async Task OnInitializedAsync()
+	{
+		techniques = await TechniqueRepo.GetAllTechs() ?? new();
+		lures = await LureRepo.GetAllLures() ?? new();
+	}
+
+	// Method for liking a post
 	private async Task LikePost(Post post)
 	{
 		await PostRepo.LikePost(post);

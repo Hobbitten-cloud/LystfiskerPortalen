@@ -40,27 +40,28 @@
 
 @code {
 	[Inject]
-	private ISortService SortService { get; set; }
+	private ISortService sortService { get; set; }
 	private string sortMethod { get; set; } = "Nyeste";
 	private List<Post> posts { get; set; }
+
 
 	// Loads all posts to feed
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
-		posts = await SortService.SortByCreationDate();
+		posts = await sortService.SortByCreationDate();
 	}
 
 	// Methods for sorting posts
 	private async Task SortByMostLikes()
 	{
-		posts = await SortService.SortByLikes();
+		posts = await sortService.SortByLikes();
 		sortMethod = "Mest likede";
 	}
 
 	private async Task SortByNewest()
 	{
-		posts = await SortService.SortByCreationDate();
+		posts = await sortService.SortByCreationDate();
 		sortMethod = "Nyeste";
 	}
 }
