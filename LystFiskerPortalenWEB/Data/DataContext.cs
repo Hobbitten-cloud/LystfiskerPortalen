@@ -66,7 +66,7 @@ namespace LystFiskerPortalenWEB.Data
                     {
                         Id = 1,
                         Title = "Fisketur ved søen",
-                        Picture = "public/TestPictures/TestFisk1.png",
+                        //Images = "public/TestPictures/TestFisk1.png",
                         Description = "En fantastisk dag ved søen med masser af fisk!",
                         Location = "Søen ved Skoven",
                         Likes = 10,
@@ -79,7 +79,7 @@ namespace LystFiskerPortalenWEB.Data
                     {
                         Id = 2,
                         Title = "Havfiskeri eventyr",
-                        Picture = "public/TestPictures/TestFisk2.jpg",
+                        //Picture = "public/TestPictures/TestFisk2.jpg",
                         Description = "En spændende dag på havet med store fangster.",
                         Location = "Kysten ved Byen",
                         Likes = 4,
@@ -92,7 +92,7 @@ namespace LystFiskerPortalenWEB.Data
                     {
                         Id = 3,
                         Title = "Kæmpe blæksprutte fanget!",
-                        Picture = "public/TestPictures/TestFisk3.png",
+                        //Picture = "public/TestPictures/TestFisk3.png",
                         Description = "Jeg fangede en kæmpe blæksprutte - det ikke AI",
                         Location = "Byens kyst",
                         Likes = 2,

@@ -9,7 +9,8 @@ namespace LystFiskerPortalenWEB.Models
 
         public string? Title { get; set; }
 
-        public string? Picture { get; set; }
+        //public string? Picture { get; set; }
+        public List<PostImage> Images { get; set; } = new();
 
         [Required]
         public string Description { get; set; }

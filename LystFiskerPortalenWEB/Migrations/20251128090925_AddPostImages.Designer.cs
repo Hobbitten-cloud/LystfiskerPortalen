@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251128065733_NewDev")]
-    partial class NewDev
+    [Migration("20251128090925_AddPostImages")]
+    partial class AddPostImages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -308,6 +308,28 @@ namespace LystFiskerPortalenWEB.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.PostImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostImage");
+                });
+
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>
                 {
                     b.Property<string>("Id")
@@ -385,13 +407,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3",
+                            ConcurrencyStamp = "b51bb245-593b-484c-9082-70e77b9da341",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "dfa6bad6-399b-42a8-81f8-b92b7f555313",
+                            SecurityStamp = "79431a34-66c1-43f3-971d-9547a54ddf23",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
@@ -670,6 +692,17 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.Navigation("Technique");
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.PostImage", b =>
+                {
+                    b.HasOne("LystFiskerPortalenWEB.Models.Post", "Post")
+                        .WithMany("Images")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -729,6 +762,8 @@ namespace LystFiskerPortalenWEB.Migrations
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>

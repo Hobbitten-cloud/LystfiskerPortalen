@@ -10,152 +10,161 @@
 <h3>Opret en ny post</h3>
 
 <div class="card" style="width: 32rem; margin-bottom: 2%">
-    <EditForm Model="post" FormName="CreateForm" OnValidSubmit="CreatePost">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <ValidationSummary></ValidationSummary>
+	<EditForm Model="post" FormName="CreateForm" OnValidSubmit="CreatePost">
+		<DataAnnotationsValidator></DataAnnotationsValidator>
+		<ValidationSummary></ValidationSummary>
 
-        <div class="card-body">
-            <div>
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <label for="title" class="form-label">Titel</label>
-                    </div>
-                    <div class="col-10">
-                        <InputText class="card-title" @bind-Value="post.Title"></InputText>
-                    </div>
-                </div>
+		<div class="card-body">
+			<div>
+				<div class="row mb-3">
+					<div class="col-2">
+						<label for="title" class="form-label">Titel</label>
+					</div>
+					<div class="col-10">
+						<InputText class="card-title" @bind-Value="post.Title"></InputText>
+					</div>
+				</div>
 
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <label for="description" class="form-label">Beskrivelse</label>
-                    </div>
-                    <div class="col-10">
-                        <InputTextArea @bind-Value="post.Description"></InputTextArea>
-                    </div>
-                    <div class="col">
-                        <ValidationMessage For="@(() => post.Description)"></ValidationMessage>
-                    </div>
-                </div>
+				<div class="row mb-3">
+					<div class="col-2">
+						<label for="description" class="form-label">Beskrivelse</label>
+					</div>
+					<div class="col-10">
+						<InputTextArea @bind-Value="post.Description"></InputTextArea>
+					</div>
+					<div class="col">
+						<ValidationMessage For="@(() => post.Description)"></ValidationMessage>
+					</div>
+				</div>
 
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <label for="location" class="form-label">Lokation</label>
-                    </div>
-                    <div class="col-10">
-                        <InputText @bind-Value="post.Location"></InputText>
-                    </div>
-                </div>
+				<div class="row mb-3">
+					<div class="col-2">
+						<label for="location" class="form-label">Lokation</label>
+					</div>
+					<div class="col-10">
+						<InputText @bind-Value="post.Location"></InputText>
+					</div>
+				</div>
 
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <label for="picture" class="form-label">Billede</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="text" readonly class="form-control-plaintext" value="@post.Picture" />
-                    </div>
-                </div>
+				<div class="row mb-3">
+					<div class="col-2">
+						<label for="picture" class="form-label">Billede</label>
+					</div>
+					<div class="col-10">
+						<input type="text" readonly class="form-control-plaintext" value="@post.Images" />
+					</div>
+				</div>
 
-                <div class="mb-3">
-                    <label class="form-label">Teknik</label>
-                    <InputSelect class="form-select" @bind-Value="post.TechniqueId">
-                        <option value="none" selected hidden disabled>Vælg Teknik</option>
-                        @foreach (var tech in techniques)
-                        {
-                            <option value="@tech.Id">@tech.Name</option>
-                        }
-                    </InputSelect>
-                </div>
+				<div class="mb-3">
+					<label class="form-label">Teknik</label>
+					<InputSelect class="form-select" @bind-Value="post.TechniqueId">
+						<option value="none" selected hidden disabled>Vælg Teknik</option>
+						@foreach (var tech in techniques)
+						{
+							<option value="@tech.Id">@tech.Name</option>
+						}
+					</InputSelect>
+				</div>
 
-                <div class="mb-3">
-                    <label class="form-label">Blink</label>
-                    <InputSelect class="form-select" @bind-Value="post.LureId">
-                        <option value="none" selected disabled hidden>Vælg Blink</option>
-                        @foreach (var lure in lures)
-                        {
-                            <option value="@lure.Id">@lure.Name</option>
-                        }
-                    </InputSelect>
-                </div>
+				<div class="mb-3">
+					<label class="form-label">Blink</label>
+					<InputSelect class="form-select" @bind-Value="post.LureId">
+						<option value="none" selected disabled hidden>Vælg Blink</option>
+						@foreach (var lure in lures)
+						{
+							<option value="@lure.Id">@lure.Name</option>
+						}
+					</InputSelect>
+				</div>
 
-                <button class="btn btn-primary" style="float: right;" type="submit">Opret</button>
-            </div>
-        </div>
-    </EditForm>
-    <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="AddImage">
-        <div class="card-footer">
-            <div>
-                <InputFile name="FileInput.File" class="form-control" OnChange="OnFileSelected" style="width:fit-content" />
-                <br />
-                <button type="submit">Upload</button>
-            </div>
-        </div> 
-    </EditForm>
+				<button class="btn btn-primary" style="float: right;" type="submit">Opret</button>
+			</div>
+		</div>
+	</EditForm>
+	@* <EditForm Model="FileInput" class="row-cols-2" enctype="multipart/form-data" FormName="UploadFileForm" OnSubmit="AddImage">
+		<div class="card-footer">
+			<div>
+				<InputFile name="FileInput.File" class="form-control" OnChange="OnFilesSelected" style="width:fit-content" multiple />
+				<br />
+			</div>
+		</div>
+	</EditForm> *@
 </div>
 
 @code {
-    [SupplyParameterFromForm(FormName = "CreateForm")]
-    public Post post { get; set; } = new Post();
-
-    
-    [Inject]
-    private IPostRepo postRepo { get; set; }
-
-    private bool forceReloadPage = true;
-
-    private async Task CreatePost()
-    {
-        
-        post.CreationDate = DateTime.Now;
-        if (post.TechniqueId is null)
-            post.TechniqueId = 1;
-
-        if (post.LureId is null)
-            post.LureId = 1;
-
-        post.Likes = 0;
-        await postRepo.CreatePost(post);
-        NavigationManager.NavigateTo("/", forceReloadPage);
-    }
-
-    // Everything below is related to the image upload
-    [SupplyParameterFromForm(FormName = "UploadFileForm")]
-    FileModel FileInput { get; set; } = new();
-
-    class FileModel
-    {
-        public IBrowserFile File { get; set; }
-    }
-
-    private async Task AddImage()
-    {
-        if (FileInput.File != null)
-        {
-            post.Picture = await fileUploadService.UploadFile(FileInput.File, "PostImages");
-        }
-    }
-
-    private void OnFileSelected(InputFileChangeEventArgs e)
-    {
-        FileInput.File = e.File;
-    }
-
-    [Inject]
-    private IFileUploadService fileUploadService { get; set; }
-
-    private List<Technique> techniques { get; set; } = new List<Technique>();
-
-    private List<Lure> lures { get; set; } = new List<Lure>();
+	[SupplyParameterFromForm(FormName = "CreateForm")]
+	public Post post { get; set; } = new Post();
 
 
+	[Inject]
+	private IPostRepo postRepo { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        lures = await LureRepo.GetAllLures();
-        techniques = await TechniqueRepo.GetAllTechs();
-        
-        post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
-    }
+	private bool forceReloadPage = true;
+
+	private async Task CreatePost()
+	{
+
+		post.CreationDate = DateTime.Now;
+		if (post.TechniqueId is null)
+			post.TechniqueId = 1;
+
+		if (post.LureId is null)
+			post.LureId = 1;
+
+		post.Likes = 0;
+		await postRepo.CreatePost(post);
+		NavigationManager.NavigateTo("/", forceReloadPage);
+	}
+
+	// Everything below is related to the image upload
+	[SupplyParameterFromForm(FormName = "UploadFileForm")]
+	FileModel FileInput { get; set; } = new();
+
+	class FileModel
+	{
+		public IBrowserFile File { get; set; }
+	}
+
+	// private async Task AddImage()
+	// {
+	// 	if (FileInput.File != null)
+	// 	{
+	// 		post.Picture = await fileUploadService.UploadFile(FileInput.File, "PostImages");
+	// 	}
+	// }
+
+	private void OnFileSelected(InputFileChangeEventArgs e)
+	{
+		FileInput.File = e.File;
+	}
+
+	private async Task OnFilesSelected(InputFileChangeEventArgs e)
+	{
+		foreach (var file in e.GetMultipleFiles())
+		{
+			var url = await fileUploadService.UploadFile(file, "PostImages");
+
+			post.Images.Add(new PostImage { ImageUrl = url });
+		}
+	}
+
+	[Inject]
+	private IFileUploadService fileUploadService { get; set; }
+
+	private List<Technique> techniques { get; set; } = new List<Technique>();
+
+	private List<Lure> lures { get; set; } = new List<Lure>();
+
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+		lures = await LureRepo.GetAllLures();
+		techniques = await TechniqueRepo.GetAllTechs();
+
+		post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
+	}
 }

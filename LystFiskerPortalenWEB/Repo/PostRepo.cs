@@ -44,7 +44,6 @@ namespace LystFiskerPortalenWEB.Repo
             existingPost.Title = post.Title;
             existingPost.Description = post.Description;
             existingPost.Location = post.Location;
-            existingPost.Picture = post.Picture;
             existingPost.TechniqueId = post.TechniqueId;
             existingPost.LureId = post.LureId;
 
@@ -70,6 +69,7 @@ namespace LystFiskerPortalenWEB.Repo
                 .Include(p => p.Comments)
                 .Include(p=>p.Technique)
                 .Include(p=>p.Lure)
+                .Include(p => p.Images)
                 .OrderByDescending(t => t.CreationDate)
                 .ToListAsync();
 
@@ -85,7 +85,7 @@ namespace LystFiskerPortalenWEB.Repo
 
         public async Task<Post> GetPostById(int id)
         {
-            return await _context.Posts.Include(p => p.Profile).FirstAsync(p => p.Id == id);
+            return await _context.Posts.Include(p => p.Profile).Include(p => p.Images).FirstAsync(p => p.Id == id);
         }
 
         public async Task<List<Post>> GetPostsByUser(string userId)
@@ -93,6 +93,7 @@ namespace LystFiskerPortalenWEB.Repo
             return await _context.Posts
                 .Where(p => p.ProfileID == userId)
                 .Include(p => p.Profile)
+                .Include(p => p.Images)
                 .OrderByDescending(p => p.CreationDate)
                 .ToListAsync();
         }
