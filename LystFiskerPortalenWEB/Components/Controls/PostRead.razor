@@ -1,142 +1,282 @@
 ﻿@inject IPostRepo PostRepo
+
+@inject ITechniqueRepo TechniqueRepo
+@inject ILureRepo LureRepo
+
+@inject ICommentRepo CommentRepo
+@inject NavigationManager NavigationManager
+
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@if (posts == null)
+@if (Posts == null)
 {
-    <p>Loading posts....</p>
+	<p>Loading posts....</p>
 }
-else if (posts.Count == 0)
+else if (Posts.Count == 0)
 {
-    <p>Der er ingen posts at vise.</p>
+	<p>Der er ingen posts at vise.</p>
 }
 else
 {
-    @foreach (var post in posts)
-    {
-        <div class="card mb-4 shadow-sm" style="max-width: 36rem;">
-            @if (!post.IsEditing)
-            {
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <span> 
-                            <img src="@post.Profile.ImagePath" class="rounded-circle me-2" alt="Profilbillede ikke fundet" style="width: 40px; height: 40px; object-fit: cover;" >
-                            @post.Profile.UserName
-                        </span>
-                        <p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
-                    </div>
+	@foreach (var post in Posts)
+	{
+		<div class="card mb-4 shadow-sm" style="max-width: 36rem;">
+			@if (!post.IsEditing)
+			{
+				<div class="card-body">
+					<div class="d-flex justify-content-between">
+						<span>
+							<img src="@post.Profile?.ImagePath" class="rounded-circle me-2" alt="Profilbillede ikke fundet" style="width: 40px; height: 40px; object-fit: cover;">
+							@post.Profile?.UserName
+						</span>
+						<p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
+					</div>
 
-                    <h5 class="card-title mt-2">@post.Title</h5>
-                    <p class="card-text mb-1">@post.Description</p>
-                    <p class="card-text mb-2">@post.Location</p>
+					<h5 class="card-title mt-2">@post.Title</h5>
+					<p class="card-text mb-1">@post.Description</p>
+					<p class="card-text mb-2">@post.Location</p>
 
-                    <img src="@post.Picture" class="card-img-top rounded mb-3" alt="Billede ikke fundet" style="object-fit: cover" />
+					<img src="@post.Picture" class="card-img-top rounded mb-3" alt="Billede ikke fundet" style="object-fit: cover" />
 
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        <div>
-                            <p class="badge bg-primary me-2">Teknik</p>
-                            <p class="badge bg-info text-dark">Blink</p>
-                        </div>
-                        <div>
-                            <p>Likes @post.Likes</p>
-                            <button class="btn-primary" @onclick="@(() => LikePost(post))">Like Post</button>
-                        </div>
+					<div class="d-flex justify-content-between align-items-center mt-2">
+						<div>
+							@if (post.Technique != null)
+							{
+								<p class="badge bg-primary me-2">@post.Technique.Name</p>
+							}
+							else
+							{
+								<p class="badge bg-primary me-2">Ukendt Teknik</p>
+							}
+							@if (post.Lure != null)
+							{
+								<p class="badge bg-info text-dark">@post.Lure.Name</p>
+							}
+							else
+							{
+								<p class="badge bg-info text-dark">Ukendt Blink</p>
+							}
+						</div>
+						<div>
+							<p>Likes @post.Likes</p>
+							<button class="btn-primary" @onclick="@(() => LikePost(post))">Like Post</button>
+						</div>
+						<button class="btn btn-outline-warning btn-sm" @onclick="@(() => StartEdit(post))">Ændr</button>
+						<button class="btn btn-outline-danger btn-sm ms-2" @onclick="@(() => DeletePost(post.Id))">Slet</button>
+					</div>
+				</div>
+			}
+			else
+			{
+				<div class="card-body">
+					<div class="d-flex justify-content-between">
+						<p>Rediger post</p>
+						<p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
+					</div>
 
-                        <button class="btn btn-outline-warning btn-sm" @onclick="@(() => StartEdit(post))">Ændr</button>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <p>Rediger post</p>
-                        <p>@post.CreationDate.ToString("dd-MM-yyyy HH:mm")</p>
-                    </div>
+					<div class="mb-3 mt-2">
+						<label class="form-label">Titel</label>
+						<InputText class="form-control" @bind-Value="post.Title" />
+					</div>
 
-                    <div class="mb-3 mt-2">
-                        <label class="form-label">Titel</label>
-                        <InputText class="form-control" @bind-Value="post.Title" />
-                    </div>
+					<div class="mb-3">
+						<label class="form-label">Beskrivelse</label>
+						<InputTextArea class="form-control" @bind-Value="post.Description" rows="3" />
+					</div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Beskrivelse</label>
-                        <InputTextArea class="form-control" @bind-Value="post.Description" rows="3" />
-                    </div>
+					<div class="mb-3">
+						<label class="form-label">Teknik</label>
+						<InputSelect class="form-select" @bind-Value="post.TechniqueId">
+							@foreach (var tech in techniques)
+							{
+								<option value="@tech.Id">@tech.Name</option>
+							}
+						</InputSelect>
+					</div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Lokation</label>
-                        <InputText class="form-control" @bind-Value="post.Location" />
-                    </div>
+					<div class="mb-3">
+						<label class="form-label">Blink</label>
+						<InputSelect class="form-select" @bind-Value="post.LureId">
+							@foreach (var lure in lures)
+							{
+								<option value="@lure.Id">@lure.Name</option>
+							}
+						</InputSelect>
+					</div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Billede-URL</label>
-                        <InputText class="form-control" @bind-Value="post.Picture" />
-                        <img src="@post.Picture" class="img-fluid rounded mt-2" alt="Billede ikke fundet" style="max-height: 200px; max-width: auto;" />
-                    </div>
+					<div class="mb-3">
+						<label class="form-label">Lokation</label>
+						<InputText class="form-control" @bind-Value="post.Location" />
+					</div>
 
-                    <div class="d-flex justify-content-end">
-                        <button class="btn btn-success btn-sm me-2" @onclick="@(() => SavePost(post))">Gem</button>
-                        <button class="btn btn-outline-secondary btn-sm" @onclick="@(() => CancelEdit(post))">Annuller</button>
-                    </div>
-                </div>
-            }
+					<div class="mb-3">
+						<label class="form-label">Billede-URL</label>
+						<InputText class="form-control" @bind-Value="post.Picture" />
+						<img src="@post.Picture" class="img-fluid rounded mt-2" alt="Billede ikke fundet" style="max-height: 200px; max-width: auto;" />
+					</div>
 
-            <div class="card-footer bg-white border-0">
-                <p>KOMMENTARER</p>
-            </div>
-        </div>
-    }
+					<div class="d-flex justify-content-end">
+						<button class="btn btn-success btn-sm me-2" @onclick="@(() => SavePost(post))">Gem</button>
+						<button class="btn btn-outline-secondary btn-sm" @onclick="@(() => CancelEdit(post))">Annuller</button>
+					</div>
+				</div>
+			}
+
+			<hr />
+
+			<div class="card-footer bg-white border-0">
+				@if (post.Comments?.Any() == true)
+				{
+					<ul class="list-group list-group-flush mb-3">
+						@foreach (var comment in post.Comments)
+						{
+							<li class="list-group-item px-0">
+								<div class="d-flex justify-content-between">
+									<span>@comment.Description</span>
+									<small class="text-muted">@comment.CreationDate.ToString("dd-MM-yyyy HH:mm")</small>
+								</div>
+							</li>
+						}
+					</ul>
+				}
+				else
+				{
+					<p class="text-muted mb-3">Ingen kommentarer endnu.</p>
+				}
+
+				@{
+					var commentModel = GetCommentModel(post.Id);
+				}
+				<EditForm Model="@commentModel" FormName="CreateCommentForm" OnValidSubmit="@(() => CreateComment(post))">
+					<DataAnnotationsValidator></DataAnnotationsValidator>
+					<ValidationSummary></ValidationSummary>
+					<div class="input-group">
+						<InputText class="form-control" @bind-Value="commentModel.Description" placeholder="Skriv en kommentar..." />
+						<button class="btn btn-primary" type="submit">Send</button>
+					</div>
+				</EditForm>
+			</div>
+		</div>
+	}
 }
 
 @code {
-    private List<Post> posts { get; set; }
+	[Parameter]
+	public List<Post> Posts { get; set; }
+	private readonly Dictionary<int, Comment> commentModels = new();
 
-    [Parameter]
-    public string? UserId { get; set; }
-    [Parameter]
-    public bool IsProfilePage{ get; set; }
+	[Parameter]
+	public string? UserId { get; set; }
+	[Parameter]
+	public bool IsProfilePage { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-         posts = await PostRepo.GetAllPosts();
-        await base.OnInitializedAsync();
-    }
+	private List<Technique> techniques { get; set; } = new();
+	private List<Lure> lures { get; set; } = new();
 
-    private async Task LikePost(Post post)
-    {
-        await PostRepo.LikePost(post);
+	protected override async Task OnInitializedAsync()
+	{
+		techniques = await TechniqueRepo.GetAllTechs() ?? new();
+		lures = await LureRepo.GetAllLures() ?? new();
+	}
 
-        //posts = await PostRepo.GetAllPosts();
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-       UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? null;
-        if (UserId is not null && IsProfilePage)
-        {
-            // Filter posts only for the given user
-            posts = await PostRepo.GetPostsByUser(UserId);
-        }
-        else
-        {
-            // Load all posts
-            posts = await PostRepo.GetAllPosts();
-        }
-    }
+	// Method for liking a post
+	private async Task LikePost(Post post)
+	{
+		await PostRepo.LikePost(post);
 
-    // Methods for editing posts
-    private void StartEdit(Post post)
-    {
-        post.IsEditing = true;
-    }
+		//posts = await PostRepo.GetAllPosts();
+		var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		UserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? null;
+		if (UserId is not null && IsProfilePage)
+		{
+			// Filter posts only for the given user
+			Posts = await PostRepo.GetPostsByUser(UserId);
+		}
+		else
+		{
+			// Load all posts
+			Posts = await PostRepo.GetAllPosts();
+		}
+	}
 
-    private async Task SavePost(Post post)
-    {
-        await PostRepo.UpdatePost(post);
-        post.IsEditing = false;
-    }
+	// Methods for editing posts
+	private void StartEdit(Post post)
+	{
+		post.IsEditing = true;
+	}
 
-    private async Task CancelEdit(Post post)
-    {
-        post.IsEditing = false;
-    }
+	private async Task CancelEdit(Post post)
+	{
+		post.IsEditing = false;
+	}
 
+	private async Task SavePost(Post post)
+	{
+		await PostRepo.UpdatePost(post);
+		post.Technique = techniques.FirstOrDefault(t => t.Id == post.TechniqueId);//gemmer ændre på tech
+		post.Lure = lures.FirstOrDefault(l => l.Id == post.LureId);//gemmer ændre på lure
+		post.IsEditing = false;
+		StateHasChanged();
+	}
+
+	private async Task DeletePost(int id)
+	{
+		await PostRepo.DeletePost(id);
+		Posts = await PostRepo.GetAllPosts();
+	}
+
+	// Methods related to commenting
+	private Comment GetCommentModel(int postId)
+	{
+		if (!commentModels.TryGetValue(postId, out var comment))
+		{
+			comment = new Comment();
+			commentModels[postId] = comment;
+		}
+
+		return comment;
+	}
+
+	private async Task CreateComment(Post post)
+	{
+		var commentModel = GetCommentModel(post.Id);
+		if (string.IsNullOrWhiteSpace(commentModel.Description))
+		{
+			return;
+		}
+
+		var newComment = new Comment
+			{
+				Description = commentModel.Description,
+				PostId = post.Id,
+				CreationDate = DateTime.Now
+			};
+
+		await CommentRepo.CreateComment(newComment);
+		await RefreshPost(post.Id);
+
+		commentModels[post.Id] = new Comment();
+	}
+
+	private async Task RefreshPost(int postId)
+	{
+		if (Posts == null)
+		{
+			return;
+		}
+
+		var updatedPost = await PostRepo.GetPostWithComments(postId);
+		if (updatedPost == null)
+		{
+			return;
+		}
+
+		var index = Posts.FindIndex(p => p.Id == postId);
+		if (index >= 0)
+		{
+			updatedPost.IsEditing = Posts[index].IsEditing;
+			Posts[index] = updatedPost;
+		}
+	}
 }

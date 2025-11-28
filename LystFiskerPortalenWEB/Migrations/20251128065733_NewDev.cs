@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LystFiskerPortalenWEB.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class NewDev : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,7 +36,8 @@ namespace LystFiskerPortalenWEB.Migrations
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,7 +78,8 @@ namespace LystFiskerPortalenWEB.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,69 +204,113 @@ namespace LystFiskerPortalenWEB.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Likes = table.Column<int>(type: "int", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LureId = table.Column<int>(type: "int", nullable: true),
+                    TechniqueId = table.Column<int>(type: "int", nullable: true),
                     ProfileID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Posts_Lures_LureId",
+                        column: x => x.LureId,
+                        principalTable: "Lures",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Posts_Profiles_ProfileID",
                         column: x => x.ProfileID,
                         principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Posts_Techniques_TechniqueId",
+                        column: x => x.TechniqueId,
+                        principalTable: "Techniques",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Lures",
-                columns: new[] { "Id", "Color", "Name", "Type", "Weight" },
+                columns: new[] { "Id", "Color", "Name", "PostId", "Type", "Weight" },
                 values: new object[,]
                 {
-                    { 1, "Blank", "Blank", "Blank", 0.0 },
-                    { 2, "Sølv/blå", "Möresilda", "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt.", 7.0 },
-                    { 3, "Sølv", "Abu Garcia Toby", "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre.", 7.0 },
-                    { 4, "pearl/white", "Savage Gear Sandeel Surf Seeker", "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande.", 35.0 },
-                    { 5, "kobber/orange", "Hansen Flash", "Kystblink med livlig gang. Godt til havørred på lavere vand.", 15.0 },
-                    { 6, "chartreuse", "Snaps", "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk.", 25.0 },
-                    { 7, "sølv/black stripes", "Abu Garcia Atom", "Geddeblink nr. 1 i mange år. Bred, vuggende gang – perfekt i søer og brakvand.", 40.0 },
-                    { 8, "Firetiger", "Blue Fox Lucius", "Geddeblink til både lavt og dybt vand. God til at provokere hug i uklart vand.", 27.0 },
-                    { 9, "rød/sølv", "Solvkroken Stingsilda", "Kraftigt, tungt blink til havfiskeri og kyst. Bruges ofte til torsk, makrel og havørred.", 18.0 },
-                    { 10, "sølv/blue stripes", "Mepps Syclops", "Allround blink med meget “flappende” gang. Bruges til både aborre, gedde og laks.", 12.0 },
-                    { 11, "Pink Panther", "Westin D360", "Slankt long-distance blink – super til havørred, især i klart vand.", 22.0 }
+                    { 1, "Blank", "Blank", 1, "Blank", 0.0 },
+                    { 2, "Sølv/blå", "Möresilda", 2, "Klassisk kystblink til havørred, hornfisk og andre rovfisk. Går lidt dybere og kaster langt.", 7.0 },
+                    { 3, "Sølv", "Abu Garcia Toby", 3, "Universelt blink til både sø og kyst. Fisker godt efter gedde, havørred, laks og aborre.", 7.0 },
+                    { 4, "pearl/white", "Savage Gear Sandeel Surf Seeker", 4, "Moderne long-cast kystblink. Perfekt til havørred, især i hårdt vejr og lange kasteafstande.", 35.0 },
+                    { 5, "kobber/orange", "Hansen Flash", 5, "Kystblink med livlig gang. Godt til havørred på lavere vand.", 15.0 },
+                    { 6, "chartreuse", "Snaps", 6, "Kæmpe favorit blandt danske kystfiskere. Særligt effektiv på havørred og hornfisk.", 25.0 },
+                    { 7, "sølv/black stripes", "Abu Garcia Atom", 0, "Geddeblink nr. 1 i mange år. Bred, vuggende gang – perfekt i søer og brakvand.", 40.0 },
+                    { 8, "Firetiger", "Blue Fox Lucius", 0, "Geddeblink til både lavt og dybt vand. God til at provokere hug i uklart vand.", 27.0 },
+                    { 9, "rød/sølv", "Solvkroken Stingsilda", 0, "Kraftigt, tungt blink til havfiskeri og kyst. Bruges ofte til torsk, makrel og havørred.", 18.0 },
+                    { 10, "sølv/blue stripes", "Mepps Syclops", 0, "Allround blink med meget “flappende” gang. Bruges til både aborre, gedde og laks.", 12.0 },
+                    { 11, "Pink Panther", "Westin D360", 0, "Slankt long-distance blink – super til havørred, især i klart vand.", 22.0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "bfcbe28d-5567-471e-a4b3-bf35f0bbdb27", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "55d989ce-74cd-49a7-903d-2add41839aa9", false, "testuser" });
+                values: new object[] { "testid", 0, "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "dfa6bad6-399b-42a8-81f8-b92b7f555313", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",
-                columns: new[] { "Id", "Description", "Name" },
+                columns: new[] { "Id", "Description", "Name", "PostId" },
                 values: new object[,]
                 {
-                    { 1, "Blank", "Blank" },
-                    { 2, "En af de mest klassiske rigs i både salt- og ferskvand. Et lod sidder nederst, og 1–3 kroge sidder på korte forfang (”trembler”) over loddet.", "Paternoster-rig" },
-                    { 3, "Et kuglelod glider frit på hovedlinen foran en perle og en svirvel. Herefter kommer et langt forfang med en enkeltkrog.", "Carolina-rig" },
-                    { 4, "Ligner Carolina-rigget, men loddet sidder direkte foran agnen (typisk med en lille gummistopper). Agnen (ofte en softbait) kan rigges ”weedless”.", "Texas-rig" },
-                    { 5, "Et lod trækkes frit på hovedlinen, enten gennem et rør eller et glidelod, før en svirvel og et forfang.", "Glidende bundrig" },
-                    { 6, "En aflange kasteflåd (bombarda) monteres på linen, så man kan kaste selv små fluer eller lette agn meget langt.", "Bombarda-rig" },
-                    { 7, "En enkeltkrog bindes på linen, og loddet sidder i enden. Krogen kan justeres i præcis den ønskede højde.", "Drop-shot-rig" },
-                    { 8, "Krogen bindes på en speciel måde, hvor agnen (fx boilies) sidder på en lille “hair” efter krogen og ikke direkte på krogen.", "Hair-rig" },
-                    { 9, "Et simpelt rig med flåd, stopperknuder, lodder og krog.", "Float-rig" },
-                    { 10, "Bruges især til dødagn, hvor et spinnerblad eller rotator tilføjes for at give en livlig gang.", "Spinner-rig" },
-                    { 11, "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge.", "Fladfiskerig" }
+                    { 1, "Blank", "Blank", 1 },
+                    { 2, "En af de mest klassiske rigs i både salt- og ferskvand. Et lod sidder nederst, og 1–3 kroge sidder på korte forfang (”trembler”) over loddet.", "Paternoster-rig", 2 },
+                    { 3, "Et kuglelod glider frit på hovedlinen foran en perle og en svirvel. Herefter kommer et langt forfang med en enkeltkrog.", "Carolina-rig", 3 },
+                    { 4, "Ligner Carolina-rigget, men loddet sidder direkte foran agnen (typisk med en lille gummistopper). Agnen (ofte en softbait) kan rigges ”weedless”.", "Texas-rig", 4 },
+                    { 5, "Et lod trækkes frit på hovedlinen, enten gennem et rør eller et glidelod, før en svirvel og et forfang.", "Glidende bundrig", 0 },
+                    { 6, "En aflange kasteflåd (bombarda) monteres på linen, så man kan kaste selv små fluer eller lette agn meget langt.", "Bombarda-rig", 0 },
+                    { 7, "En enkeltkrog bindes på linen, og loddet sidder i enden. Krogen kan justeres i præcis den ønskede højde.", "Drop-shot-rig", 0 },
+                    { 8, "Krogen bindes på en speciel måde, hvor agnen (fx boilies) sidder på en lille “hair” efter krogen og ikke direkte på krogen.", "Hair-rig", 0 },
+                    { 9, "Et simpelt rig med flåd, stopperknuder, lodder og krog.", "Float-rig", 0 },
+                    { 10, "Bruges især til dødagn, hvor et spinnerblad eller rotator tilføjes for at give en livlig gang.", "Spinner-rig", 0 },
+                    { 11, "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge.", "Fladfiskerig", 0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Posts",
-                columns: new[] { "Id", "CreationDate", "Description", "Likes", "Location", "Picture", "ProfileID", "Title" },
+                columns: new[] { "Id", "CreationDate", "Description", "Likes", "Location", "LureId", "Picture", "ProfileID", "TechniqueId", "Title" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", 10, "Søen ved Skoven", "public/TestPictures/TestFisk1.png", "testid", "Fisketur ved søen" },
-                    { 2, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", 4, "Kysten ved Byen", "public/TestPictures/TestFisk2.jpg", "testid", "Havfiskeri eventyr" },
-                    { 3, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", 2, "Byens kyst", "public/TestPictures/TestFisk3.png", "testid", "Kæmpe blæksprutte fanget!" },
-                    { 4, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", 0, null, null, "testid", "Hej Fiskere!" }
+                    { 1, new DateTime(2024, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "En fantastisk dag ved søen med masser af fisk!", 10, "Søen ved Skoven", 1, "public/TestPictures/TestFisk1.png", "testid", 1, "Fisketur ved søen" },
+                    { 2, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "En spændende dag på havet med store fangster.", 4, "Kysten ved Byen", 2, "public/TestPictures/TestFisk2.jpg", "testid", 2, "Havfiskeri eventyr" },
+                    { 3, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Jeg fangede en kæmpe blæksprutte - det ikke AI", 2, "Byens kyst", 3, "public/TestPictures/TestFisk3.png", "testid", 3, "Kæmpe blæksprutte fanget!" },
+                    { 4, new DateTime(2024, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Søger single lystfiskere i Odense beliggenhed", 0, null, 4, null, "testid", 4, "Hej Fiskere!" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Comments",
+                columns: new[] { "Id", "CreationDate", "Description", "Picture", "PostId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "Fantastisk fangst! Tillykke med den store fisk.", null, 1 },
+                    { 2, new DateTime(2024, 5, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "Wow, det ser ud til at have været en spændende dag på havet!", null, 2 },
+                    { 3, new DateTime(2024, 5, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "En blæksprutte af den størrelse er virkelig imponerende!", null, 3 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -295,9 +341,24 @@ namespace LystFiskerPortalenWEB.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_PostId",
+                table: "Comments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_LureId",
+                table: "Posts",
+                column: "LureId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_ProfileID",
                 table: "Posts",
                 column: "ProfileID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_TechniqueId",
+                table: "Posts",
+                column: "TechniqueId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -331,19 +392,22 @@ namespace LystFiskerPortalenWEB.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Lures");
-
-            migrationBuilder.DropTable(
-                name: "Posts");
-
-            migrationBuilder.DropTable(
-                name: "Techniques");
+                name: "Comments");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Lures");
+
+            migrationBuilder.DropTable(
                 name: "Profiles");
+
+            migrationBuilder.DropTable(
+                name: "Techniques");
         }
     }
 }
