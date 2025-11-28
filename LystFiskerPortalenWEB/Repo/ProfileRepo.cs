@@ -1,6 +1,7 @@
 ﻿using LystFiskerPortalenWEB.Data;
 using LystFiskerPortalenWEB.Models;
 using Microsoft.AspNetCore.Components.Authorization;
+using LystFiskerPortalenWEB.Repo.IRepos;
 using Microsoft.EntityFrameworkCore;
 namespace LystFiskerPortalenWEB.Repo
 {
