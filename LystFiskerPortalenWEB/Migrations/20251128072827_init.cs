@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LystFiskerPortalenWEB.Migrations
 {
     /// <inheritdoc />
-    public partial class NewDev : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -272,7 +272,7 @@ namespace LystFiskerPortalenWEB.Migrations
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "dfa6bad6-399b-42a8-81f8-b92b7f555313", false, "testuser" });
+                values: new object[] { "testid", 0, "a0246583-3aed-4dfe-afef-1dd019c0833f", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "ecf7b96c-5fa3-4f8e-a1d0-0722484c0018", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",

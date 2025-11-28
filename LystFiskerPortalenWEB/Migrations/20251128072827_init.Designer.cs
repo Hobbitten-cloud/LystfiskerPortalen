@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251128065733_NewDev")]
-    partial class NewDev
+    [Migration("20251128072827_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -385,13 +385,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3",
+                            ConcurrencyStamp = "a0246583-3aed-4dfe-afef-1dd019c0833f",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "dfa6bad6-399b-42a8-81f8-b92b7f555313",
+                            SecurityStamp = "ecf7b96c-5fa3-4f8e-a1d0-0722484c0018",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
