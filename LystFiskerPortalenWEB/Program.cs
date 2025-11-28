@@ -21,7 +21,7 @@ namespace LystFiskerPortalenWEB
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            builder.Services.AddSignalR();
+            
 
             builder.Services.AddDbContextFactory<DataContext>(options =>
             {
@@ -72,7 +72,7 @@ namespace LystFiskerPortalenWEB
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+      
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
@@ -81,11 +81,11 @@ namespace LystFiskerPortalenWEB
             app.UseStaticFiles();
             app.UseAntiforgery();
 
-            app.MapHub<ChatHub>("/chathub");
+         
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
-
+            app.MapHub<ChatHub>("/Chat");
             app.MapAdditionalIdentityEndpoints();
 
             app.Run();
