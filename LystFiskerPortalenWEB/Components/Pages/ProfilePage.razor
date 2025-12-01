@@ -1,7 +1,11 @@
 ﻿@page "/Profile/{id}"
+@using Microsoft.EntityFrameworkCore
 
+@rendermode InteractiveServer
 @inject IProfileRepo profileRepo
 @inject AuthenticationStateProvider AuthenticationStateProvider
+
+
 
 
 @if (profile == null)
@@ -16,14 +20,57 @@ else
         </div>
         <div class="col">
             <h3>@profile.UserName</h3>
+            <br />
+            <div style="display:flex; gap:20px; align-items:center;">
+                <div>Følgere: 0</div>
+                <div>Følger: 0</div>
+            </div> 
+            <button style="
+            background:@(isFollowing ? "#444" : "#007bff"); 
+            color:white;
+            border:none;
+            padding:6px 12px;
+            border-radius:5px;
+            cursor:pointer;"
+            type="button"
+            @onclick="ToggleFollow">
+            @(isFollowing ? "Following" : "Follow")
+            </button> @*udsene på follow knappen og func*@
+            
+        </div>
+        
+    </div>
+
+    <div class="row">
+
+        @* Componet for viewing all posts - sorted after creationDate *@
+        <div  class="col-6" style="margin: auto; width: 50%;">
+            <PostRead UserId="@id" IsProfilePage="@true"></PostRead>
+        </div>
+        
+        <div class="col-4">
+                <div class="follow-box p-3 border rounded">
+                    <h5>Following</h5>
+                    <ul class="list-unstyled">
+                        
+                        @*Viser person navn + billede*@
+                        <a href="/Profile/@profile.Id" style="text-decoration:none; color:black;"> 
+                            <div style="display:flex; align-items:center; cursor:pointer;">
+                                <img src="@profile.ImagePath" style="width:30px; height:30px; border-radius:50%; margin-right:8px;" />
+                                <span style="color:black; text-decoration:underline;">
+                                    @profile.UserName
+                                </span>
+                            </div>
+                        </a>
+
+
+                        <li>Follow 2</li>
+                        <li>Follow 3</li>
+                    </ul>
+                </div>
         </div>
     </div>
 
-
-    @* Componet for viewing all posts - sorted after creationDate *@
-    <div style="margin: auto; width: 50%;">
-        <PostRead UserId="@id" IsProfilePage="@true"></PostRead>
-    </div>
 }
 
 
@@ -38,6 +85,16 @@ else
         var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         id = state.User.FindFirst("sub")?.Value; // or ClaimTypes.NameIdentifier
 
+       
     }
       // private string? userId;
+
+    private string loggedInUserId;
+    bool isFollowing = false;
+
+    async Task ToggleFollow()
+    {
+        isFollowing = !isFollowing;
+    }
+
 }

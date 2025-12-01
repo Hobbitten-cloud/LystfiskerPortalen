@@ -73,6 +73,24 @@ namespace LystFiskerPortalenWEB.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Follows", b =>
+                {
+                    b.Property<string>("FollowerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("FollowingId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("FollowerId", "FollowingId");
+
+                    b.HasIndex("FollowingId");
+
+                    b.ToTable("Follows", (string)null);
+                });
+
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Lure", b =>
                 {
                     b.Property<int>("Id")
@@ -382,13 +400,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3",
+                            ConcurrencyStamp = "fe6bdf3e-601d-462d-839a-e847678e8f2c",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "dfa6bad6-399b-42a8-81f8-b92b7f555313",
+                            SecurityStamp = "657a753a-3c4a-421c-a444-e1155af3d89e",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
@@ -644,6 +662,25 @@ namespace LystFiskerPortalenWEB.Migrations
                     b.Navigation("Post");
                 });
 
+            modelBuilder.Entity("LystFiskerPortalenWEB.Models.Follows", b =>
+                {
+                    b.HasOne("LystFiskerPortalenWEB.Models.Profile", "Follower")
+                        .WithMany("Following")
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LystFiskerPortalenWEB.Models.Profile", "Following")
+                        .WithMany("Followers")
+                        .HasForeignKey("FollowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Follower");
+
+                    b.Navigation("Following");
+                });
+
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Post", b =>
                 {
                     b.HasOne("LystFiskerPortalenWEB.Models.Lure", "Lure")
@@ -730,6 +767,10 @@ namespace LystFiskerPortalenWEB.Migrations
 
             modelBuilder.Entity("LystFiskerPortalenWEB.Models.Profile", b =>
                 {
+                    b.Navigation("Followers");
+
+                    b.Navigation("Following");
+
                     b.Navigation("Posts");
                 });
 

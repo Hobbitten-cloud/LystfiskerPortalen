@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LystFiskerPortalenWEB.Migrations
 {
     /// <inheritdoc />
-    public partial class NewDev : Migration
+    public partial class follower : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -193,6 +193,31 @@ namespace LystFiskerPortalenWEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Follows",
+                columns: table => new
+                {
+                    FollowerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FollowingId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Follows", x => new { x.FollowerId, x.FollowingId });
+                    table.ForeignKey(
+                        name: "FK_Follows_Profiles_FollowerId",
+                        column: x => x.FollowerId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Follows_Profiles_FollowingId",
+                        column: x => x.FollowingId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -272,7 +297,7 @@ namespace LystFiskerPortalenWEB.Migrations
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "dfa6bad6-399b-42a8-81f8-b92b7f555313", false, "testuser" });
+                values: new object[] { "testid", 0, "fe6bdf3e-601d-462d-839a-e847678e8f2c", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "657a753a-3c4a-421c-a444-e1155af3d89e", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",
@@ -346,6 +371,11 @@ namespace LystFiskerPortalenWEB.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Follows_FollowingId",
+                table: "Follows",
+                column: "FollowingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_LureId",
                 table: "Posts",
                 column: "LureId");
@@ -393,6 +423,9 @@ namespace LystFiskerPortalenWEB.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Follows");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
