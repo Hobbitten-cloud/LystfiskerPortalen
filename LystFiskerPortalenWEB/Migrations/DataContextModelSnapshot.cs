@@ -382,13 +382,13 @@ namespace LystFiskerPortalenWEB.Migrations
                         {
                             Id = "testid",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9a8c5b7b-71ec-48e4-85f5-7e1365ddd8f3",
+                            ConcurrencyStamp = "c189464e-c840-4df1-8874-66c6b570e73b",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
-                            SecurityStamp = "dfa6bad6-399b-42a8-81f8-b92b7f555313",
+                            SecurityStamp = "18cf3832-4b1a-4c88-8fb5-5730565f8db4",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });
