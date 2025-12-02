@@ -301,23 +301,9 @@ namespace LystFiskerPortalenUnitTest
         {
             // Arrange
             #region
-            var profile1 = new Profile
+            var profile = new Profile
             {
                 Id = "1",
-                UserName = "TestUser1",
-                ImagePath = "testimage.jpg",
-                Role = "User"
-            };
-            var profile2 = new Profile
-            {
-                Id = "2",
-                UserName = "TestUser1",
-                ImagePath = "testimage.jpg",
-                Role = "User"
-            };
-            var profile3 = new Profile
-            {
-                Id = "3",
                 UserName = "TestUser1",
                 ImagePath = "testimage.jpg",
                 Role = "User"
@@ -325,38 +311,53 @@ namespace LystFiskerPortalenUnitTest
             var post1 = new Post
             {
                 Id = 1,
-                Title = "Post 1",
-                Description = "TestPost",
-                ProfileID = profile1.Id
+                Title = "Test Post 1",
+                Description = "This is test post 1",
+                Location = "Test Location 1",
+                Picture = "testpicture1.jpg",
+                TechniqueId = 1,
+                LureId = 1,
+                Likes = 0,
+                ProfileID = profile.Id
             };
             var post2 = new Post
             {
                 Id = 2,
-                Title = "Post 2",
-                Description = "TestPost",
-                ProfileID = profile2.Id
+                Title = "Test Post 2",
+                Description = "This is test post 1",
+                Location = "Test Location 1",
+                Picture = "testpicture1.jpg",
+                TechniqueId = 1,
+                LureId = 1,
+                Likes = 0,
+                ProfileID = profile.Id
             };
             var post3 = new Post
             {
                 Id = 3,
-                Title = "Post 3",
-                Description = "TestPost",
-                ProfileID = profile3.Id
+                Title = "Test Post 3",
+                Description = "This is test post 1",
+                Location = "Test Location 1",
+                Picture = "testpicture1.jpg",
+                TechniqueId = 1,
+                LureId = 1,
+                Likes = 0,
+                ProfileID = profile.Id
             };
             #endregion
-            _context.Profiles.AddRange(profile1, profile2, profile3);
+            _context.Profiles.Add(profile);
             _context.Posts.AddRange(post1, post2, post3);
             await _context.SaveChangesAsync();
 
             // Act
-            _postRepo.GetPostsByUser("TestUser1");
-            var postsByUser = await _postRepo.GetPostsByUser("TestUser1");
+            _postRepo.GetPostsByUser("1");
+            var postsByUser = await _postRepo.GetPostsByUser("1");
 
 
             // Assert
             Assert.IsNotNull(postsByUser);
             Assert.AreEqual(3, postsByUser.Count);
-            Assert.AreNotSame(post1, postsByUser[0]);
+            Assert.AreNotSame(post1, postsByUser[1]);
         }
     }
 }
