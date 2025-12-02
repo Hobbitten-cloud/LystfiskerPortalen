@@ -11,7 +11,7 @@ namespace LystFiskerPortalenWEB.Repo
 
         private DataContext _context;
         private AuthenticationStateProvider _authenticationStateProvider;
-        public ProfileRepo(DataContext context,AuthenticationStateProvider authstateprovider)
+        public ProfileRepo(DataContext context, AuthenticationStateProvider authstateprovider)
         {
             _context = context;
             _authenticationStateProvider = authstateprovider;
