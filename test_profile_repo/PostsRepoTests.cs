@@ -64,6 +64,7 @@ namespace LystFiskerPortalenUnitTest
             var createdPost = await _context.Posts.FindAsync(1);
 
             Assert.IsNotNull(createdPost);
+            Assert.AreEqual(1, createdPost.Id);
             Assert.AreEqual("Test Post", createdPost.Title);
             Assert.AreEqual("This is a test post", createdPost.Description);
             Assert.AreEqual("Test Location", createdPost.Location);
@@ -77,6 +78,38 @@ namespace LystFiskerPortalenUnitTest
         public void GetAllPosts_ShouldReturnListOfPosts()
         {
 
+        }
+
+        [TestMethod]
+        public async Task GetPostById_ShouldReturnPostById()
+        {
+            var profile = new Profile
+            {
+                Id = "1",
+                UserName = "Test User",
+                ImagePath = "testimage.jpg",
+                Role = "User"
+            };
+            var post = new Post
+            {
+                Id = 1,
+                Title = "Test Post",
+                Description = "This is a test post",
+                Location = "Test Location",
+                Picture = "testpicture.jpg",
+                TechniqueId = 1,
+                LureId = 1,
+                Likes = 0,
+                ProfileID = profile.Id
+            };
+            _context.Profiles.Add(profile);
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+            await _postRepo.GetPostById(1);
+
+            Assert.IsNotNull(post);
+            Assert.AreEqual(1, post.Id);
+            Assert.AreEqual("Test Post", post.Title);
         }
     }
 }
