@@ -41,8 +41,38 @@ namespace LystFiskerPortalenUnitTest
         [TestMethod]
         public async Task CreateComment_ShouldCreateAComment()
         {
+            // Arrange
+            #region
+            var post = new Post
+            {
+                Id = 1,
+                CreationDate = DateTime.Now,
+                Title = "Test",
+                Description = "Hejsa"
+            };
+            var comment = new Comment
+            {
+                Id = 1,
+                Description = "Your fish is not large enough",
+                CreationDate = DateTime.Now,
+                Picture = "julemanden.png",
+                PostId = 1
+            };
+            #endregion
+            _context.Add(comment);
+            _context.Add(post);
+            await _context.SaveChangesAsync();
+            
+            // Act
+            await _commentRepo.CreateComment(comment);
 
-
+            // Assert
+            Assert.IsNotNull(comment);
+            Assert.AreEqual(1, comment.Id);
+            Assert.AreEqual("Your fish is not large enough", comment.Description);
+            Assert.AreEqual("julemanden.png", comment.Picture);
+            Assert.AreSame(post, comment.Post);
+            Assert.AreSame(post.Id, comment.PostId);
         }
 
         [TestMethod]
@@ -90,6 +120,60 @@ namespace LystFiskerPortalenUnitTest
 
             // Assert
             Assert.IsNull(deletedComment);
+        }
+
+        [TestMethod]
+        public async Task GetAllComments_ShouldReturnAllComments()
+        {
+            // Arrange
+            #region
+            var comment1 = new Comment
+            {
+                Id = 1,
+                Description = "Your fish is not large enough",
+                CreationDate = DateTime.Now,
+                Picture = "julemanden.png",
+                PostId = 1
+            };
+            var comment2 = new Comment
+            {
+                Id = 2,
+                Description = "Fish",
+                CreationDate = DateTime.Now,
+                Picture = "fish.png",
+                PostId = 2
+            };
+            var comment3 = new Comment
+            {
+                Id = 3,
+                Description = "Fishermen",
+                CreationDate = DateTime.Now,
+                Picture = "fishingfishermen.png",
+                PostId = 1
+            };
+            #endregion
+            _context.Comments.AddRange(comment1, comment2, comment3);
+            await _context.SaveChangesAsync();
+
+            // Act
+            _commentRepo.GetAllComments()
+
+            // Assert
+
+        }
+
+        [TestMethod]
+        public async Task GetCommentById_ShouldGetASpecificComment()
+        {
+            // Testing code should be applied here
+
+        }
+
+        [TestMethod]
+        public async Task UpdateComment_ShouldUpdateACommentInformation()
+        {
+            // Testing code need to be applied here
+
         }
     }
 }
