@@ -20,6 +20,7 @@ namespace LystFiskerPortalenUnitTest
         private DataContext _context;
         private PostRepo _postRepo;
         private ProfileRepo _profileRepo;
+        private CommentRepo _commentRepo;
 
         [TestInitialize]
         public void TestInitialize()
@@ -35,6 +36,7 @@ namespace LystFiskerPortalenUnitTest
             _mockAuthStateProvider = new Mock<AuthenticationStateProvider>();
             _profileRepo = new ProfileRepo(_context, _mockAuthStateProvider.Object);
             _postRepo = new PostRepo(_context);
+            _commentRepo = new CommentRepo(_context);
         }
 
         [TestMethod]
@@ -358,6 +360,52 @@ namespace LystFiskerPortalenUnitTest
             Assert.IsNotNull(postsByUser);
             Assert.AreEqual(3, postsByUser.Count);
             Assert.AreNotSame(post1, postsByUser[1]);
+        }
+
+        [TestMethod]
+        public async Task GetPostWithComments_ShouldGetAPostWithCommentsAttachedToIt()
+        {
+            // Arrange
+            #region
+            var profile = new Profile
+            {
+                Id = "1",
+                UserName = "Test User",
+                ImagePath = "testimage.jpg",
+                Role = "User"
+            };
+            var post = new Post
+            {
+                Id = 1,
+                Title = "Test Post 1",
+                Description = "This is test post 1",
+                Location = "Test Location 1",
+                Picture = "testpicture1.jpg",
+                TechniqueId = 1,
+                LureId = 1,
+                Likes = 0,
+                ProfileID = profile.Id
+            };
+            var comment = new Comment
+            {
+                Id = 1,
+                Description = "Your fish is not large enough",
+                CreationDate = DateTime.Now,
+                Picture = "julemanden.png",
+                PostId = 1
+            };
+            #endregion
+            _context.Profiles.Add(profile);
+            _context.Posts.Add(post);
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            // Act
+            _postRepo.GetPostWithComments(1);
+
+            // Assert
+            Assert.AreEqual(1, comment.Id);
+            Assert.AreEqual(1, post.Id);
         }
     }
 }
