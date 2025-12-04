@@ -3,6 +3,7 @@ using LystFiskerPortalenWEB.Models;
 using LystFiskerPortalenWEB.Repo;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -156,10 +157,12 @@ namespace LystFiskerPortalenUnitTest
             await _context.SaveChangesAsync();
 
             // Act
-            _commentRepo.GetAllComments()
+            var comments = _commentRepo.GetAllComments();
 
             // Assert
-
+            Assert.IsNotNull(comments);
+            Assert.IsInstanceOfType(comments, typeof(Task<List<Comment>>));
+            Assert.AreEqual(3, comments.Result.Count);
         }
 
         [TestMethod]
