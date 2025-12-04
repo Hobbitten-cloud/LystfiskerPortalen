@@ -18,8 +18,6 @@ namespace LystFiskerPortalenUnitTest
     {
         private Mock<AuthenticationStateProvider> _mockAuthStateProvider;
         private DataContext _context;
-        private PostRepo _postRepo;
-        private ProfileRepo _profileRepo;
         private CommentRepo _commentRepo;
 
         [TestInitialize]
@@ -34,8 +32,6 @@ namespace LystFiskerPortalenUnitTest
 
             // Initialize repository with in-memory database and mocked AuthenticationStateProvider
             _mockAuthStateProvider = new Mock<AuthenticationStateProvider>();
-            _profileRepo = new ProfileRepo(_context, _mockAuthStateProvider.Object);
-            _postRepo = new PostRepo(_context);
             _commentRepo = new CommentRepo(_context);
         }
 
