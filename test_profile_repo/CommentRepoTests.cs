@@ -40,12 +40,19 @@ namespace LystFiskerPortalenUnitTest
         {
             // Arrange
             #region
+            var profile = new Profile()
+            {
+                Id = "1",
+                UserName = "Test",
+                Role = "user"
+            };
             var post = new Post
             {
                 Id = 1,
                 CreationDate = DateTime.Now,
                 Title = "Test",
-                Description = "Hejsa"
+                Description = "Hejsa",
+                ProfileID = "1"
             };
             var comment = new Comment
             {
@@ -59,7 +66,7 @@ namespace LystFiskerPortalenUnitTest
             _context.Add(comment);
             _context.Add(post);
             await _context.SaveChangesAsync();
-            
+
             // Act
             await _commentRepo.CreateComment(comment);
 
@@ -164,8 +171,49 @@ namespace LystFiskerPortalenUnitTest
         [TestMethod]
         public async Task GetCommentById_ShouldGetASpecificComment()
         {
-            // Testing code should be applied here
+            // Arrange
+            #region
+            var comment1 = new Comment
+            {
+                Id = 1,
+                Description = "Your fish is not large enough",
+                CreationDate = DateTime.Now,
+                Picture = "julemanden.png",
+                PostId = 1
+            };
+            var comment2 = new Comment
+            {
+                Id = 2,
+                Description = "Fish",
+                CreationDate = DateTime.Now,
+                Picture = "fish.png",
+                PostId = 2
+            };
+            var comment3 = new Comment
+            {
+                Id = 3,
+                Description = "Fishermen",
+                CreationDate = DateTime.Now,
+                Picture = "fishingfishermen.png",
+                PostId = 1
+            };
+            #endregion
+            _context.Comments.AddRange(comment1, comment2, comment3);
+            await _context.SaveChangesAsync();
 
+            // Act
+            var specificComment1 = _commentRepo.GetCommentById(comment1.Id);
+            var specificComment2 = _commentRepo.GetCommentById(comment2.Id);
+            var specificComment3 = _commentRepo.GetCommentById(comment3.Id);
+
+
+            // Assert
+            Assert.Equals(comment1.Id, specificComment1.Id);
+            Assert.Equals(comment2.Id, specificComment2.Id);
+            Assert.Equals(comment3.Id, specificComment3.Id);
+            Assert.AreNotSame(comment1, comment2);
+            Assert.AreNotSame(comment1.Id, comment2.Id);
+            Assert.AreNotSame(comment1.Id, comment3.Id);
         }
 
         [TestMethod]
@@ -173,6 +221,29 @@ namespace LystFiskerPortalenUnitTest
         {
             // Testing code need to be applied here
 
+            // Arrange
+            #region
+            var comment = new Comment
+            {
+                Id = 1,
+                Description = "Your fish is not large enough",
+                CreationDate = DateTime.Now,
+                Picture = "julemanden.png",
+                PostId = 1
+            };
+            #endregion
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+
+            // Act
+            comment.Description = "Nice fish";
+            comment.Picture = "snemand.png";
+            _commentRepo.UpdateComment(comment);
+
+            // Assert
+            Assert.AreEqual(comment.Description, "Nice fish");
+            Assert.AreEqual(comment.Picture, "snemand.png");
+            Assert.AreEqual(comment.Id, 1);
         }
     }
 }
