@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace LystFiskerPortalenWEB.Tests
+namespace LystFiskerPortalenUnitTest
 {
 	[TestClass]
 	public class ProfileRepoTests
