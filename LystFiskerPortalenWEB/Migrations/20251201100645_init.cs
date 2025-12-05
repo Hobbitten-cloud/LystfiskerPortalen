@@ -209,7 +209,7 @@ namespace LystFiskerPortalenWEB.Migrations
                         column: x => x.ReceiverId,
                         principalTable: "Profiles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Messages_Profiles_SenderId",
                         column: x => x.SenderId,
@@ -264,7 +264,7 @@ namespace LystFiskerPortalenWEB.Migrations
             migrationBuilder.InsertData(
                 table: "Profiles",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "ImagePath", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "Role", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "testid", 0, "11d8390a-0a63-4a66-9af1-feb00bcf3c4c", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "eb41ce7c-48da-4e63-8540-3cff7b576c9f", false, "testuser" });
+                values: new object[] { "testid", 0, "d0be0497-99e5-4251-8aeb-209e4693328a", null, false, "/public/Images/DefaultProfileImage.png", false, null, null, null, null, null, false, "user", "9548904a-2d74-4235-a9f0-e5bcd5b4a579", false, "testuser" });
 
             migrationBuilder.InsertData(
                 table: "Techniques",

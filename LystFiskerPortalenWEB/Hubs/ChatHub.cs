@@ -1,30 +1,25 @@
-﻿
-
-using LystFiskerPortalenWEB.Models;
+﻿using LystFiskerPortalenWEB.Models;
+using LystFiskerPortalenWEB.Repo;
 using Microsoft.AspNetCore.SignalR;
+using LystFiskerPortalenWEB.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LystFiskerPortalenWEB.Hubs
 {
+    
     public class ChatHub : Hub
     {
-        public const string HubUrl = "/Chat";
-
-        public async Task Broadcast(string username, string message)
+        private IMessageService _messages;
+        
+        public ChatHub(IMessageService messages)
         {
-            await Clients.All.SendAsync("Broadcast", username, message);
+            _messages = messages;
         }
-
-        public override Task OnConnectedAsync()
+        public async Task SendMessage(string senderId, string receiverId,string content)
         {
-            Console.WriteLine($"{Context.ConnectionId} connected");
-            return base.OnConnectedAsync();
+            await _messages.SaveMessageAsync(senderId, receiverId, content);
+            await Clients.User(receiverId)
+                .SendAsync("ReceiveMessage", senderId, receiverId);        
         }
-
-        public override async Task OnDisconnectedAsync(Exception e)
-        {
-            Console.WriteLine($"Disconnected {e?.Message} {Context.ConnectionId}");
-            await base.OnDisconnectedAsync(e);
-        }
-
     }
 }

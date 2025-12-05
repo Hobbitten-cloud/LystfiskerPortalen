@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using LystFiskerPortalenWEB.Repo;
 using LystFiskerPortalenWEB.Services;
 using LystFiskerPortalenWEB.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace LystFiskerPortalenWEB
 {
@@ -29,10 +30,7 @@ namespace LystFiskerPortalenWEB
                     options.UseSqlServer(builder.Configuration.GetConnectionString("MyDBConnection"));
                    
                 }
-            }
-            , ServiceLifetime.Transient
-        
-            );
+            }, ServiceLifetime.Transient );
 
             builder.Services.AddDefaultIdentity<Profile>
                 (options => options.SignIn.RequireConfirmedAccount = false)
@@ -53,8 +51,23 @@ namespace LystFiskerPortalenWEB
             builder.Services.AddScoped<ILureRepo, LureRepo>();
 
 
-            builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+            //chat
+            builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<IChatClient,ChatClient>();
 
+
+
+
+
+
+
+
+
+
+
+
+            builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+            
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = IdentityConstants.ApplicationScheme;
@@ -85,7 +98,7 @@ namespace LystFiskerPortalenWEB
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
-            app.MapHub<ChatHub>("/Chat");
+            app.MapHub<ChatHub>("/chathub");
             app.MapAdditionalIdentityEndpoints();
 
             app.Run();
