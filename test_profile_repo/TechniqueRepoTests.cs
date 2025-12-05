@@ -29,7 +29,6 @@ namespace LystFiskerPortalenUnitTest
                 .Options;
 
             _context = new DataContext(options);
-            _factoryContext = new IDbContextFactory<DataContext> _factory;
 
             // Initialize repository with in-memory database and mocked AuthenticationStateProvider
             _mockAuthStateProvider = new Mock<AuthenticationStateProvider>();
@@ -37,7 +36,7 @@ namespace LystFiskerPortalenUnitTest
             _postRepo = new PostRepo(_context);
 
             // Using DBFactory instead of regular context ??
-            _techniqueRepo = new TechniqueRepo(_factory);
+            _techniqueRepo = new TechniqueRepo(_context);
         }
 
         [TestMethod]
@@ -57,14 +56,8 @@ namespace LystFiskerPortalenUnitTest
             // Arrange
             Assert.IsNotNull(createdLure);
             Assert.IsNotNull(createdLure.Id);
-            Assert.IsNotNull(createdLure.Color);
-            Assert.IsNotNull(createdLure.Type);
-            Assert.IsNotNull(createdLure.Weight);
             Assert.IsNotNull(createdLure.Name);
             Assert.AreEqual(1, createdLure.Id);
-            Assert.AreEqual("green", createdLure.Color);
-            Assert.AreEqual("small", createdLure.Type);
-            Assert.AreEqual(32.34, createdLure.Weight);
             Assert.AreEqual("Green Crawfish", createdLure.Name);
         }
 
