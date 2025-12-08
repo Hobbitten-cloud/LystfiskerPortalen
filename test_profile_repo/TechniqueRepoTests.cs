@@ -36,7 +36,7 @@ namespace LystFiskerPortalenUnitTest
             _postRepo = new PostRepo(_context);
 
             // Using DBFactory instead of regular context ??
-            _techniqueRepo = new TechniqueRepo(_context);
+            //_techniqueRepo = new TechniqueRepo(_context);
         }
 
         [TestMethod]
