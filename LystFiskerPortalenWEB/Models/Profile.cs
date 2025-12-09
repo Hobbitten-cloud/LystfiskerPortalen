@@ -13,6 +13,7 @@ namespace LystFiskerPortalenWEB.Models
 
         public string ImagePath { get; set; }
 
+
         public List<Post> Posts { get; set; }
 
     }

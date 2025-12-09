@@ -1,5 +1,6 @@
 ﻿@page "/Test"
 @attribute [StreamRendering]
+@rendermode InteractiveServer
 
 
 
@@ -8,14 +9,31 @@
 <h1>Test</h1>
 <p>Lorem ipsum</p>
 
-<TechLureDropdownComp></TechLureDropdownComp> 
+<TechLureDropdownComp></TechLureDropdownComp>
 
+<button style="
+            background:@(isFollowing ? "#444" : "#007bff");
+            color:white;
+            border:none;
+            padding:6px 12px;
+            border-radius:5px;
+            cursor:pointer;"
+        type="button"
+        @onclick="ToggleFollow">
+    @(isFollowing ? "Following" : "Follow")
+</button> @*udsene på follow knappen og func*@
 
 
 
 
 
 @code {
-   
+    private string loggedInUserId;
+    bool isFollowing = false;
+
+    async Task ToggleFollow()
+    {
+        isFollowing = !isFollowing;
+    }
 
 }

@@ -8,15 +8,19 @@
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@if (Posts == null)
-{
-	<p>Loading posts....</p>
-}
-else if (Posts.Count == 0)
-{
-	<p>Der er ingen posts at vise.</p>
-}
-else
+@*Code below was previously used to let the user know if 0 posts existed but is commented out as it conflicted with the profilepage*@
+@* 
+	@if (Posts == null)
+	{
+		<p>Loading posts....</p>
+	} 
+	else if (Posts.Count == 0)
+	{
+		<p>Der er ingen posts at vise.</p>
+	} 
+*@
+
+@if (Posts != null)
 {
 	@foreach (var post in Posts)
 	{
