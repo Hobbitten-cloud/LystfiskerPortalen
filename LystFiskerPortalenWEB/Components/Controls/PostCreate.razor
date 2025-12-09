@@ -16,6 +16,13 @@
 
         <div class="card-body">
             <div>
+                @if (!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    <div class="alert alert-warning" role="alert">
+                        @errorMessage
+                    </div>
+                }
+
                 <div class="row mb-3">
                     <div class="col-2">
                         <label for="title" class="form-label">Titel</label>
@@ -58,7 +65,7 @@
                 <div class="mb-3">
                     <label class="form-label">Teknik</label>
                     <InputSelect class="form-select" @bind-Value="post.TechniqueId">
-                        <option value="none" selected hidden disabled>Vælg Teknik</option>
+                        <option value="" selected hidden disabled>Vælg Teknik</option>
                         @foreach (var tech in techniques)
                         {
                             <option value="@tech.Id">@tech.Name</option>
@@ -69,7 +76,7 @@
                 <div class="mb-3">
                     <label class="form-label">Blink</label>
                     <InputSelect class="form-select" @bind-Value="post.LureId">
-                        <option value="none" selected disabled hidden>Vælg Blink</option>
+                        <option value="" selected disabled hidden>Vælg Blink</option>
                         @foreach (var lure in lures)
                         {
                             <option value="@lure.Id">@lure.Name</option>
@@ -77,7 +84,7 @@
                     </InputSelect>
                 </div>
 
-                <button class="btn btn-primary" style="float: right;" type="submit">Opret</button>
+                <button class="btn btn-primary" style="float: right;" type="submit" disabled="@(!canCreatePost)">Opret</button>
             </div>
         </div>
     </EditForm>
@@ -101,10 +108,18 @@
     private IPostRepo postRepo { get; set; }
 
     private bool forceReloadPage = true;
+    private string? errorMessage;
+    private bool canCreatePost => !string.IsNullOrWhiteSpace(post.ProfileID);
 
     private async Task CreatePost()
     {
-        
+        if (!canCreatePost)
+        {
+            errorMessage = "Du skal være logget ind for at oprette et opslag.";
+            return;
+        }
+
+        errorMessage = null;
         post.CreationDate = DateTime.Now;
         if (post.TechniqueId is null)
             post.TechniqueId = 1;
@@ -152,10 +167,16 @@
     {
         var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
-        post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            post.ProfileID = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            post.Profile = !string.IsNullOrEmpty(post.ProfileID) ? await ProfileRepo.GetProfileById(post.ProfileID) : null;
+        }
+        else
+        {
+            errorMessage = "Log ind for at kunne oprette et opslag.";
+        }
         lures = await LureRepo.GetAllLures();
         techniques = await TechniqueRepo.GetAllTechs();
-        
-        post.Profile = await ProfileRepo.GetProfileById(post.ProfileID);
     }
 }
