@@ -71,8 +71,8 @@ namespace LystFiskerPortalenWEB.Repo
             var posts = await _context.Posts
                 .Include(p => p.Profile)
                 .Include(p => p.Comments)
-                .Include(p=>p.Technique)
-                .Include(p=>p.Lure)
+                .Include(p => p.Technique)
+                .Include(p => p.Lure)
                 .OrderByDescending(t => t.CreationDate)
                 .ToListAsync();
 
@@ -99,6 +99,7 @@ namespace LystFiskerPortalenWEB.Repo
                 .OrderByDescending(p => p.CreationDate)
                 .ToListAsync();
         }
+
         public async Task<Post?> GetPostWithComments(int id)
         {
             return await _context.Posts
@@ -107,14 +108,14 @@ namespace LystFiskerPortalenWEB.Repo
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task DeleteComment(int id)
-        {
-            var comment = await _context.Comments.FindAsync(id);
-            if (comment != null)
-            {
-                _context.Comments.Remove(comment);
-                await _context.SaveChangesAsync();
-            }
-        }
+        //public async Task DeleteComment(int id)
+        //{
+        //    var comment = await _context.Comments.FindAsync(id);
+        //    if (comment != null)
+        //    {
+        //        _context.Comments.Remove(comment);
+        //        await _context.SaveChangesAsync();
+        //    }
+        //}
     }
 }
