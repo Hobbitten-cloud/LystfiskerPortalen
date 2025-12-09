@@ -4,6 +4,7 @@ using LystFiskerPortalenWEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LystFiskerPortalenWEB.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251128124208_follower")]
+    partial class follower
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -401,14 +404,12 @@ namespace LystFiskerPortalenWEB.Migrations
                             Id = "testid",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "fe6bdf3e-601d-462d-839a-e847678e8f2c",
-                            ConcurrencyStamp = "c189464e-c840-4df1-8874-66c6b570e73b",
                             EmailConfirmed = false,
                             ImagePath = "/public/Images/DefaultProfileImage.png",
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
                             Role = "user",
                             SecurityStamp = "657a753a-3c4a-421c-a444-e1155af3d89e",
-                            SecurityStamp = "18cf3832-4b1a-4c88-8fb5-5730565f8db4",
                             TwoFactorEnabled = false,
                             UserName = "testuser"
                         });

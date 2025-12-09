@@ -17,6 +17,7 @@ namespace LystFiskerPortalenWEB.Data
         public DbSet<Technique> Techniques { get; set; }
         public DbSet<Lure> Lures { get; set; }
         public DbSet<Comment> Comments { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +32,8 @@ namespace LystFiskerPortalenWEB.Data
             builder.Entity<Post>().ToTable("Posts");
             builder.Entity<Technique>().ToTable("Techniques");
             builder.Entity<Lure>().ToTable("Lures");
+            
+
             builder.Entity<Comment>(entity =>
             {
                 entity.ToTable("Comments");
@@ -190,6 +193,7 @@ namespace LystFiskerPortalenWEB.Data
                     Description = "Specialiseret bundrig med korte forfang og farvede perler/spinnerblade, ofte med to kroge."
                 }
             );
+
 
 
 
