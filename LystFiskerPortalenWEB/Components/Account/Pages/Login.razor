@@ -55,18 +55,13 @@
             </EditForm>
         </section>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to log in.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
-    </div>
 </div>
 
 @code {
     private string? errorMessage;
 
+    [Inject]
+    public UserManager<Profile> userManager { get; set; }
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
 
@@ -89,7 +84,8 @@
     {
         // This doesn't count login failures towards account lockout
         // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-        var result = await SignInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+        var username = await userManager.FindByEmailAsync(Input.Email);
+        var result = await SignInManager.PasswordSignInAsync(username.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
         if (result.Succeeded)
         {
             Logger.LogInformation("User logged in.");
